@@ -33,6 +33,7 @@ describe "Publisher API" do
      'PaypalEmail' => $publisher_paypal_email
     }
     response = @@publisher.create($new_publisher)
+    puts response.body
     $publisher_id = JSON.parse(response.body)["Id"].to_s
     $publisher_first.should == JSON.parse(response.body)["FirstName"]
     $publisher_last.should == JSON.parse(response.body)["LastName"]

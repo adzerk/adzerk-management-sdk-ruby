@@ -21,7 +21,8 @@ describe "Campaign API" do
       'IsActive' => $campaign_IsActive,
       'Price' => $campaign_Price,
       'BrandId' => $campaign_BrandId,
-      'Flights' => $campaign_Flights
+      'Flights' => $campaign_Flights,
+      'IsDeleted' => false
     }
   
     response = @@campaign.create(new_campaign)
@@ -32,6 +33,7 @@ describe "Campaign API" do
     $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
     $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
     $campaign_BrandId.should == JSON.parse(response.body)["BrandId"]
+    JSON.parse(response.body)["IsDeleted"].should == false
     $campaign_Flights.should == JSON.parse(response.body)["Flights"]
   end
   
@@ -43,8 +45,9 @@ describe "Campaign API" do
       'Price' => "5.00",
       'Keywords' => "test, test2",
       'Name' => "Test",
-      'CampaignId' => $campaign_Id,
-      'ChannelId' => 1196
+      'ChannelId' => 1196,
+      'Impressions' => 10000,
+      'IsDeleted' => false
     }]
     new1_campaign = {
       'Name' => $campaign_Name,
@@ -53,21 +56,60 @@ describe "Campaign API" do
       'IsActive' => $campaign_IsActive,
       'Price' => $campaign_Price,
       'BrandId' => $campaign_BrandId,
+      'IsDeleted' => false,
       'Flights' => $campaign_Flights1
     }
+    puts new1_campaign.to_json
     response = @@campaign.create(new1_campaign)
-    puts response.body
+    $campaign_id1 = JSON.parse(response.body)["Id"].to_s
+    $campaign_Name.should == JSON.parse(response.body)["Name"]
+    #$campaign_StartDate.should == JSON.parse(response.body)["StartDate"]
+    #$campaign_EndDate.should == JSON.parse(response.body)["EndDate"]
+    $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
+    JSON.parse(response.body)["IsDeleted"].should == false
+    $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
+    $campaign_BrandId.should == JSON.parse(response.body)["BrandId"]
+    #$campaign_Flights1.to_json.should == JSON.parse(response.body)["Flights"]
   end
   
   it "should create a new campaign with two flights" do
-    
+    $campaign_Flights2 = [{
+      'StartDate' => "1/1/2011",
+      'EndDate' => "12/31/2011",
+      'NoEndDate' => false,
+      'Price' => "5.00",
+      'Keywords' => "test, test2",
+      'Name' => "Test",
+      'ChannelId' => 1196,
+      'Impressions' => 10000
+    },{
+      'StartDate' => "1/1/2010",
+      'EndDate' => "12/31/2012",
+      'NoEndDate' => false,
+      'Price' => "10.00",
+      'Keywords' => "test, test2, test3",
+      'Name' => "Test3",
+      'ChannelId' => 1196,
+      'Impressions' => 15000
+    }]
+    new2_campaign = {
+      'Name' => $campaign_Name,
+      'StartDate' => $campaign_StartDate,
+      'EndDate' => $campaign_EndDate,
+      'IsActive' => $campaign_IsActive,
+      'Price' => $campaign_Price,
+      'BrandId' => $campaign_BrandId,
+      'Flights' => $campaign_Flights2
+    }
+    response = @@campaign.create(new2_campaign)
+    $campaign_id2 = JSON.parse(response.body)["Id"].to_s
+    JSON.parse(response.body)["Flights"].length.should == 2
   end
   
-  
-  # it "should list a specific campaign" do
-  #   response = @@campaign.get($campaign_id)
-  #   response.body.should == '{"Id":' + $campaign_id + ',"Title":"' + $campaign_title + '","Commission":' + $campaign_commission.to_s + ',"Engine":"' + $campaign_engine + '","Keywords":"' + $campaign_keywords + '","CPM":' + $campaign_CPM + ',"AdTypes":' + $campaign_AdTypes.to_json + '}'
-  # end
+  it "should list a specific campaign" do
+    response = @@campaign.get($campaign_id)
+    response.body.should == '{"Id":' + $campaign_id + ',"Name":"' + $campaign_Name + '","StartDate":"\/Date(1293858000000-0500)\/","EndDate":"\/Date(1325307600000-0500)\/","IsActive":false,"Price":' + $campaign_Price + ',"BrandId":' + $campaign_BrandId.to_s + ',"IsDeleted":false}'
+  end
   # 
   # it "should update a campaign" do
   #   $u_campaign_title = 'Test campaign ' + rand(1000000).to_s + 'test'

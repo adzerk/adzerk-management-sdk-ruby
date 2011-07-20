@@ -68,6 +68,7 @@ describe "Channel API" do
   it "should list all channels" do
     result = @@channel.list()
     result.length.should > 0
+    puts result.to_json
     result["Items"].last["Id"].to_s.should == $channel_id
     result["Items"].last["Title"].should == $u_channel_title
     result["Items"].last["Commission"].should == $u_channel_commission.to_f

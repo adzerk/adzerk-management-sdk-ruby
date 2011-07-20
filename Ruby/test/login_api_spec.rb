@@ -15,8 +15,8 @@ describe "Login_API" do
     uri = URI.parse($host + '/login')
     new_login = { 
       'Id' => '5055',
-      'Email' => 'kacy+' + rand(1000000).to_s + '@kacyfortner.com',
-      'Name' => 'Kacy Fortner',
+      'Email' => 'noreply+' + rand(1000000).to_s + '@adzerk.com',
+      'Name' => 'Test',
       'Password' => 'XXXX'
     }
     data = { 'login' => new_login.to_json }

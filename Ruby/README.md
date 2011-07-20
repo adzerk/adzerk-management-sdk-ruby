@@ -12,27 +12,52 @@ Be sure and get your API key. Log into the management application at [http://man
 
 ## Usage
 
+Refer to the [https://github.com/adzerk/adzerk-api/wiki](wiki) of this repository for the properties needed for update and create. 
+
 ### Examples
 
     adzerk = Adzerk.new('your_api_key')
     adzerk::Site.list()
 
+### Campaigns
+
+    Adzerk::Campaign.create(json)
+    Adzerk::Campaign.get(id)
+    Adzerk::Campaign.list()
+    Adzerk::Campaign.update(json)
+    Adzerk::Campaign.delete(id)
+    
+### Channels
+
+    Adzerk::Campaign.create(json)
+    Adzerk::Campaign.get(id)
+    Adzerk::Campaign.list()
+    Adzerk::Campaign.update(json)
+    Adzerk::Campaign.delete(id)
+    
+### Flights
+
+    Adzerk::Campaign.create(json)
+    Adzerk::Campaign.get(id)
+    Adzerk::Campaign.list()
+    Adzerk::Campaign.update(json)
+    Adzerk::Campaign.delete(id)
+        
+### Publishers
+
+    Adzerk::Campaign.create(json)
+    Adzerk::Campaign.get(id)
+    Adzerk::Campaign.list()
+    Adzerk::Campaign.update(json)
+    Adzerk::Campaign.delete(id)
+    
 ### Sites
 
-    Adzerk::Site.create(json)
-      - Title
-      - Url
-      
-    Adzerk::Site.get(id)
-    
-    Adzerk::Site.list()
-    
-    Adzerk::Site.update(json)
-      - Id
-      - Title
-      - Url
-      - PublisherAccountId
-      
-    Adzerk::Site.delete(id)
+    Adzerk::Campaign.create(json)
+    Adzerk::Campaign.get(id)
+    Adzerk::Campaign.list()
+    Adzerk::Campaign.update(json)
+    Adzerk::Campaign.delete(id)
+
 
 Copyright (c) 2011 Adzerk, Inc.

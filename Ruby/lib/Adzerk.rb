@@ -5,7 +5,7 @@ require "net/http"
 module Adzerk
   
   @@header = 'X-Adzerk-ApiKey'
-  $host = 'http://172.16.35.195/v1/'
+  $host = 'http://api.adzerk.net/v1/'
   
   def self.new(key)
     @@api_key = key
@@ -22,6 +22,14 @@ module Adzerk
   def self.post_request(uri, data)
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.request_uri)
+    request.add_field @@header, @@api_key
+    request.set_form_data(data)
+    http.request(request)
+  end
+  
+  def self.put_request(uri, data)
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Put.new(uri.request_uri)
     request.add_field @@header, @@api_key
     request.set_form_data(data)
     http.request(request)
