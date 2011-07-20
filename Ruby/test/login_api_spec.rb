@@ -2,31 +2,51 @@ require 'spec_helper'
 
 describe "Login_API" do
   
-  login_id = '484'
+  $login_url = 'http://www.adzerk.com/'
+  @@login = $adzerk::Login.new
 
-  # it "should_list_all_logins_to_network" do
-  #   uri = URI.parse($host << '/login')
-  #   response = get_request(uri)
-  #   puts response.code
-  #   puts response.body    
-  # end
-  
-  it "should_create_a_new_login" do
-    uri = URI.parse($host + '/login')
-    new_login = { 
-      'Id' => '5055',
-      'Email' => 'noreply+' + rand(1000000).to_s + '@adzerk.com',
-      'Name' => 'Test',
-      'Password' => 'XXXX'
+  it "should list all logins" do
+    result = @@login.list()
+    result.length.should > 0
+    # result["Items"].last["Id"].to_s.should == $site_id
+  end
+
+  it "should create a new login" do
+    $email = "test+" + rand(10000).to_s + "@adzerk.com"
+    $password = "somepassword"
+    $fullname = "test person"
+    new_login = {
+      'Email' => $email,
+      'Password' => $password,
+      'Name' => $fullname
     }
-    data = { 'login' => new_login.to_json }
-    response = post_request(uri, data)
-    puts response.body
+    response = @@login.create(new_login)
+    $login_id = JSON.parse(response.body)["Id"].to_s
+    JSON.parse(response.body)["Email"].should == $email
+    JSON.parse(response.body)["Password"].should == $password
+    JSON.parse(response.body)["Name"].should == $fullname
   end
   
-  # it "should_list_specific_login_to_network" do
-  #   uri = URI.parse($host << '/login/' << login_id)
-  #   response = get_request(uri)
-  #   puts response.body    
-  # end
+  it "should list a specific login" do
+    response = @@login.get($login_id)
+    response.body.should == '{"Id":' + $login_id.to_s + ',"Email":"'+ $email + '","Password":"' + $password + '","Name":"' + $fullname + '"}'
+  end
+  
+  it "should update a login" do
+    $email = "test+" + rand(10000).to_s + "@adzerk.com"
+    $password = "somepassword"
+    $fullname = "test person"
+    new_login = {
+      'Id' => $login_id,
+      'Email' => $email,
+      'Password' => $password,
+      'Name' => $fullname
+    }
+    response = @@login.update(new_login)
+    $login_id = JSON.parse(response.body)["Id"].to_s
+    JSON.parse(response.body)["Email"].should == $email
+    JSON.parse(response.body)["Password"].should == $password
+    JSON.parse(response.body)["Name"].should == $fullname
+  end
+  
 end
