@@ -29,35 +29,46 @@ Refer to the [https://github.com/adzerk/adzerk-api/wiki](wiki) of this repositor
     
 ### Channels
 
-    Adzerk::Campaign.create(json)
-    Adzerk::Campaign.get(id)
-    Adzerk::Campaign.list()
-    Adzerk::Campaign.update(json)
-    Adzerk::Campaign.delete(id)
+    Adzerk::Channel.create(json)
+    Adzerk::Channel.get(id)
+    Adzerk::Channel.list()
+    Adzerk::Channel.update(json)
+    Adzerk::Channel.delete(id)
     
 ### Flights
 
-    Adzerk::Campaign.create(json)
-    Adzerk::Campaign.get(id)
-    Adzerk::Campaign.list()
-    Adzerk::Campaign.update(json)
-    Adzerk::Campaign.delete(id)
+    Adzerk::Flight.create(json)
+    Adzerk::Flight.get(id)
+    Adzerk::Flight.list()
+    Adzerk::Flight.update(json)
+    Adzerk::Flight.delete(id)
         
 ### Publishers
 
-    Adzerk::Campaign.create(json)
-    Adzerk::Campaign.get(id)
-    Adzerk::Campaign.list()
-    Adzerk::Campaign.update(json)
-    Adzerk::Campaign.delete(id)
+    Adzerk::Publisher.create(json)
+    Adzerk::Publisher.get(id)
+    Adzerk::Publisher.list()
+    Adzerk::Publisher.update(json)
+    Adzerk::Publisher.delete(id)
     
 ### Sites
 
-    Adzerk::Campaign.create(json)
-    Adzerk::Campaign.get(id)
-    Adzerk::Campaign.list()
-    Adzerk::Campaign.update(json)
-    Adzerk::Campaign.delete(id)
+    Adzerk::Site.create(json)
+    Adzerk::Site.get(id)
+    Adzerk::Site.list()
+    Adzerk::Site.update(json)
+    Adzerk::Site.delete(id)
+    
+### Logins
+
+    Adzerk::Login.create(json)
+    Adzerk::Login.get(id)
+    Adzerk::Login.list()
+    Adzerk::Login.update(json)
+        
+### Reporting
+
+    Adzerk::Reporting.create_report(json)
 
 
 Copyright (c) 2011 Adzerk, Inc.
