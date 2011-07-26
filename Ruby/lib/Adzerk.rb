@@ -5,7 +5,7 @@ require "net/http"
 module Adzerk
   
   @@header = 'X-Adzerk-ApiKey'
-  $host = 'http://172.16.35.195/v1/'
+  $host = 'http://10.0.1.51/v1/'
   
   def self.new(key)
     @@api_key = key
