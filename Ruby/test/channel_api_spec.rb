@@ -34,7 +34,7 @@ describe "Channel API" do
   
   it "should list a specific channel" do
     response = @@channel.get($channel_id)
-    response.body.should == '{"Id":' + $channel_id + ',"Title":"' + $channel_title + '","Commission":' + $channel_commission.to_s + ',"Engine":"' + $channel_engine + '","Keywords":"' + $channel_keywords + '","CPM":' + $channel_CPM + ',"AdTypes":' + $channel_AdTypes.to_json + '}'
+    response.body.should == '{"Id":' + $channel_id + ',"Title":"' + $channel_title + '","Commission":' + $channel_commission.to_s + ',"Engine":"' + $channel_engine + '","Keywords":"' + $channel_keywords + '","CPM":' + $channel_CPM + ',"AdTypes":' + $channel_AdTypes.to_json + ',"IsDeleted":false}'
   end
   
   it "should update a channel" do
@@ -68,7 +68,6 @@ describe "Channel API" do
   it "should list all channels" do
     result = @@channel.list()
     result.length.should > 0
-    puts result.to_json
     result["Items"].last["Id"].to_s.should == $channel_id
     result["Items"].last["Title"].should == $u_channel_title
     result["Items"].last["Commission"].should == $u_channel_commission.to_f
@@ -92,7 +91,7 @@ describe "Channel API" do
   
   it "should not get individual deleted channel" do
     response = @@channel.get($channel_id)
-    response.body.should == '{"Id":0,"Commission":0,"CPM":0}'
+    response.body.should == '{"Id":0,"Commission":0,"CPM":0,"IsDeleted":false}'
   end
   
   it "should not update deleted channels" do
@@ -106,7 +105,7 @@ describe "Channel API" do
       'AdTypes' => $u_channel_AdTypes
     }
     response = @@channel.update(updated_channel)
-    response.body.should == '{"Id":0,"Commission":0,"CPM":0}'
+    response.body.should == '{"Id":0,"Commission":0,"CPM":0,"IsDeleted":false}'
   end
   
   it "should not update the id of a channel" do

@@ -19,7 +19,7 @@ describe "Flight API" do
     $flight_UserAgentKeywords = nil
     $flight_WeightOverride = nil
     $flight_CampaignId = 1064
-    $flight_IsActive = false
+    $flight_IsActive = true
     $flight_IsDeleted = false
     
     new_flight = {
@@ -42,130 +42,121 @@ describe "Flight API" do
       'IsDeleted' => $flight_IsDeleted
     }
     response = @@flight.create(new_flight)
-    # $flight_id = JSON.parse(response.body)["Id"].to_s
-    # $flight_Name.should == JSON.parse(response.body)["Name"]
-    # #$flight_StartDate.should == JSON.parse(response.body)["StartDate"]
-    # #$flight_EndDate.should == JSON.parse(response.body)["EndDate"]
-    # $flight_IsActive.should == JSON.parse(response.body)["IsActive"]
-    # $flight_Price.to_f.should == JSON.parse(response.body)["Price"]
-    # $flight_BrandId.should == JSON.parse(response.body)["BrandId"]
-    # JSON.parse(response.body)["IsDeleted"].should == false
-    # $flight_Flights.should == JSON.parse(response.body)["Flights"]
+    $flight_id = JSON.parse(response.body)["Id"].to_s
+    JSON.parse(response.body)["NoEndDate"].should == false
+    JSON.parse(response.body)["ChannelId"].should == 1196
+    JSON.parse(response.body)["Name"].should == $flight_Name
+    JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    JSON.parse(response.body)["NoEndDate"].should == $flight_NoEndDate
+    JSON.parse(response.body)["Price"].should == 15.0
+    JSON.parse(response.body)["OptionType"].should == $flight_OptionType
+    JSON.parse(response.body)["Impressions"].should == $flight_Impressions
+    JSON.parse(response.body)["IsUnlimited"].should == $flight_IsUnlimited
+    JSON.parse(response.body)["IsFullSpeed"].should == $flight_IsFullSpeed
+    JSON.parse(response.body)["Keywords"].should == $flight_Keywords
+    JSON.parse(response.body)["UserAgentKeywords"].should == $flight_UserAgentKeywords
+    JSON.parse(response.body)["WeightOverride"].should == $flight_WeightOverride
+    JSON.parse(response.body)["CampaignId"].should == $flight_CampaignId
+    JSON.parse(response.body)["IsActive"].should == $flight_IsActive
+    JSON.parse(response.body)["IsDeleted"].should == $flight_IsDeleted
+  end  
+  
+  it "should list a specific flight" do
+    response = @@flight.get($flight_id)
+    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293858000000-0500)\\/","EndDate":"\\/Date(1325307600000-0500)\\/","Price":15,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":1064,"ChannelId":0,"IsDeleted":false,"IsActive":true}'
   end
   
-  
-  # it "should list a specific flight" do
-  #   response = @@flight.get($flight_id)
-  #   response.body.should == '{"Id":' + $flight_id + ',"Name":"' + $flight_Name + '","StartDate":"\/Date(1293858000000-0500)\/","EndDate":"\/Date(1325307600000-0500)\/","IsActive":false,"Price":' + $flight_Price + ',"BrandId":' + $flight_BrandId.to_s + ',"IsDeleted":false}'
-  # end
-  # 
-  # it "should update a flight" do
-  #   $u_flight_title = 'Test flight ' + rand(1000000).to_s + 'test'
-  #   $u_flight_commission = '1'
-  #   $u_flight_engine = 'CPI'
-  #   $u_flight_keywords = 'another test'
-  #   $u_flight_CPM = '0'
-  #   $u_flight_AdTypes = [4,5,6,7,8]
-  #   
-  #   updated_flight = {
-  #     'Id' => $flight_id,
-  #     'Title' => $u_flight_title,
-  #     'Commission' => $u_flight_commission,
-  #     'Engine' => $u_flight_engine,
-  #     'Keywords' => $u_flight_keywords,
-  #     'CPM' => $u_flight_CPM,
-  #     'AdTypes' => $u_flight_AdTypes
-  #   }
-  # 
-  #   response = @@flight.update(updated_flight)
-  #   $flight_id = JSON.parse(response.body)["Id"].to_s
-  #   $u_flight_title.should == JSON.parse(response.body)["Title"]
-  #   $u_flight_commission.to_f.should == JSON.parse(response.body)["Commission"]
-  #   $u_flight_engine.should == JSON.parse(response.body)["Engine"]
-  #   $u_flight_keywords.should == JSON.parse(response.body)["Keywords"]
-  #   $u_flight_CPM.to_f.should == JSON.parse(response.body)["CPM"]
-  #   $u_flight_AdTypes.should == JSON.parse(response.body)["AdTypes"]
-  # end
+  it "should update a flight" do
+    $u_flight_Name = 'Test Test flight ' + rand(1000000).to_s
+    $u_flight_StartDate = "1/1/2011"
+    $u_flight_EndDate = "12/31/2011"
+    $u_flight_NoEndDate = false
+    $u_flight_Price = '16.00'
+    $u_flight_OptionType = 1
+    $u_flight_Impressions = 12000
+    $u_flight_IsUnlimited = false
+    $u_flight_IsFullSpeed = false
+    $u_flight_Keywords = "test, test2"
+    $u_flight_UserAgentKeywords = nil
+    $u_flight_WeightOverride = nil
+    $u_flight_CampaignId = 1064
+    $u_flight_IsActive = true
+    $u_flight_IsDeleted = false
+    
+    new_flight = {
+      'Id' => $flight_id,
+      'NoEndDate' => false,
+      'ChannelId' => 1196,
+      'Name' => $u_flight_Name,
+      'StartDate' => $u_flight_StartDate,
+      'EndDate' => $u_flight_EndDate,
+      'NoEndDate' => $u_flight_NoEndDate,
+      'Price' => $u_flight_Price,
+      'OptionType' => $u_flight_OptionType,
+      'Impressions' => $u_flight_Impressions,
+      'IsUnlimited' => $u_flight_IsUnlimited,
+      'IsFullSpeed' => $u_flight_IsFullSpeed,
+      'Keywords' => $u_flight_Keywords,
+      'UserAgentKeywords' => $u_flight_UserAgentKeywords,
+      'WeightOverride' => $u_flight_WeightOverride,
+      'CampaignId' => $u_flight_CampaignId,
+      'IsActive' => $u_flight_IsActive,
+      'IsDeleted' => $u_flight_IsDeleted
+    }
+    response = @@flight.create(new_flight)
+    $flight_id = JSON.parse(response.body)["Id"].to_s
+    JSON.parse(response.body)["NoEndDate"].should == false
+    JSON.parse(response.body)["ChannelId"].should == 1196
+    JSON.parse(response.body)["Name"].should == $u_flight_Name
+    JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    JSON.parse(response.body)["NoEndDate"].should == $u_flight_NoEndDate
+    JSON.parse(response.body)["Price"].should == 16.0
+    JSON.parse(response.body)["OptionType"].should == $u_flight_OptionType
+    JSON.parse(response.body)["Impressions"].should == $u_flight_Impressions
+    JSON.parse(response.body)["IsUnlimited"].should == $u_flight_IsUnlimited
+    JSON.parse(response.body)["IsFullSpeed"].should == $u_flight_IsFullSpeed
+    JSON.parse(response.body)["Keywords"].should == $u_flight_Keywords
+    JSON.parse(response.body)["UserAgentKeywords"].should == $u_flight_UserAgentKeywords
+    JSON.parse(response.body)["WeightOverride"].should == $u_flight_WeightOverride
+    JSON.parse(response.body)["CampaignId"].should == $u_flight_CampaignId
+    JSON.parse(response.body)["IsActive"].should == $u_flight_IsActive
+    JSON.parse(response.body)["IsDeleted"].should == $u_flight_IsDeleted
+  end
   
   it "should list all flights" do
     result = @@flight.list()
     result.length.should > 0
-    puts result.to_json
+    ## Can't test this right now because of paging issues
     # result["Items"].last["Id"].to_s.should == $flight_id
-    # result["Items"].last["Title"].should == $u_flight_title
-    # result["Items"].last["Commission"].should == $u_flight_commission.to_f
-    # result["Items"].last["Engine"].should == $u_flight_engine
-    # result["Items"].last["Keywords"].should == $u_flight_keywords
-    # result["Items"].last["CPM"].to_s.should == $u_flight_CPM.to_f.to_s
-    # result["Items"].last["AdTypes"].should == $u_flight_AdTypes
+    # result["Items"].last["NoEndDate"].should == false
+    # result["Items"].last["ChannelId"].should == 1196
+    # result["Items"].last["Name"].should == $flight_Name
+    # result["Items"].last["StartDate"].should == "/Date(1293858000000-0500)/"
+    # result["Items"].last["EndDate"].should == "/Date(1325307600000-0500)/"
+    # result["Items"].last["NoEndDate"].should == $flight_NoEndDate
+    # result["Items"].last["Price"].should == 15.0
+    # result["Items"].last["OptionType"].should == $flight_OptionType
+    # result["Items"].last["Impressions"].should == $flight_Impressions
+    # result["Items"].last["IsUnlimited"].should == $flight_IsUnlimited
+    # result["Items"].last["IsFullSpeed"].should == $flight_IsFullSpeed
+    # result["Items"].last["Keywords"].should == $flight_Keywords
+    # result["Items"].last["UserAgentKeywords"].should == $flight_UserAgentKeywords
+    # result["Items"].last["WeightOverride"].should == $flight_WeightOverride
+    # result["Items"].last["CampaignId"].should == $flight_CampaignId
+    # result["Items"].last["IsActive"].should == $flight_IsActive
+    # result["Items"].last["IsDeleted"].should == $flight_IsDeleted
   end
   
-  # it "should delete a new flight" do
-  #   response = @@flight.delete($flight_id)
-  #   response.body.should == 'OK'
-  # end
-  # 
-  # it "should not list deleted flights" do
-  #   result = @@flight.list()
-  #   result["Items"].each do |r|
-  #     r["Id"].to_s.should_not == $flight_id
-  #   end
-  # end
-  # 
-  # it "should not get individual deleted flight" do
-  #   response = @@flight.get($flight_id)
-  #   response.body.should == '{"Id":0,"Commission":0,"CPM":0}'
-  # end
-  # 
-  # it "should not update deleted flights" do
-  #   updated_flight = {
-  #     'Id' => $flight_id,
-  #     'Title' => $u_flight_title + "test",
-  #     'Commission' => $u_flight_commission,
-  #     'Engine' => $u_flight_engine,
-  #     'Keywords' => $u_flight_keywords,
-  #     'CPM' => $u_flight_CPM,
-  #     'AdTypes' => $u_flight_AdTypes
-  #   }
-  #   response = @@flight.update(updated_flight)
-  #   response.body.should == '{"Id":0,"Commission":0,"CPM":0}'
-  # end
-  
-  it "should not be able to edit a brand you don't have access to" do
-    
+  it "should delete a new flight" do
+    response = @@flight.delete($flight_id)
+    response.body.should == 'OK'
   end
-  
-  
-  # 
-  # 
-  # it "should not update the id of a flight" do
-  #   # can't update id of another site because the site id in the 
-  #   # route doesn't matter. Taken from the json passed in.
-  # end
-  # 
-  # it "should not add a flight to a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end
-  # 
-  # it "should not update a flight on a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end
-  # 
-  # it "should not get a flight on a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end
-  # 
-  # it "should not list flights a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end
-  # 
-  # it "should not delete flights a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end  
+
+  it "should not get individual deleted flight" do
+    response = @@flight.get($flight_id)
+    response.body.should == '{"Id":0,"ChannelId":0,"IsDeleted":false,"IsActive":false}'
+  end
 
 end

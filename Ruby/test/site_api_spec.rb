@@ -20,7 +20,7 @@ describe "Site API" do
   
   it "should list a specific site" do
     response = @@site.get($site_id)
-    response.body.should == '{"Id":' + $site_id + ',"Title":"' + $site_title + '","Url":"' + $site_url + '","PublisherAccountId":' + $site_pub_id + '}'
+    response.body.should == '{"Id":' + $site_id + ',"Title":"' + $site_title + '","Url":"' + $site_url + '","PublisherAccountId":' + $site_pub_id + ',"IsDeleted":false}'
   end
 
   it "should update a site" do
@@ -60,7 +60,7 @@ describe "Site API" do
 
   it "should not get individual deleted sites" do
     response = @@site.get($site_id)
-    response.body.should == '{"Id":0,"PublisherAccountId":0}'
+    response.body.should == '{"Id":0,"PublisherAccountId":0,"IsDeleted":false}'
   end
 
   it "should not update deleted sites" do
@@ -71,7 +71,7 @@ describe "Site API" do
       'Url' => $site_url
     }
     response = @@site.update(updated_site)
-    response.body.should == '{"Id":0,"PublisherAccountId":0}'
+    response.body.should == '{"Id":0,"PublisherAccountId":0,"IsDeleted":false}'
   end
 
   it "should not update the id of a site" do

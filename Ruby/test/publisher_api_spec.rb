@@ -33,7 +33,6 @@ describe "Publisher API" do
      'PaypalEmail' => $publisher_paypal_email
     }
     response = @@publisher.create($new_publisher)
-    puts response.body
     $publisher_id = JSON.parse(response.body)["Id"].to_s
     $publisher_first.should == JSON.parse(response.body)["FirstName"]
     $publisher_last.should == JSON.parse(response.body)["LastName"]
@@ -52,7 +51,7 @@ describe "Publisher API" do
   
   it "should list a specific publisher" do
      response = @@publisher.get($publisher_id)
-     response.body.should == '{"Id":' + $publisher_id + ',"FirstName":"' + $publisher_first + '","LastName":"' + $publisher_last + '","CompanyName":"' + $publisher_company + '","Address":{"Id":' + $address_id + ',"Line1":"' + $publisher_line1 + '","Line2":"' + $publisher_line2 + '","City":"' + $publisher_city + '","StateProvince":"' + $publisher_state + '","PostalCode":"' + $publisher_zip + '","Country":"' + $publisher_country + '"},"PaypalEmail":"' + $publisher_paypal_email + '","PaymentOption":"PayPal"}'
+     response.body.should == '{"Id":' + $publisher_id + ',"FirstName":"' + $publisher_first + '","LastName":"' + $publisher_last + '","CompanyName":"' + $publisher_company + '","Address":{"Id":' + $address_id + ',"Line1":"' + $publisher_line1 + '","Line2":"' + $publisher_line2 + '","City":"' + $publisher_city + '","StateProvince":"' + $publisher_state + '","PostalCode":"' + $publisher_zip + '","Country":"' + $publisher_country + '"},"PaypalEmail":"' + $publisher_paypal_email + '","PaymentOption":"PayPal","IsDeleted":false}'
    end
 
   it "should update a publisher" do
@@ -120,7 +119,7 @@ describe "Publisher API" do
 
   it "should not get individual deleted publishers" do
     response = @@publisher.get($publisher_id)
-    response.body.should == '{"Id":0}'
+    response.body.should == '{"Id":0,"IsDeleted":false}'
   end
 
   it "should not update deleted publishers" do
@@ -141,7 +140,7 @@ describe "Publisher API" do
       'PaypalEmail' => $publisher_paypal_email + "test"
     }
     response = @@publisher.update($updated_publisher)
-    response.body.should == '{"Id":0}'
+    response.body.should == '{"Id":0,"IsDeleted":false}'
   end
 
   it "should not update the id of a publisher" do
