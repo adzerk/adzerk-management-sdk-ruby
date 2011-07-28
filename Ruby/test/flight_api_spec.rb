@@ -104,7 +104,7 @@ describe "Flight API" do
       'IsActive' => $u_flight_IsActive,
       'IsDeleted' => $u_flight_IsDeleted
     }
-    response = @@flight.create(new_flight)
+    response = @@flight.update(new_flight)
     $flight_id = JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["NoEndDate"].should == false
     JSON.parse(response.body)["ChannelId"].should == 1196

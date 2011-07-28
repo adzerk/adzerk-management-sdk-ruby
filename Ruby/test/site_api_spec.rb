@@ -74,44 +74,4 @@ describe "Site API" do
     response.body.should == '{"Id":0,"PublisherAccountId":0,"IsDeleted":false}'
   end
 
-  it "should not update the id of a site" do
-    # can't update id of another site because the site id in the 
-    # route doesn't matter. Taken from the json passed in.
-  end
-
-  it "should not create a new site with a publisher in a different network" do
-    # have to implement the publisher account api first because the
-    # foreign key depends upon an existing publisher account.
-  end
-
-  it "should not update a site with a publisher in a different network" do
-    # have to implement the publisher account api first because the
-    # foreign key depends upon an existing publisher account.
-  end
-
-  it "should not add a site to a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-
-  it "should not update a site on a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-
-  it "should not get a site on a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-
-  it "should not list sites a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-
-  it "should not delete sites a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end  
-
 end

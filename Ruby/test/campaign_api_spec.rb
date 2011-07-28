@@ -120,6 +120,7 @@ describe "Campaign API" do
     $campaign_Flights = []
     
     new_campaign = {
+      'Id' => $campaign_id,
       'Name' => $campaign_Name,
       'StartDate' => $campaign_StartDate,
       'EndDate' => $campaign_EndDate,
@@ -130,7 +131,7 @@ describe "Campaign API" do
       'IsDeleted' => false
     }
   
-    response = @@campaign.create(new_campaign)
+    response = @@campaign.update(new_campaign)
     $campaign_id = JSON.parse(response.body)["Id"].to_s
     $campaign_Name.should == JSON.parse(response.body)["Name"]
     #$campaign_StartDate.should == JSON.parse(response.body)["StartDate"]
@@ -163,56 +164,20 @@ describe "Campaign API" do
     response = @@campaign.get($campaign_id)
     true.should == !response.body.scan(/Object/).nil?
   end
-  # 
-  # it "should not update deleted campaigns" do
-  #   updated_campaign = {
-  #     'Id' => $campaign_id,
-  #     'Title' => $u_campaign_title + "test",
-  #     'Commission' => $u_campaign_commission,
-  #     'Engine' => $u_campaign_engine,
-  #     'Keywords' => $u_campaign_keywords,
-  #     'CPM' => $u_campaign_CPM,
-  #     'AdTypes' => $u_campaign_AdTypes
-  #   }
-  #   response = @@campaign.update(updated_campaign)
-  #   response.body.should == '{"Id":0,"Commission":0,"CPM":0}'
-  # end
   
-  it "should not be able to edit a brand you don't have access to" do
-    
+  it "should not update deleted campaigns" do
+    updated_campaign = {
+      'Id' => $campaign_id,
+      'Name' => $campaign_Name,
+      'StartDate' => $campaign_StartDate,
+      'EndDate' => $campaign_EndDate,
+      'IsActive' => $campaign_IsActive,
+      'Price' => $campaign_Price,
+      'BrandId' => $campaign_BrandId,
+      'Flights' => $campaign_Flights,
+      'IsDeleted' => false
+    }
+    response = @@campaign.update(updated_campaign)
   end
-  
-  
-  # 
-  # 
-  # it "should not update the id of a campaign" do
-  #   # can't update id of another site because the site id in the 
-  #   # route doesn't matter. Taken from the json passed in.
-  # end
-  # 
-  # it "should not add a campaign to a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end
-  # 
-  # it "should not update a campaign on a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end
-  # 
-  # it "should not get a campaign on a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end
-  # 
-  # it "should not list campaigns a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end
-  # 
-  # it "should not delete campaigns a different network" do
-  #   # since I removed the network id from the route, it cannot 
-  #   # be changed. Depends solely on the on the api key.
-  # end  
 
 end

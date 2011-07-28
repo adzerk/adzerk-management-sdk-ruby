@@ -107,35 +107,5 @@ describe "Channel API" do
     response = @@channel.update(updated_channel)
     response.body.should == '{"Id":0,"Commission":0,"CPM":0,"IsDeleted":false}'
   end
-  
-  it "should not update the id of a channel" do
-    # can't update id of another site because the site id in the 
-    # route doesn't matter. Taken from the json passed in.
-  end
-  
-  it "should not add a channel to a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-  
-  it "should not update a channel on a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-  
-  it "should not get a channel on a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-  
-  it "should not list channels a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-  
-  it "should not delete channels a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end  
 
 end

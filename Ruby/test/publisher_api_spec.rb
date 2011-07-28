@@ -56,21 +56,22 @@ describe "Publisher API" do
 
   it "should update a publisher" do
     $new_publisher = {
-     'FirstName' => $publisher_first + "test",
-     'LastName' => $publisher_last + "test",
-     'CompanyName' => $publisher_company + "test",
-     'Address' => {
+      'Id' => $publisher_id,
+      'FirstName' => $publisher_first + "test",
+      'LastName' => $publisher_last + "test",
+      'CompanyName' => $publisher_company + "test",
+      'Address' => {
        'Line1' => $publisher_line1 + "test",
        'Line2' => $publisher_line2 + "test",
        'City' => $publisher_city + "test",
        'StateProvince' => $publisher_state + "test",
        'PostalCode' => $publisher_zip + "test",
        'Country' => $publisher_country + "test"
-     },
-     'PaymentOption' => $publisher_payment_option,
-     'PaypalEmail' => $publisher_paypal_email + "test"
+      },
+      'PaymentOption' => $publisher_payment_option,
+      'PaypalEmail' => $publisher_paypal_email + "test"
     }
-    response = @@publisher.create($new_publisher)
+    response = @@publisher.update($new_publisher)
     $publisher_id = JSON.parse(response.body)["Id"].to_s
     ($publisher_first + "test").should == JSON.parse(response.body)["FirstName"]
     ($publisher_last + "test").should == JSON.parse(response.body)["LastName"]
@@ -142,35 +143,5 @@ describe "Publisher API" do
     response = @@publisher.update($updated_publisher)
     response.body.should == '{"Id":0,"IsDeleted":false}'
   end
-
-  it "should not update the id of a publisher" do
-    # can't update id of another publisher because the publisher 
-    # id in the route doesn't matter. Taken from the json passed in.
-  end
-
-  it "should not add a publisher to a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-
-  it "should not update a publisher on a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-
-  it "should not get a publisher on a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-
-  it "should not list publisher a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end
-
-  it "should not delete publisher a different network" do
-    # since I removed the network id from the route, it cannot 
-    # be changed. Depends solely on the on the api key.
-  end  
 
 end
