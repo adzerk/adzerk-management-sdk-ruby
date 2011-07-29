@@ -12,8 +12,8 @@ module Adzerk
       Adzerk.get_request(uri)
     end
     
-    def list(flightId)
-      uri = URI.parse($host + 'flight/' + flightId.to_s + "/creatives")
+    def list(advertiserId)
+      uri = URI.parse($host + 'advertiser/' + advertiserId.to_s + "/creatives")
       response = Adzerk.get_request(uri)
       JSON.parse(response.body)
     end

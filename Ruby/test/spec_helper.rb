@@ -14,5 +14,5 @@ require "../lib/adzerk/Creative"
 require "../lib/adzerk/CreativeMap"
 require "../lib/adzerk/Advertiser"
 
-api_key = 'youapikey'
+api_key = 'yourapikey'
 $adzerk = Adzerk.new(api_key)
