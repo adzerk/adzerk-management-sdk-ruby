@@ -6,7 +6,7 @@ require 'net/http/post/multipart'
 module Adzerk
   
   @@header = 'X-Adzerk-ApiKey'
-  $host = 'http://api.adzerk.net/v1/'
+  $host = 'http://api.adzerk.net'
   
   def self.new(key)
     @@api_key = key

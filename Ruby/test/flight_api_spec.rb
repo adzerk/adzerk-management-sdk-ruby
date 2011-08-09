@@ -4,6 +4,41 @@ describe "Flight API" do
   
   $flight_url = 'http://www.adzerk.com'
   @@flight = $adzerk::Flight.new
+  @@advertiser = $adzerk::Advertiser.new
+  @@channel = $adzerk::Channel.new
+  @@campaign = $adzerk::Campaign.new
+  
+  before(:all) do
+    new_advertiser = {
+      'Title' => "Test"
+    }
+    response = @@advertiser.create(new_advertiser)
+    $brandId = JSON.parse(response.body)["Id"]
+    
+    new_channel = {
+      'Title' => 'Test Channel ' + rand(1000000).to_s,
+      'Commission' => '0',
+      'Engine' => 'CPM',
+      'Keywords' => 'test',
+      'CPM' => '10.00',
+      'AdTypes' => [0,1,2,3,4]
+    }  
+    response = @@channel.create(new_channel)
+    $channelId = JSON.parse(response.body)["Id"]
+    
+    new_campaign = {
+      'Name' => 'Test campaign ' + rand(1000000).to_s,
+      'StartDate' => "1/1/2011",
+      'EndDate' => "12/31/2011",
+      'IsActive' => false,
+      'Price' => '10.00',
+      'BrandId' => $brandId,
+      'Flights' => [],
+      'IsDeleted' => false
+    }  
+    response = @@campaign.create(new_campaign)
+    $campaignId = JSON.parse(response.body)["Id"]
+  end
   
   it "should create a flight" do
     $flight_Name = 'Test flight ' + rand(1000000).to_s
@@ -18,13 +53,13 @@ describe "Flight API" do
     $flight_Keywords = "test, test2"
     $flight_UserAgentKeywords = nil
     $flight_WeightOverride = nil
-    $flight_CampaignId = 1064
+    $flight_CampaignId = $campaignId
     $flight_IsActive = true
     $flight_IsDeleted = false
     
     new_flight = {
       'NoEndDate' => false,
-      'ChannelId' => 1196,
+      'ChannelId' => $channelId,
       'Name' => $flight_Name,
       'StartDate' => $flight_StartDate,
       'EndDate' => $flight_EndDate,
@@ -44,7 +79,7 @@ describe "Flight API" do
     response = @@flight.create(new_flight)
     $flight_id = JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["NoEndDate"].should == false
-    JSON.parse(response.body)["ChannelId"].should == 1196
+    JSON.parse(response.body)["ChannelId"].should == $channelId
     JSON.parse(response.body)["Name"].should == $flight_Name
     JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
     JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
@@ -64,7 +99,7 @@ describe "Flight API" do
   
   it "should list a specific flight" do
     response = @@flight.get($flight_id)
-    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293858000000-0500)\\/","EndDate":"\\/Date(1325307600000-0500)\\/","Price":15,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":1064,"ChannelId":0,"IsDeleted":false,"IsActive":true}'
+    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293858000000-0500)\\/","EndDate":"\\/Date(1325307600000-0500)\\/","Price":15,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true}'
   end
   
   it "should update a flight" do
@@ -80,14 +115,14 @@ describe "Flight API" do
     $u_flight_Keywords = "test, test2"
     $u_flight_UserAgentKeywords = nil
     $u_flight_WeightOverride = nil
-    $u_flight_CampaignId = 1064
+    $u_flight_CampaignId = $campaignId
     $u_flight_IsActive = true
     $u_flight_IsDeleted = false
     
     new_flight = {
       'Id' => $flight_id,
       'NoEndDate' => false,
-      'ChannelId' => 1196,
+      'ChannelId' => $channelId,
       'Name' => $u_flight_Name,
       'StartDate' => $u_flight_StartDate,
       'EndDate' => $u_flight_EndDate,
@@ -107,7 +142,7 @@ describe "Flight API" do
     response = @@flight.update(new_flight)
     $flight_id = JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["NoEndDate"].should == false
-    JSON.parse(response.body)["ChannelId"].should == 1196
+    JSON.parse(response.body)["ChannelId"].should == $channelId
     JSON.parse(response.body)["Name"].should == $u_flight_Name
     JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
     JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
@@ -131,7 +166,7 @@ describe "Flight API" do
     ## Can't test this right now because of paging issues
     # result["Items"].last["Id"].to_s.should == $flight_id
     # result["Items"].last["NoEndDate"].should == false
-    # result["Items"].last["ChannelId"].should == 1196
+    # result["Items"].last["ChannelId"].should == $channelId
     # result["Items"].last["Name"].should == $flight_Name
     # result["Items"].last["StartDate"].should == "/Date(1293858000000-0500)/"
     # result["Items"].last["EndDate"].should == "/Date(1325307600000-0500)/"
@@ -149,6 +184,11 @@ describe "Flight API" do
     # result["Items"].last["IsDeleted"].should == $flight_IsDeleted
   end
   
+  it "should not get if campaignId or channelId is forbidden" do
+    response = @@flight.get($flight_id)
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
   it "should delete a new flight" do
     response = @@flight.delete($flight_id)
     response.body.should == 'OK'
@@ -157,6 +197,100 @@ describe "Flight API" do
   it "should not get individual deleted flight" do
     response = @@flight.get($flight_id)
     response.body.should == '{"Id":0,"ChannelId":0,"IsDeleted":false,"IsActive":false}'
+  end
+  
+  it "should not create/update if campaignId is forbidden" do
+    new_flight = {
+      'NoEndDate' => false,
+      'ChannelId' => $channelId,
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => '123',
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted
+    }
+    response = @@flight.create(new_flight)
+    true.should == !response.body.scan(/Object/).nil?
+    
+    new_flight = {
+      'Id' => $flight_id,
+      'NoEndDate' => false,
+      'ChannelId' => $channelId,
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => '123',
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted
+    }
+    response = @@flight.update(new_flight)
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
+  it "should not create/update if channelId is forbidden" do
+    new_flight = {
+      'NoEndDate' => false,
+      'ChannelId' => '123',
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => $flight_CampaignId,
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted
+    }
+    response = @@flight.create(new_flight)
+    true.should == !response.body.scan(/Object/).nil?
+    
+    new_flight = {
+      'Id' => $flight_id,
+      'NoEndDate' => false,
+      'ChannelId' => '123',
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => $flight_CampaignId,
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted
+    }
+    response = @@flight.update(new_flight)
+    true.should == !response.body.scan(/Object/).nil?
   end
 
 end

@@ -43,13 +43,13 @@ describe "Advertiser API" do
     $isActive = false
     $isDeleted = true
     
-    new_advertiser = {
+    updated_advertiser = {
       'Id' => $advertiser_id.to_i,
       'Title' => $title,
-      'IsActive' => $isActive,
-      'IsDeleted' => $isDeleted
+      'IsDeleted' => false,
+      'IsActive' => true
     }
-    response = @@advertiser.update(new_advertiser)
+    response = @@advertiser.update(updated_advertiser)
     # $advertiser_id = JSON.parse(response.body)["Id"].to_s
     # $title.should == JSON.parse(response.body)["Title"]
     # $isActive.should == JSON.parse(response.body)["IsActive"]
@@ -79,6 +79,22 @@ describe "Advertiser API" do
       'Title' => "test"
     }
     response = @@advertiser.update(updated_advertiser)
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
+  it "should create a new advertiser without IsActive or IsDeleted" do
+    new_advertiser = {
+      'Title' => $title
+    }
+    response = @@advertiser.create(new_advertiser)
+    $title.should == JSON.parse(response.body)["Title"]
+    JSON.parse(response.body)["IsActive"].should == false
+    JSON.parse(response.body)["IsDeleted"].should == false
+  end
+  
+  it "should require a title" do
+    new_advertiser = {}
+    response = @@advertiser.create(new_advertiser)
     true.should == !response.body.scan(/Object/).nil?
   end
 

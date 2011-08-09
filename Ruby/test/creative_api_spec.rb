@@ -110,5 +110,89 @@ describe "Creative API" do
     response = @@creative.delete($creative_id)
     response.body.should == "OK"
   end
-    
+  
+  it "should not use a brandId it doesn't have access to when creating" do 
+    new_creative = {
+      'Title' => $Title,
+      'ImageName' => $ImageName,
+      'Url' => $Url,
+      'Body' => $Body,
+      'BrandId' => 1,
+      'AdTypeId' => $AdTypeId,
+      'SiteId' => $SiteId,
+      'IsActive' => $IsActive,
+      'Alt' => $Alt,
+      'IsDeleted' => $IsDeleted,
+      'IsSync' => $IsSync
+    }
+    response = @@creative.create(new_creative)
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
+  it "should not use a brandId it doesn't have access to when updating" do 
+    new_creative = {
+      'Id' => $creative_id.to_i,
+      'Title' => $Title,
+      'ImageName' => $ImageName,
+      'Url' => $Url,
+      'Body' => $Body,
+      'BrandId' => 1,
+      'AdTypeId' => $AdTypeId,
+      'SiteId' => $SiteId,
+      'IsActive' => $IsActive,
+      'Alt' => $Alt,
+      'IsDeleted' => $IsDeleted,
+      'IsSync' => $IsSync
+    }
+    response = @@creative.update(new_creative)
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
+  it "should not retrieve a creative it doesn't have access to" do
+    response = @@creative.get("123")
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
+  it "should not delete a creative it doesn't have access to" do
+    response = @@creative.delete("123")
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
+  it "should no use a siteId it doen't have access to when creating" do
+    new_creative = {
+      'Title' => $Title,
+      'ImageName' => $ImageName,
+      'Url' => $Url,
+      'Body' => $Body,
+      'BrandId' => $BrandId,
+      'AdTypeId' => $AdTypeId,
+      'SiteId' => 123,
+      'IsActive' => $IsActive,
+      'Alt' => $Alt,
+      'IsDeleted' => $IsDeleted,
+      'IsSync' => $IsSync
+    }
+    response = @@creative.create(new_creative)
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
+  it "should no use a siteId it doen't have access to when updating" do
+    new_creative = {
+      'Id' => $creative_id.to_i,
+      'Title' => $Title,
+      'ImageName' => $ImageName,
+      'Url' => $Url,
+      'Body' => $Body,
+      'BrandId' => $BrandId,
+      'AdTypeId' => $AdTypeId,
+      'SiteId' => 123,
+      'IsActive' => $IsActive,
+      'Alt' => $Alt,
+      'IsDeleted' => $IsDeleted,
+      'IsSync' => $IsSync
+    }
+    response = @@creative.update(new_creative)
+    true.should == !response.body.scan(/Object/).nil?
+  end
+      
 end

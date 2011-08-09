@@ -4,6 +4,28 @@ describe "Campaign API" do
   
   $campaign_url = 'http://www.adzerk.com'
   @@campaign = $adzerk::Campaign.new
+  @@advertiser = $adzerk::Advertiser.new
+  @@channel = $adzerk::Channel.new
+  
+  before(:all) do
+    new_advertiser = {
+      'Title' => "Test"
+    }
+    response = @@advertiser.create(new_advertiser)
+    $brandId = JSON.parse(response.body)["Id"].to_s
+
+    new_channel = {
+      'Title' => 'Test Channel ' + rand(1000000).to_s,
+      'Commission' => '0',
+      'Engine' => 'CPM',
+      'Keywords' => 'test',
+      'CPM' => '10.00',
+      'AdTypes' => [0,1,2,3,4]
+    }  
+    response = @@channel.create(new_channel)
+    $channelId = JSON.parse(response.body)["Id"].to_s
+    
+  end
   
   it "should create a new campaign with no flights" do
     $campaign_Name = 'Test campaign ' + rand(1000000).to_s
@@ -11,7 +33,7 @@ describe "Campaign API" do
     $campaign_EndDate = "12/31/2011"
     $campaign_IsActive = false
     $campaign_Price = '10.00'
-    $campaign_BrandId = 391
+    $campaign_BrandId = $brandId.to_i
     $campaign_Flights = []
     
     new_campaign = {
@@ -28,8 +50,8 @@ describe "Campaign API" do
     response = @@campaign.create(new_campaign)
     $campaign_id = JSON.parse(response.body)["Id"].to_s
     $campaign_Name.should == JSON.parse(response.body)["Name"]
-    #$campaign_StartDate.should == JSON.parse(response.body)["StartDate"]
-    #$campaign_EndDate.should == JSON.parse(response.body)["EndDate"]
+    JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
     $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
     $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
     $campaign_BrandId.should == JSON.parse(response.body)["BrandId"]
@@ -45,7 +67,7 @@ describe "Campaign API" do
       'Price' => "5.00",
       'Keywords' => "test, test2",
       'Name' => "Test",
-      'ChannelId' => 1196,
+      'ChannelId' => $channelId,
       'Impressions' => 10000,
       'IsDeleted' => false
     }]
@@ -62,8 +84,8 @@ describe "Campaign API" do
     response = @@campaign.create(new1_campaign)
     $campaign_id1 = JSON.parse(response.body)["Id"].to_s
     $campaign_Name.should == JSON.parse(response.body)["Name"]
-    #$campaign_StartDate.should == JSON.parse(response.body)["StartDate"]
-    #$campaign_EndDate.should == JSON.parse(response.body)["EndDate"]
+    JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
     $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
     JSON.parse(response.body)["IsDeleted"].should == false
     $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
@@ -79,7 +101,7 @@ describe "Campaign API" do
       'Price' => "5.00",
       'Keywords' => "test, test2",
       'Name' => "Test",
-      'ChannelId' => 1196,
+      'ChannelId' => $channelId,
       'Impressions' => 10000
     },{
       'StartDate' => "1/1/2010",
@@ -88,7 +110,7 @@ describe "Campaign API" do
       'Price' => "10.00",
       'Keywords' => "test, test2, test3",
       'Name' => "Test3",
-      'ChannelId' => 1196,
+      'ChannelId' => $channelId,
       'Impressions' => 15000
     }]
     new2_campaign = {
@@ -116,7 +138,6 @@ describe "Campaign API" do
     $campaign_EndDate = "12/31/2011"
     $campaign_IsActive = false
     $campaign_Price = '10.00'
-    $campaign_BrandId = 391
     $campaign_Flights = []
     
     new_campaign = {
@@ -134,8 +155,8 @@ describe "Campaign API" do
     response = @@campaign.update(new_campaign)
     $campaign_id = JSON.parse(response.body)["Id"].to_s
     $campaign_Name.should == JSON.parse(response.body)["Name"]
-    #$campaign_StartDate.should == JSON.parse(response.body)["StartDate"]
-    #$campaign_EndDate.should == JSON.parse(response.body)["EndDate"]
+    JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
     $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
     $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
     $campaign_BrandId.should == JSON.parse(response.body)["BrandId"]
@@ -178,6 +199,40 @@ describe "Campaign API" do
       'IsDeleted' => false
     }
     response = @@campaign.update(updated_campaign)
+  end
+  
+  it "should not create/update a campaign with a brandId that doesn't belong to it" do
+    new_campaign = {
+      'Name' => 'Test campaign ' + rand(1000000).to_s,
+      'StartDate' => "1/1/2011",
+      'EndDate' => "12/31/2011",
+      'IsActive' => false,
+      'Price' => '10.00',
+      'BrandId' => '123',
+      'Flights' => [],
+      'IsDeleted' => false
+    }  
+    response = @@campaign.create(new_campaign)
+    true.should == !response.body.scan(/Object/).nil?
+    
+    updated_campaign = {
+      'Id' => $campaign_id,
+      'Name' => 'Test campaign ' + rand(1000000).to_s,
+      'StartDate' => "1/1/2011",
+      'EndDate' => "12/31/2011",
+      'IsActive' => false,
+      'Price' => '10.00',
+      'BrandId' => '123',
+      'Flights' => [],
+      'IsDeleted' => false
+    }  
+    response = @@campaign.update(updated_campaign)
+    true.should == !response.body.scan(/Object/).nil?
+  end
+  
+  it "should not retrieve a campaign with a brandId that doesn't belong to it" do
+    response = @@campaign.get('123')
+    true.should == !response.body.scan(/Object/).nil?
   end
 
 end
