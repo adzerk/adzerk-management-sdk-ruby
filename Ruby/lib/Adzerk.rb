@@ -5,7 +5,7 @@ require "rest_client"
 module Adzerk
   
   @@header = 'X-Adzerk-ApiKey'
-  $host = ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net'
+  $host = ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/'
   
   def self.new(key)
     @@api_key = key
