@@ -1,4 +1,3 @@
-require "rubygems"
 require "json"
 require "net/http"
 require "rest_client"
@@ -6,7 +5,7 @@ require "rest_client"
 module Adzerk
   
   @@header = 'X-Adzerk-ApiKey'
-  $host = 'http://api.adzerk.net'
+  $host = ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net'
   
   def self.new(key)
     @@api_key = key
