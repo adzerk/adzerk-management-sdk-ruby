@@ -1,10 +1,23 @@
+require "rest_client"
+
 module Adzerk
   class Creative
     
-    def create(data={})
-      uri = URI.parse($host + 'creative')
-      data = { 'creative' => data.to_json }
-      Adzerk.post_request(uri, data)
+    def create(data={}, imagepath='')      
+      begin
+        image = File.new(imagepath, 'rb')
+      rescue
+        image = ''
+      end
+      
+      response = RestClient.post $host + 'creative',
+        {:creative => data.to_json},
+        :X_Adzerk_ApiKey => Adzerk.api_key,
+        :content_type => :json, 
+        :accept => :json
+        
+      Adzerk.uploadCreative(JSON.parse(response)["Id"], imagepath) 
+      response
     end
     
     def get(id)

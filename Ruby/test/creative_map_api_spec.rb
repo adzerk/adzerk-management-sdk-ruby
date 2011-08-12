@@ -80,7 +80,7 @@ describe "Creative Flight API" do
     $CampaignId = $campaignId
     $FlightId = $flightId
     $MapId = 0
-    $AdTypeId = 1
+    $AdTypeId = 18
     $ZoneId = 0
     $SiteId = $siteId
     $ChannelId = $channelId
@@ -109,6 +109,7 @@ describe "Creative Flight API" do
       'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
       'Percentage' => $Percentage,
+      'SiteId' => $SiteId,
       #'DistributionType' => $DistributionType,
       'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
@@ -120,7 +121,6 @@ describe "Creative Flight API" do
         'Body' => $Body,
         'BrandId' => $BrandId,
         'AdTypeId' => $AdTypeId,
-        #'SiteId' => $SiteId,
         'IsActive' => $IsActive,
         'Alt' => $Alt,
         'IsDeleted' => $IsDeleted,
@@ -128,6 +128,7 @@ describe "Creative Flight API" do
       }
     }
     response = @@map.create(new_creative)
+    Adzerk.uploadCreative(JSON.parse(response.body)["Creative"]["Id"].to_s, "250x250.gif") 
     $creative_id = JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["Creative"]["Title"].should == $Title
     JSON.parse(response.body)["Creative"]["Url"].should == $Url
@@ -138,7 +139,7 @@ describe "Creative Flight API" do
     #JSON.parse(response.body)["MapId"].should == $MapId
     JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
     #JSON.parse(response.body)["ZoneId"].should == $ZoneId
-    #JSON.parse(response.body)["Creative"]["SiteId"].should == $SiteId
+    JSON.parse(response.body)["SiteId"].should == $SiteId
     JSON.parse(response.body)["ChannelId"].should == $ChannelId
     JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
@@ -166,7 +167,7 @@ describe "Creative Flight API" do
     #JSON.parse(entry)["MapId"].should == $MapId
     JSON.parse(entry)["Creative"]["AdTypeId"].should == $AdTypeId
     #JSON.parse(entry)["ZoneId"].should == $ZoneId
-    #JSON.parse(entry)["Creative"]["SiteId"].should == $SiteId
+    JSON.parse(entry)["SiteId"].should == $SiteId
     #JSON.parse(entry)["ChannelId"].should == $ChannelId
     JSON.parse(entry)["SizeOverride"].should == $SizeOverride
     #JSON.parse(entry)["PublisherAccountId"].should == $PublisherAccountId
@@ -193,7 +194,7 @@ describe "Creative Flight API" do
     #JSON.parse(response.body)["MapId"].should == $MapId
     JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
     #JSON.parse(response.body)["ZoneId"].should == $ZoneId
-    # JSON.parse(response.body)["Creative"]["SiteId"].should == $SiteId
+    JSON.parse(response.body)["SiteId"].should == $SiteId
     #JSON.parse(response.body)["ChannelId"].should == $ChannelId
     JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     #JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
@@ -221,7 +222,7 @@ describe "Creative Flight API" do
       #'MapId' => $MapId,
       'AdTypeId' => $AdTypeId,
       #'ZoneId' => $ZoneId,
-      #'SiteId' => $SiteId,
+      'SiteId' => $SiteId,
       'ChannelId' => $ChannelId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
@@ -247,7 +248,7 @@ describe "Creative Flight API" do
     # JSON.parse(response.body)["MapId"].should == $MapId
     # JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
     # JSON.parse(response.body)["ZoneId"].should == $ZoneId
-    # JSON.parse(response.body)["Creative"]["SiteId"].should == $SiteId
+    # JSON.parse(response.body)["SiteId"].should == $SiteId
     # JSON.parse(response.body)["ChannelId"].should == $ChannelId
     # JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     # JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
@@ -277,6 +278,7 @@ describe "Creative Flight API" do
       'PublisherAccountId' => $PublisherAccountId,
       'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
+      'SiteId' => $SiteId,
       'Percentage' => $Percentage,
       'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
@@ -296,6 +298,7 @@ describe "Creative Flight API" do
       'PublisherAccountId' => $PublisherAccountId,
       'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
+      'SiteId' => $SiteId,
       'Percentage' => $Percentage,
       'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
@@ -315,6 +318,7 @@ describe "Creative Flight API" do
       'PublisherAccountId' => $PublisherAccountId,
       'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
+      'SiteId' => $SiteId,
       'Percentage' => $Percentage,
       'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,

@@ -1,7 +1,7 @@
 require "rubygems"
 require "json"
 require "net/http"
-require 'net/http/post/multipart'
+require "rest_client"
 
 module Adzerk
   
@@ -11,6 +11,10 @@ module Adzerk
   def self.new(key)
     @@api_key = key
     return self
+  end
+  
+  def self.api_key()
+    @@api_key
   end
   
   def self.get_request(uri)
@@ -36,16 +40,10 @@ module Adzerk
     http.request(request)
   end
   
-  def self.post_multipart(uri, data, imagepath)
-    File.open(imagepath) do |image|
-      req = Net::HTTP::Post::Multipart.new url.path,
-        "file" => UploadIO.new(image, "image/gif", "image.gif")
-      req.add_field @@header, @@api_key
-      req.set_form_data(data)
-      res = Net::HTTP.start(url.host, url.port) do |http|
-        http.request(req)
-      end
-    end
+  def self.uploadCreative(id, imagepath)
+    RestClient.post $host + 'creative/' + id.to_s + '/upload', 
+      {:image => File.new(imagepath, 'rb')},
+      "X-Adzerk-ApiKey" => Adzerk.api_key
   end
   
 end

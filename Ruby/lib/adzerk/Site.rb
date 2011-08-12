@@ -1,3 +1,5 @@
+require 'rest_client'
+
 module Adzerk
   class Site
     
@@ -7,7 +9,7 @@ module Adzerk
       Adzerk.post_request(uri, data)
     end
     
-    def get(id)
+    def get(id)        
       uri = URI.parse($host + 'site/' + id)
       Adzerk.get_request(uri)
     end
