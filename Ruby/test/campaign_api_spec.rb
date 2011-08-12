@@ -50,8 +50,8 @@ describe "Campaign API" do
     response = @@campaign.create(new_campaign)
     $campaign_id = JSON.parse(response.body)["Id"].to_s
     $campaign_Name.should == JSON.parse(response.body)["Name"]
-    JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
-    JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
     $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
     $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
     $campaign_BrandId.should == JSON.parse(response.body)["BrandId"]
@@ -84,8 +84,8 @@ describe "Campaign API" do
     response = @@campaign.create(new1_campaign)
     $campaign_id1 = JSON.parse(response.body)["Id"].to_s
     $campaign_Name.should == JSON.parse(response.body)["Name"]
-    JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
-    JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
     $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
     JSON.parse(response.body)["IsDeleted"].should == false
     $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
@@ -129,7 +129,7 @@ describe "Campaign API" do
   
   it "should list a specific campaign" do
     response = @@campaign.get($campaign_id)
-    response.body.should == '{"Id":' + $campaign_id + ',"Name":"' + $campaign_Name + '","StartDate":"\/Date(1293858000000-0500)\/","EndDate":"\/Date(1325307600000-0500)\/","IsActive":false,"Price":' + $campaign_Price + ',"BrandId":' + $campaign_BrandId.to_s + ',"IsDeleted":false}'
+    response.body.should == '{"Id":' + $campaign_id + ',"Name":"' + $campaign_Name + '","StartDate":"\/Date(1293840000000+0000)\/","EndDate":"\/Date(1325289600000+0000)\/","IsActive":false,"Price":' + $campaign_Price + ',"BrandId":' + $campaign_BrandId.to_s + ',"IsDeleted":false}'
   end
   
   it "should update a campaign" do
@@ -155,8 +155,8 @@ describe "Campaign API" do
     response = @@campaign.update(new_campaign)
     $campaign_id = JSON.parse(response.body)["Id"].to_s
     $campaign_Name.should == JSON.parse(response.body)["Name"]
-    JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
-    JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
     $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
     $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
     $campaign_BrandId.should == JSON.parse(response.body)["BrandId"]
