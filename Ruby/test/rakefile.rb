@@ -19,7 +19,7 @@ task :runall do
     cmd += file +' '
   end
 
-  system cmd
+  sh "#{cmd}"
 
 end
 
