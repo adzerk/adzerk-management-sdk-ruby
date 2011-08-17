@@ -42,7 +42,8 @@ module Adzerk
   def self.uploadCreative(id, imagepath)
     RestClient.post $host + 'creative/' + id.to_s + '/upload', 
       {:image => File.new(imagepath, 'rb')},
-      "X-Adzerk-ApiKey" => Adzerk.api_key
+      "X-Adzerk-ApiKey" => Adzerk.api_key,
+      :accept => :json
   end
   
 end
