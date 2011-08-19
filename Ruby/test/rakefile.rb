@@ -2,6 +2,7 @@
   'advertiser_api_spec.rb',
   'campaign_api_spec.rb',
   'channel_api_spec.rb',
+  'channel_api_security_spec.rb',
   'creative_api_spec.rb',
   'creative_map_api_spec.rb',
   'flight_api_spec.rb',
