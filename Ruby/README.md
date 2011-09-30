@@ -21,6 +21,8 @@ Refer to the [https://github.com/adzerk/adzerk-api/wiki](wiki) of this repositor
     adzerk = Adzerk.new('your_api_key')
     adzerk::Site.list()
 
+or
+
     require 'adzerk'
     require 'adzerk/advertiser'
     adzerk = Adzerk.new 'your_api_key'
