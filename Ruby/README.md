@@ -16,59 +16,18 @@ Refer to the [https://github.com/adzerk/adzerk-api/wiki](wiki) of this repositor
 
 ### Examples
 
+    require 'adzerk'
+    require 'adzerk/site'
     adzerk = Adzerk.new('your_api_key')
     adzerk::Site.list()
 
-### Campaigns
-
-    Adzerk::Campaign.create(json)
-    Adzerk::Campaign.get(id)
-    Adzerk::Campaign.list()
-    Adzerk::Campaign.update(json)
-    Adzerk::Campaign.delete(id)
-    
-### Channels
-
-    Adzerk::Channel.create(json)
-    Adzerk::Channel.get(id)
-    Adzerk::Channel.list()
-    Adzerk::Channel.update(json)
-    Adzerk::Channel.delete(id)
-    
-### Flights
-
-    Adzerk::Flight.create(json)
-    Adzerk::Flight.get(id)
-    Adzerk::Flight.list()
-    Adzerk::Flight.update(json)
-    Adzerk::Flight.delete(id)
-        
-### Publishers
-
-    Adzerk::Publisher.create(json)
-    Adzerk::Publisher.get(id)
-    Adzerk::Publisher.list()
-    Adzerk::Publisher.update(json)
-    Adzerk::Publisher.delete(id)
-    
-### Sites
-
-    Adzerk::Site.create(json)
-    Adzerk::Site.get(id)
-    Adzerk::Site.list()
-    Adzerk::Site.update(json)
-    Adzerk::Site.delete(id)
-    
-### Logins
-
-    Adzerk::Login.create(json)
-    Adzerk::Login.get(id)
-    Adzerk::Login.list()
-    Adzerk::Login.update(json)
-        
-### Reporting
-
-    Adzerk::Reporting.create_report(json)
-
+    require 'adzerk'
+    require 'adzerk/advertiser'
+    adzerk = Adzerk.new 'your_api_key'
+    adzerk::Advertiser.create {
+      'Title' => "Example Advertiser",
+      'IsActive' => true,
+      'IsDeleted' => false
+    }
 
 Copyright (c) 2011 Adzerk, Inc.
