@@ -11,7 +11,7 @@ describe "Channel API" do
     $channel_engine = 'CPM'
     $channel_keywords = 'test, another test'
     $channel_CPM = '10.00'
-    $channel_AdTypes = [0,1,2,3,4]
+    $channel_AdTypes = [1,2,3,4,5]
     
     new_channel = {
       'Title' => $channel_title,

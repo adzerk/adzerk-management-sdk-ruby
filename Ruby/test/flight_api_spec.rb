@@ -21,7 +21,7 @@ describe "Flight API" do
       'Engine' => 'CPM',
       'Keywords' => 'test',
       'CPM' => '10.00',
-      'AdTypes' => [0,1,2,3,4]
+      'AdTypes' => [1,2,3,4]
     }  
     response = @@channel.create(new_channel)
     $channelId = JSON.parse(response.body)["Id"]
