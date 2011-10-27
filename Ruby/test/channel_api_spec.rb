@@ -73,7 +73,7 @@ describe "Channel API" do
     result["Items"].last["Commission"].should == $u_channel_commission.to_f
     result["Items"].last["Engine"].should == $u_channel_engine
     result["Items"].last["Keywords"].should == $u_channel_keywords
-    result["Items"].last["CPM"].to_s.should == $u_channel_CPM.to_f.to_s
+    result["Items"].last["CPM"].to_f == $u_channel_CPM.to_f
     result["Items"].last["AdTypes"].should == $u_channel_AdTypes
   end
   
