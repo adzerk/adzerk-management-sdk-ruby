@@ -11,7 +11,7 @@ describe "Channel API" do
     $channel_engine = 'CPM'
     $channel_keywords = 'test, another test'
     $channel_CPM = '10.00'
-    $channel_AdTypes = [0,1,2,3,4]
+    $channel_AdTypes = [1,2,3,4,5]
     
     new_channel = {
       'Title' => $channel_title,
@@ -73,7 +73,7 @@ describe "Channel API" do
     result["Items"].last["Commission"].should == $u_channel_commission.to_f
     result["Items"].last["Engine"].should == $u_channel_engine
     result["Items"].last["Keywords"].should == $u_channel_keywords
-    result["Items"].last["CPM"].to_s.should == $u_channel_CPM.to_f.to_s
+    result["Items"].last["CPM"].to_f == $u_channel_CPM.to_f
     result["Items"].last["AdTypes"].should == $u_channel_AdTypes
   end
   

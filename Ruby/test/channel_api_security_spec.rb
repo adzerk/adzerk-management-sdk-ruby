@@ -41,7 +41,7 @@ describe "Channel API security" do
       		'Engine' => "CPM",
       		'Keywords' => "bigfoot",
       		'CPM' => "10.00",
-      		'AdTypes' => [0,1,2,3,4]
+      		'AdTypes' => [1,2,3,4]
     	}
 	channel.update(updated_channel).response.code.should_not == 200
   end
