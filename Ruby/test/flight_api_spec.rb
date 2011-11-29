@@ -293,4 +293,63 @@ describe "Flight API" do
     true.should == !response.body.scan(/Object/).nil?
   end
 
+  it "should list the coutries, regions, and metros for geo-targeting" do
+    response = @@flight.countries()
+    true.should == !response.body.scan(/Object/).nil?
+    response = @@flight.regions("NC")
+    true.should == !response.body.scan(/Object/).nil?
+  end
+
+  it "should create a flight with geotargeting" do
+    $geo = [{
+      #'LocationId' => nil,
+      'CountryCode' => 'US',
+      'Region' => 'NC',
+      'MetroCode' => '560'
+    }]
+
+    new_flight = {
+      'NoEndDate' => false,
+      'ChannelId' => $channelId,
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => $flight_CampaignId,
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted,
+      'GeoTargeting' => $geo
+    }
+    response = @@flight.create(new_flight)
+    $flight_id = JSON.parse(response.body)["Id"].to_s
+    JSON.parse(response.body)["NoEndDate"].should == false
+    JSON.parse(response.body)["ChannelId"].should == $channelId
+    JSON.parse(response.body)["Name"].should == $flight_Name
+    #JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
+    #JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    JSON.parse(response.body)["NoEndDate"].should == $flight_NoEndDate
+    JSON.parse(response.body)["Price"].should == 15.0
+    JSON.parse(response.body)["OptionType"].should == $flight_OptionType
+    JSON.parse(response.body)["Impressions"].should == $flight_Impressions
+    JSON.parse(response.body)["IsUnlimited"].should == $flight_IsUnlimited
+    JSON.parse(response.body)["IsFullSpeed"].should == $flight_IsFullSpeed
+    JSON.parse(response.body)["Keywords"].should == $flight_Keywords
+    JSON.parse(response.body)["UserAgentKeywords"].should == $flight_UserAgentKeywords
+    JSON.parse(response.body)["WeightOverride"].should == $flight_WeightOverride
+    JSON.parse(response.body)["CampaignId"].should == $flight_CampaignId
+    JSON.parse(response.body)["IsActive"].should == $flight_IsActive
+    JSON.parse(response.body)["IsDeleted"].should == $flight_IsDeleted
+    JSON.parse(response.body)["GeoTargeting"].first["CountryCode"].should == "US"
+    JSON.parse(response.body)["GeoTargeting"].first["Region"].should == "NC"
+    JSON.parse(response.body)["GeoTargeting"].first["MetroCode"].should == "560"
+  end  
+
 end

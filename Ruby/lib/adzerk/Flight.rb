@@ -28,6 +28,17 @@ module Adzerk
       uri = URI.parse($host + 'flight/' + id + '/delete')
       Adzerk.get_request(uri)
     end
-    
+
+    def countries()
+      uri = URI.parse($host + 'countries')
+      Adzerk.get_request(uri)
+    end
+
+    def regions(region)
+      uri = URI.parse($host + 'regions/' + region)
+      Adzerk.get_request(uri)
+    end
+
+
   end
 end
