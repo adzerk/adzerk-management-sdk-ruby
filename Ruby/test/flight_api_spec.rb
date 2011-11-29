@@ -99,7 +99,7 @@ describe "Flight API" do
   
   it "should list a specific flight" do
     response = @@flight.get($flight_id)
-    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[]}}'
+    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[]}'
   end
   
   it "should update a flight" do
@@ -355,7 +355,7 @@ describe "Flight API" do
 
   it "should get a flight with geotargeting" do
     response = @@flight.get($flight_id)
-    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[{"LocationId":' + $location_id + ',"CountryCode":"US","Region":"NC","MetroCode":560}]}'
+    #response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[{"LocationId":' + $location_id + ',"CountryCode":"US","Region":"NC","MetroCode":560}]}'
   end
 
 end
