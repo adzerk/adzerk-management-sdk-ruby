@@ -99,7 +99,7 @@ describe "Flight API" do
   
   it "should list a specific flight" do
     response = @@flight.get($flight_id)
-    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true}'
+    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[]}}'
   end
   
   it "should update a flight" do
@@ -349,7 +349,13 @@ describe "Flight API" do
     JSON.parse(response.body)["IsDeleted"].should == $flight_IsDeleted
     JSON.parse(response.body)["GeoTargeting"].first["CountryCode"].should == "US"
     JSON.parse(response.body)["GeoTargeting"].first["Region"].should == "NC"
-    JSON.parse(response.body)["GeoTargeting"].first["MetroCode"].should == "560"
-  end  
+    JSON.parse(response.body)["GeoTargeting"].first["MetroCode"].should == 560
+    $location_id = JSON.parse(response.body)["GeoTargeting"].first["LocationId"].to_s
+  end
+
+  it "should get a flight with geotargeting" do
+    response = @@flight.get($flight_id)
+    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[{"LocationId":' + $location_id + ',"CountryCode":"US","Region":"NC","MetroCode":560}]}'
+  end
 
 end
