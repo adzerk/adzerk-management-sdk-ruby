@@ -35,7 +35,7 @@ module Adzerk
     end
 
     def regions(region)
-      uri = URI.parse($host + 'regions/' + region)
+      uri = URI.parse($host + 'region/' + region)
       Adzerk.get_request(uri)
     end
 
