@@ -16,3 +16,8 @@ require "../lib/adzerk/Invitation"
 
 api_key = ENV["ADZERK_API_KEY"] || 'yourapikey'
 $adzerk = Adzerk.new(api_key)
+
+RSpec.configure do |config|
+  config.color_enabled = true
+end
+

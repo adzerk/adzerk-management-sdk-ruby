@@ -6,6 +6,7 @@
   'creative_api_spec.rb',
   'creative_map_api_spec.rb',
   'flight_api_spec.rb',
+  'invitation_api_spec.rb',
   'login_api_spec.rb',
   'publisher_api_spec.rb',
   'report_api_spec.rb',
