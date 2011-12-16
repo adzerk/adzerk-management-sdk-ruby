@@ -235,4 +235,32 @@ describe "Campaign API" do
     true.should == !response.body.scan(/Object/).nil?
   end
 
+  it "should create a new campaign with no end date" do
+    $campaign_Name = 'Test campaign ' + rand(1000000).to_s
+    $campaign_StartDate = "1/1/2011"
+    $campaign_EndDate = "12/31/2011"
+    $campaign_IsActive = false
+    $campaign_Price = '10.00'
+    $campaign_BrandId = $brandId.to_i
+    $campaign_Flights = []
+    
+    new_campaign = {
+      'Name' => $campaign_Name,
+      'StartDate' => $campaign_StartDate,
+      'IsActive' => $campaign_IsActive,
+      'Price' => $campaign_Price,
+      'BrandId' => $campaign_BrandId,
+      'Flights' => $campaign_Flights,
+      'IsDeleted' => false
+    }
+  
+    response = @@campaign.create(new_campaign)
+    $campaign_Name.should == JSON.parse(response.body)["Name"]
+    $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
+    $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
+    $campaign_BrandId.should == JSON.parse(response.body)["BrandId"]
+    JSON.parse(response.body)["IsDeleted"].should == false
+    $campaign_Flights.should == JSON.parse(response.body)["Flights"]
+  end
+
 end
