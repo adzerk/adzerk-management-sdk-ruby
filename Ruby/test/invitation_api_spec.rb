@@ -4,6 +4,7 @@ describe "Invitation API" do
 
   $invitation_url = 'http://www.adzerk.com/'
   @@invite = $adzerk::Invitation.new
+  @@advertiser = $adzerk::Advertiser.new
   $email = "test+apitest@adzerk.com"
   
   before(:all) do
@@ -16,13 +17,19 @@ describe "Invitation API" do
     }
     response = site.create(new_site)
     $siteId = JSON.parse(response.body)["Id"].to_s
+    new_advertiser = {
+      'Title' => "Test"
+    }
+    response = @@advertiser.create(new_advertiser)
+    $advertiserId = JSON.parse(response.body)["Id"].to_s
   end
 
   it "should create a new publisher invitation" do
 
     invitation = {
       'Email' => $email,
-      'SiteId' => $siteId
+      'SiteId' => $siteId,
+      'AdvertiserId' => $advertiserId
     }
   
     response = @@invite.invite_publisher(invitation)
@@ -34,7 +41,8 @@ describe "Invitation API" do
 
     invitation = {
       'Email' => $email,
-      'SiteId' => $siteId
+      'SiteId' => $siteId,
+      'AdvertiserId' => $advertiserId
     }
   
     response = @@invite.invite_advertiser(invitation)
