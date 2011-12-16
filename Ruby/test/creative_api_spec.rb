@@ -163,5 +163,42 @@ describe "Creative API" do
     response = @@creative.delete("123")
     true.should == !response.body.scan(/Object/).nil?
   end
-      
+
+  it "should create a creative with no url passed in" do
+    $Title = 'Test creative ' + rand(1000000).to_s
+    $ImageName = ""
+    $Url = "http://adzerk.com"
+    $Body = "Test text"
+    $BrandId = $brandId
+    $AdTypeId = 18
+    $IsActive = true
+    $Alt = "test alt"
+    $IsDeleted = false
+    $IsSync = false
+    
+    new_creative = {
+      'Title' => $Title,
+      'ImageName' => $ImageName,
+      'Body' => $Body,
+      'BrandId' => $BrandId,
+      'AdTypeId' => $AdTypeId,
+      'IsActive' => $IsActive,
+      'Alt' => $Alt,
+      'IsDeleted' => $IsDeleted,
+      'IsSync' => $IsSync
+    }
+    response = @@creative.create(new_creative, '250x250.gif')
+    
+    $creative_id = JSON.parse(response)["Id"].to_s
+    JSON.parse(response.body)["Title"].should == $Title
+    JSON.parse(response.body)["Body"].should == $Body
+    JSON.parse(response.body)["BrandId"].should == $BrandId
+    JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
+    JSON.parse(response.body)["IsActive"].should == $IsActive
+    JSON.parse(response.body)["Alt"].should == $Alt
+    JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
+    JSON.parse(response.body)["IsSync"].should == $IsSync
+    
+  end
+
 end

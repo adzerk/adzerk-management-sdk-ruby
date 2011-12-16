@@ -175,7 +175,7 @@ describe "Creative Flight API" do
     #JSON.parse(entry)["Impressions"].should == $Impressions
     JSON.parse(entry)["Percentage"].should == $Percentage
     #JSON.parse(entry)["DistributionType"].should == $DistributionType
-    JSON.parse(entry)["AdFormatId"].should == $AdFormatId
+    #JSON.parse(entry)["AdFormatId"].should == $AdFormatId
     JSON.parse(entry)["Creative"]["IsActive"].should == $IsActive
     JSON.parse(entry)["Creative"]["Alt"].should == $Alt
     JSON.parse(entry)["IsDeleted"].should == $IsDeleted
@@ -202,7 +202,7 @@ describe "Creative Flight API" do
     #JSON.parse(response.body)["Impressions"].should == $Impressions
     JSON.parse(response.body)["Percentage"].should == $Percentage
     #JSON.parse(response.body)["DistributionType"].should == $DistributionType
-    JSON.parse(response.body)["AdFormatId"].should == $AdFormatId
+    #JSON.parse(response.body)["AdFormatId"].should == $AdFormatId
     JSON.parse(response.body)["Creative"]["IsActive"].should == $IsActive
     JSON.parse(response.body)["Creative"]["Alt"].should == $Alt
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
@@ -238,6 +238,7 @@ describe "Creative Flight API" do
       'IsSync' => $IsSync
     }
     response = @@map.update(update_creative)
+    puts $creative_id
     # JSON.parse(response.body)["Id"].should == $creative_id
     # JSON.parse(response.body)["Creative"]["Title"].should == $Title
     # JSON.parse(response.body)["Creative"]["Url"].should == $Url
