@@ -98,4 +98,8 @@ describe "Advertiser API" do
     true.should == !response.body.scan(/Object/).nil?
   end
 
+  it "should search advertiser based on name" do
+    response = @@advertiser.search("test")
+    JSON.parse(response.body)["TotalItems"].should > 0
+  end
 end

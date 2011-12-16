@@ -28,6 +28,12 @@ module Adzerk
       uri = URI.parse($host + 'advertiser/' + id.to_s + '/delete')
       Adzerk.get_request(uri)
     end
-    
+
+    def search(advertiserName)
+      uri = URI.parse($host + 'advertiser/search')
+      data = { 'advertiserName' => advertiserName }
+      Adzerk.post_request(uri, data)      
+    end
+
   end
 end
