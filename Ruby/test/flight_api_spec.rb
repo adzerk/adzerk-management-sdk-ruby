@@ -13,7 +13,7 @@ describe "Flight API" do
       'Title' => "Test"
     }
     response = @@advertiser.create(new_advertiser)
-    $brandId = JSON.parse(response.body)["Id"]
+    $advertiserId = JSON.parse(response.body)["Id"]
     
     new_channel = {
       'Title' => 'Test Channel ' + rand(1000000).to_s,
@@ -32,7 +32,7 @@ describe "Flight API" do
       'EndDate' => "12/31/2011",
       'IsActive' => false,
       'Price' => '10.00',
-      'BrandId' => $brandId,
+      'AdvertiserId' => $advertiserId,
       'Flights' => [],
       'IsDeleted' => false
     }  

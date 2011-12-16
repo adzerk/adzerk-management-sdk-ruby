@@ -15,7 +15,7 @@ describe "Creative Flight API" do
       'Title' => "Test"
     }
     response = @@advertiser.create(new_advertiser)
-    $brandId = JSON.parse(response.body)["Id"]
+    $advertiserId = JSON.parse(response.body)["Id"]
     
     new_channel = {
       'Title' => 'Test Channel ' + rand(1000000).to_s,
@@ -34,7 +34,7 @@ describe "Creative Flight API" do
       'EndDate' => "12/31/2011",
       'IsActive' => false,
       'Price' => '10.00',
-      'BrandId' => $brandId,
+      'AdvertiserId' => $advertiserId,
       'Flights' => [],
       'IsDeleted' => false
     }  
@@ -76,7 +76,7 @@ describe "Creative Flight API" do
     $ImageName = "test.jpg"
     $Url = "http://adzerk.com"
     $Body = "Test text"
-    $BrandId = $brandId
+    $AdvertiserId = $advertiserId
     $CampaignId = $campaignId
     $FlightId = $flightId
     $MapId = 0
@@ -119,7 +119,7 @@ describe "Creative Flight API" do
         'ImageName' => $ImageName,
         'Url' => $Url,
         'Body' => $Body,
-        'BrandId' => $BrandId,
+        'AdvertiserId' => $AdvertiserId,
         'AdTypeId' => $AdTypeId,
         'IsActive' => $IsActive,
         'Alt' => $Alt,
@@ -133,7 +133,7 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["Title"].should == $Title
     JSON.parse(response.body)["Creative"]["Url"].should == $Url
     JSON.parse(response.body)["Creative"]["Body"].should == $Body
-    JSON.parse(response.body)["Creative"]["BrandId"].should == $BrandId
+    JSON.parse(response.body)["Creative"]["AdvertiserId"].should == $AdvertiserId
     JSON.parse(response.body)["CampaignId"].should == $CampaignId
     JSON.parse(response.body)["FlightId"].should == $FlightId
     #JSON.parse(response.body)["MapId"].should == $MapId
@@ -161,7 +161,7 @@ describe "Creative Flight API" do
     JSON.parse(entry)["Creative"]["Title"].should == $Title
     JSON.parse(entry)["Creative"]["Url"].should == $Url
     JSON.parse(entry)["Creative"]["Body"].should == $Body
-    JSON.parse(entry)["Creative"]["BrandId"].should == $BrandId
+    JSON.parse(entry)["Creative"]["AdvertiserId"].should == $AdvertiserId
     #JSON.parse(entry)["CampaignId"].should == $CampaignId
     #JSON.parse(entry)["FlightId"].should == $FlightId
     #JSON.parse(entry)["MapId"].should == $MapId
@@ -188,7 +188,7 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["Title"].should == $Title
     JSON.parse(response.body)["Creative"]["Url"].should == $Url
     JSON.parse(response.body)["Creative"]["Body"].should == $Body
-    JSON.parse(response.body)["Creative"]["BrandId"].should == $BrandId
+    JSON.parse(response.body)["Creative"]["AdvertiserId"].should == $AdvertiserId
     #JSON.parse(response.body)["CampaignId"].should == $CampaignId
     #JSON.parse(response.body)["FlightId"].should == $FlightId
     #JSON.parse(response.body)["MapId"].should == $MapId
@@ -216,7 +216,7 @@ describe "Creative Flight API" do
       'ImageName' => $ImageName,
       'Url' => $Url,
       'Body' => $Body,
-      'BrandId' => $BrandId,
+      'AdvertiserId' => $AdvertiserId,
       'CampaignId' => $CampaignId,
       'FlightId' => $FlightId,
       #'MapId' => $MapId,
@@ -238,12 +238,11 @@ describe "Creative Flight API" do
       'IsSync' => $IsSync
     }
     response = @@map.update(update_creative)
-    puts $creative_id
     # JSON.parse(response.body)["Id"].should == $creative_id
     # JSON.parse(response.body)["Creative"]["Title"].should == $Title
     # JSON.parse(response.body)["Creative"]["Url"].should == $Url
     # JSON.parse(response.body)["Creative"]["Body"].should == $Body
-    # JSON.parse(response.body)["Creative"]["BrandId"].should == $BrandId
+    # JSON.parse(response.body)["Creative"]["AdvertiserId"].should == $AdvertiserId
     # JSON.parse(response.body)["CampaignId"].should == $CampaignId
     # JSON.parse(response.body)["FlightId"].should == $FlightId
     # JSON.parse(response.body)["MapId"].should == $MapId

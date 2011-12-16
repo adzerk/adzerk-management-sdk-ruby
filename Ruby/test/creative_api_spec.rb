@@ -11,7 +11,7 @@ describe "Creative API" do
       'Title' => "Test"
     }
     response = @@advertiser.create(new_advertiser)
-    $brandId = JSON.parse(response.body)["Id"]
+    $advertiserId = JSON.parse(response.body)["Id"]
   end
   
   it "should create a creative" do
@@ -19,7 +19,7 @@ describe "Creative API" do
     $ImageName = ""
     $Url = "http://adzerk.com"
     $Body = "Test text"
-    $BrandId = $brandId
+    $AdvertiserId = $advertiserId
     $AdTypeId = 18
     $IsActive = true
     $Alt = "test alt"
@@ -31,7 +31,7 @@ describe "Creative API" do
       'ImageName' => $ImageName,
       'Url' => $Url,
       'Body' => $Body,
-      'BrandId' => $BrandId,
+      'AdvertiserId' => $AdvertiserId,
       'AdTypeId' => $AdTypeId,
       'IsActive' => $IsActive,
       'Alt' => $Alt,
@@ -44,7 +44,7 @@ describe "Creative API" do
     JSON.parse(response.body)["Title"].should == $Title
     JSON.parse(response.body)["Url"].should == $Url
     JSON.parse(response.body)["Body"].should == $Body
-    JSON.parse(response.body)["BrandId"].should == $BrandId
+    JSON.parse(response.body)["AdvertiserId"].should == $AdvertiserId
     JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
     JSON.parse(response.body)["IsActive"].should == $IsActive
     JSON.parse(response.body)["Alt"].should == $Alt
@@ -59,7 +59,7 @@ describe "Creative API" do
     JSON.parse(response.body)["Title"].should == $Title
     JSON.parse(response.body)["Url"].should == $Url
     JSON.parse(response.body)["Body"].should == $Body
-    JSON.parse(response.body)["BrandId"].should == $BrandId
+    JSON.parse(response.body)["AdvertiserId"].should == $AdvertiserId
     JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
     JSON.parse(response.body)["IsActive"].should == $IsActive
     JSON.parse(response.body)["Alt"].should == $Alt
@@ -74,7 +74,7 @@ describe "Creative API" do
       'ImageName' => $ImageName,
       'Url' => $Url,
       'Body' => $Body,
-      'BrandId' => $BrandId,
+      'AdvertiserId' => $AdvertiserId,
       'AdTypeId' => $AdTypeId,
       'IsActive' => $IsActive,
       'Alt' => $Alt,
@@ -86,7 +86,7 @@ describe "Creative API" do
     # JSON.parse(response.body)["Title"].should == $Title
     # JSON.parse(response.body)["Url"].should == $Url
     # JSON.parse(response.body)["Body"].should == $Body
-    # JSON.parse(response.body)["BrandId"].should == $BrandId
+    # JSON.parse(response.body)["AdvertiserId"].should == $AdvertiserId
     # JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
     # JSON.parse(response.body)["IsActive"].should == $IsActive
     # JSON.parse(response.body)["Alt"].should == $Alt
@@ -95,13 +95,13 @@ describe "Creative API" do
   end
 
   it "should list all creatives for an advertiser" do
-    response = @@creative.list($BrandId)
+    response = @@creative.list($AdvertiserId)
     entry = response["Items"].last.to_json
     JSON.parse(entry)["Id"].should == $creative_id.to_i
     JSON.parse(entry)["Title"].should == $Title
     JSON.parse(entry)["Url"].should == $Url
     JSON.parse(entry)["Body"].should == $Body
-    JSON.parse(entry)["BrandId"].should == $BrandId
+    JSON.parse(entry)["AdvertiserId"].should == $AdvertiserId
     JSON.parse(entry)["AdTypeId"].should == $AdTypeId
     JSON.parse(entry)["IsActive"].should == $IsActive
     JSON.parse(entry)["Alt"].should == $Alt
@@ -114,13 +114,13 @@ describe "Creative API" do
     response.body.should == "OK"
   end
 
-  it "should not use a brandId it doesn't have access to when creating" do 
+  it "should not use a AdvertiserId it doesn't have access to when creating" do 
     new_creative = {
       'Title' => $Title,
       'ImageName' => $ImageName,
       'Url' => $Url,
       'Body' => $Body,
-      'BrandId' => 1,
+      'AdvertiserId' => 1,
       'AdTypeId' => $AdTypeId,
       'IsActive' => $IsActive,
       'Alt' => $Alt,
@@ -136,14 +136,14 @@ describe "Creative API" do
     response.to_s.scan("302 Found").should_not == nil
   end
 
-  it "should not use a brandId it doesn't have access to when updating" do 
+  it "should not use a AdvertiserId it doesn't have access to when updating" do 
     new_creative = {
       'Id' => $creative_id.to_i,
       'Title' => $Title,
       'ImageName' => $ImageName,
       'Url' => $Url,
       'Body' => $Body,
-      'BrandId' => 1,
+      'AdvertiserId' => 1,
       'AdTypeId' => $AdTypeId,
       'IsActive' => $IsActive,
       'Alt' => $Alt,
@@ -169,7 +169,7 @@ describe "Creative API" do
     $ImageName = ""
     $Url = "http://adzerk.com"
     $Body = "Test text"
-    $BrandId = $brandId
+    $AdvertiserId = $advertiserId
     $AdTypeId = 18
     $IsActive = true
     $Alt = "test alt"
@@ -180,7 +180,7 @@ describe "Creative API" do
       'Title' => $Title,
       'ImageName' => $ImageName,
       'Body' => $Body,
-      'BrandId' => $BrandId,
+      'AdvertiserId' => $AdvertiserId,
       'AdTypeId' => $AdTypeId,
       'IsActive' => $IsActive,
       'Alt' => $Alt,
@@ -192,7 +192,7 @@ describe "Creative API" do
     $creative_id = JSON.parse(response)["Id"].to_s
     JSON.parse(response.body)["Title"].should == $Title
     JSON.parse(response.body)["Body"].should == $Body
-    JSON.parse(response.body)["BrandId"].should == $BrandId
+    JSON.parse(response.body)["AdvertiserId"].should == $AdvertiserId
     JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
     JSON.parse(response.body)["IsActive"].should == $IsActive
     JSON.parse(response.body)["Alt"].should == $Alt
