@@ -35,6 +35,7 @@ describe "Invitation API" do
     response = @@invite.invite_publisher(invitation)
     response.body.should_not == ""
     response.body.length.should > 10
+    response.body.length.should < 100
   end
   
   it "should create a new advertiser invitation" do
@@ -48,6 +49,7 @@ describe "Invitation API" do
     response = @@invite.invite_advertiser(invitation)
     response.body.should_not == ""
     response.body.length.should > 10
+    response.body.length.should < 100
   end
   
 end
