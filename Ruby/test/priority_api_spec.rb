@@ -29,7 +29,7 @@ describe "Priority API" do
       'Name' => $priority_name,
       'ChannelId' => $priority_channelId,
       'Weight' => $priority_weight,
-      'IsDeleted' => $priority_isDeleted,
+      'IsDeleted' => $priority_isDeleted
     }
   
     response = @@priority.create(new_priority)
@@ -51,7 +51,7 @@ describe "Priority API" do
       'Name' => $priority_name,
       'ChannelId' => $priority_channelId,
       'Weight' => $priority_weight,
-      'IsDeleted' => $priority_isDeleted,
+      'IsDeleted' => $priority_isDeleted
     }
   
     response = @@priority.update(new_priority)

@@ -7,6 +7,7 @@ describe "Flight API" do
   @@advertiser = $adzerk::Advertiser.new
   @@channel = $adzerk::Channel.new
   @@campaign = $adzerk::Campaign.new
+  @@priority = $adzerk::Priority.new
   
   before(:all) do
     new_advertiser = {
@@ -26,6 +27,15 @@ describe "Flight API" do
     response = @@channel.create(new_channel)
     $channelId = JSON.parse(response.body)["Id"]
     
+    new_priority = {
+      'Name' => "High Priority Test",
+      'ChannelId' => $channelId,
+      'Weight' => 1,
+      'IsDeleted' => false
+    }
+    response = @@priority.create(new_priority)
+    $priority_id = JSON.parse(response.body)["Id"].to_s
+
     new_campaign = {
       'Name' => 'Test campaign ' + rand(1000000).to_s,
       'StartDate' => "1/1/2011",
@@ -59,7 +69,7 @@ describe "Flight API" do
     
     new_flight = {
       'NoEndDate' => false,
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Name' => $flight_Name,
       'StartDate' => $flight_StartDate,
       'EndDate' => $flight_EndDate,
@@ -77,9 +87,10 @@ describe "Flight API" do
       'IsDeleted' => $flight_IsDeleted
     }
     response = @@flight.create(new_flight)
+    puts response
     $flight_id = JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["NoEndDate"].should == false
-    JSON.parse(response.body)["ChannelId"].should == $channelId
+    JSON.parse(response.body)["PriorityId"].to_s.should == $priority_id
     JSON.parse(response.body)["Name"].should == $flight_Name
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
@@ -99,7 +110,7 @@ describe "Flight API" do
   
   it "should list a specific flight" do
     response = @@flight.get($flight_id)
-    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[]}'
+    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"PriorityId":' + $priority_id + ',"IsDeleted":false,"IsActive":true,"GeoTargeting":[]}'
   end
   
   it "should update a flight" do
@@ -122,7 +133,7 @@ describe "Flight API" do
     new_flight = {
       'Id' => $flight_id,
       'NoEndDate' => false,
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Name' => $u_flight_Name,
       'StartDate' => $u_flight_StartDate,
       'EndDate' => $u_flight_EndDate,
@@ -142,7 +153,7 @@ describe "Flight API" do
     response = @@flight.update(new_flight)
     $flight_id = JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["NoEndDate"].should == false
-    JSON.parse(response.body)["ChannelId"].should == $channelId
+    JSON.parse(response.body)["PriorityId"].to_s.should == $priority_id
     JSON.parse(response.body)["Name"].should == $u_flight_Name
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
@@ -166,7 +177,7 @@ describe "Flight API" do
     ## Can't test this right now because of paging issues
     # result["Items"].last["Id"].to_s.should == $flight_id
     # result["Items"].last["NoEndDate"].should == false
-    # result["Items"].last["ChannelId"].should == $channelId
+    # result["Items"].last["PriorityId"].should == $priorityId
     # result["Items"].last["Name"].should == $flight_Name
     # result["Items"].last["StartDate"].should == "/Date(1293858000000-0500)/"
     # result["Items"].last["EndDate"].should == "/Date(1325307600000-0500)/"
@@ -184,7 +195,7 @@ describe "Flight API" do
     # result["Items"].last["IsDeleted"].should == $flight_IsDeleted
   end
   
-  it "should not get if campaignId or channelId is forbidden" do
+  it "should not get if campaignId or priorityId is forbidden" do
     response = @@flight.get($flight_id)
     true.should == !response.body.scan(/Object/).nil?
   end
@@ -196,13 +207,13 @@ describe "Flight API" do
 
   it "should not get individual deleted flight" do
     response = @@flight.get($flight_id)
-    response.body.should == '{"Id":0,"ChannelId":0,"IsDeleted":false,"IsActive":false}'
+    response.body.should == '{"Id":0,"PriorityId":0,"IsDeleted":false,"IsActive":false}'
   end
   
   it "should not create/update if campaignId is forbidden" do
     new_flight = {
       'NoEndDate' => false,
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Name' => $flight_Name,
       'StartDate' => $flight_StartDate,
       'EndDate' => $flight_EndDate,
@@ -225,7 +236,7 @@ describe "Flight API" do
     new_flight = {
       'Id' => $flight_id,
       'NoEndDate' => false,
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Name' => $flight_Name,
       'StartDate' => $flight_StartDate,
       'EndDate' => $flight_EndDate,
@@ -246,10 +257,10 @@ describe "Flight API" do
     true.should == !response.body.scan(/Object/).nil?
   end
   
-  it "should not create/update if channelId is forbidden" do
+  it "should not create/update if priorityId is forbidden" do
     new_flight = {
       'NoEndDate' => false,
-      'ChannelId' => '123',
+      'PriorityId' => '123',
       'Name' => $flight_Name,
       'StartDate' => $flight_StartDate,
       'EndDate' => $flight_EndDate,
@@ -272,7 +283,7 @@ describe "Flight API" do
     new_flight = {
       'Id' => $flight_id,
       'NoEndDate' => false,
-      'ChannelId' => '123',
+      'PriorityId' => '123',
       'Name' => $flight_Name,
       'StartDate' => $flight_StartDate,
       'EndDate' => $flight_EndDate,
@@ -310,7 +321,7 @@ describe "Flight API" do
 
     new_flight = {
       'NoEndDate' => false,
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Name' => $flight_Name,
       'StartDate' => $flight_StartDate,
       'EndDate' => $flight_EndDate,
@@ -331,7 +342,7 @@ describe "Flight API" do
     response = @@flight.create(new_flight)
     $flight_id = JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["NoEndDate"].should == false
-    JSON.parse(response.body)["ChannelId"].should == $channelId
+    JSON.parse(response.body)["PriorityId"].to_s.should == $priority_id
     JSON.parse(response.body)["Name"].should == $flight_Name
     #JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
     #JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
@@ -355,7 +366,7 @@ describe "Flight API" do
 
   it "should get a flight with geotargeting" do
     response = @@flight.get($flight_id)
-    #response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"ChannelId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[{"LocationId":' + $location_id + ',"CountryCode":"US","Region":"NC","MetroCode":560}]}'
+    #response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"PriorityId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[{"LocationId":' + $location_id + ',"CountryCode":"US","Region":"NC","MetroCode":560}]}'
   end
 
 end
