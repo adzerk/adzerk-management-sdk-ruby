@@ -87,7 +87,6 @@ describe "Flight API" do
       'IsDeleted' => $flight_IsDeleted
     }
     response = @@flight.create(new_flight)
-    puts response
     $flight_id = JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["NoEndDate"].should == false
     JSON.parse(response.body)["PriorityId"].to_s.should == $priority_id
