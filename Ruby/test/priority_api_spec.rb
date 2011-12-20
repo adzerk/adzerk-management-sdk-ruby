@@ -89,7 +89,7 @@ describe "Priority API" do
   end
   
   it "should not update deleted priorities" do
-    new_priority = {
+    u_priority = {
       'Id' => $priority_id,
       'Name' => $priority_name,
       'ChannelId' => $priority_channelId,
@@ -97,7 +97,7 @@ describe "Priority API" do
       'IsDeleted' => $priority_isDeleted,
     }
   
-    response = @@priority.update(new_priority)
+    response = @@priority.update(u_priority)
     response.body.should == '{"Id":0,"ChannelId":0,"Weight":0,"IsDeleted":false}'
   end
 
