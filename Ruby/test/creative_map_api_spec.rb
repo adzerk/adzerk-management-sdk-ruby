@@ -83,7 +83,6 @@ describe "Creative Flight API" do
     $AdTypeId = 18
     $ZoneId = 0
     $SiteId = $siteId
-    $ChannelId = $channelId
     $SizeOverride = false
     $Iframe = false
     $PublisherAccountId = 372
@@ -102,7 +101,6 @@ describe "Creative Flight API" do
       'FlightId' => $FlightId,
       #'MapId' => $MapId,
       #'ZoneId' => $ZoneId,
-      'ChannelId' => $ChannelId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
@@ -140,7 +138,6 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
     #JSON.parse(response.body)["ZoneId"].should == $ZoneId
     JSON.parse(response.body)["SiteId"].should == $SiteId
-    JSON.parse(response.body)["ChannelId"].should == $ChannelId
     JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
     JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
@@ -168,7 +165,6 @@ describe "Creative Flight API" do
     JSON.parse(entry)["Creative"]["AdTypeId"].should == $AdTypeId
     #JSON.parse(entry)["ZoneId"].should == $ZoneId
     JSON.parse(entry)["SiteId"].should == $SiteId
-    #JSON.parse(entry)["ChannelId"].should == $ChannelId
     JSON.parse(entry)["SizeOverride"].should == $SizeOverride
     #JSON.parse(entry)["PublisherAccountId"].should == $PublisherAccountId
     JSON.parse(entry)["ScriptBody"].should == $ScriptBody
@@ -195,7 +191,6 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
     #JSON.parse(response.body)["ZoneId"].should == $ZoneId
     JSON.parse(response.body)["SiteId"].should == $SiteId
-    #JSON.parse(response.body)["ChannelId"].should == $ChannelId
     JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     #JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
     JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
@@ -223,7 +218,6 @@ describe "Creative Flight API" do
       'AdTypeId' => $AdTypeId,
       #'ZoneId' => $ZoneId,
       'SiteId' => $SiteId,
-      'ChannelId' => $ChannelId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
@@ -249,7 +243,6 @@ describe "Creative Flight API" do
     # JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
     # JSON.parse(response.body)["ZoneId"].should == $ZoneId
     # JSON.parse(response.body)["SiteId"].should == $SiteId
-    # JSON.parse(response.body)["ChannelId"].should == $ChannelId
     # JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     # JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
     # JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
@@ -272,7 +265,6 @@ describe "Creative Flight API" do
     map = {
       'CampaignId' => '123',
       'FlightId' => $FlightId,
-      'ChannelId' => $ChannelId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
@@ -292,27 +284,6 @@ describe "Creative Flight API" do
     map = {
       'CampaignId' => $CampaignId,
       'FlightId' => '123',
-      'ChannelId' => $ChannelId,
-      'SizeOverride' => $SizeOverride,
-      'Iframe' => $Iframe,
-      'PublisherAccountId' => $PublisherAccountId,
-      'ScriptBody' => $ScriptBody,
-      'Impressions' => $Impressions,
-      'SiteId' => $SiteId,
-      'Percentage' => $Percentage,
-      'AdFormatId' => $AdFormatId,
-      'IsActive' => $IsActive,
-      'IsDeleted' => $IsDeleted
-    }
-    response = @@map.create(map)
-    true.should == !response.body.scan(/Object/).nil?
-  end
-  
-  it "should not create a map when channelId is forbidden" do
-    map = {
-      'CampaignId' => $CampaignId,
-      'FlightId' => $FlightId,
-      'ChannelId' => '123',
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
