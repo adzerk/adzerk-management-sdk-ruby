@@ -6,7 +6,8 @@ describe "Campaign API" do
   @@campaign = $adzerk::Campaign.new
   @@advertiser = $adzerk::Advertiser.new
   @@channel = $adzerk::Channel.new
-  
+  @@priority = $adzerk::Priority.new
+
   before(:all) do
     new_advertiser = {
       'Title' => "Test"
@@ -24,6 +25,15 @@ describe "Campaign API" do
     }  
     response = @@channel.create(new_channel)
     $channelId = JSON.parse(response.body)["Id"].to_s
+
+    new_priority = {
+      'Name' => "High Priority Test",
+      'ChannelId' => $channelId,
+      'Weight' => 1,
+      'IsDeleted' => false
+    }
+    response = @@priority.create(new_priority)
+    $priority_id = JSON.parse(response.body)["Id"].to_s
     
   end
   
@@ -67,7 +77,7 @@ describe "Campaign API" do
       'Price' => "5.00",
       'Keywords' => "test, test2",
       'Name' => "Test",
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Impressions' => 10000,
       'IsDeleted' => false
     }]
@@ -101,7 +111,7 @@ describe "Campaign API" do
       'Price' => "5.00",
       'Keywords' => "test, test2",
       'Name' => "Test",
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Impressions' => 10000
     },{
       'StartDate' => "1/1/2010",
@@ -110,7 +120,7 @@ describe "Campaign API" do
       'Price' => "10.00",
       'Keywords' => "test, test2, test3",
       'Name' => "Test3",
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Impressions' => 15000
     }]
     new2_campaign = {

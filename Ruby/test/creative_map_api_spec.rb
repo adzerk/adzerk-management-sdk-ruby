@@ -9,6 +9,7 @@ describe "Creative Flight API" do
   @@campaign = $adzerk::Campaign.new
   @@site = $adzerk::Site.new
   @@flight = $adzerk::Flight.new
+  @@priority = $adzerk::Priority.new
   
   before(:all) do
     new_advertiser = {
@@ -27,6 +28,15 @@ describe "Creative Flight API" do
     }  
     response = @@channel.create(new_channel)
     $channelId = JSON.parse(response.body)["Id"]
+
+    new_priority = {
+      'Name' => "High Priority Test",
+      'ChannelId' => $channelId,
+      'Weight' => 1,
+      'IsDeleted' => false
+    }
+    response = @@priority.create(new_priority)
+    $priority_id = JSON.parse(response.body)["Id"].to_s
     
     new_campaign = {
       'Name' => 'Test campaign ' + rand(1000000).to_s,
@@ -43,7 +53,7 @@ describe "Creative Flight API" do
     
     new_flight = {
       'NoEndDate' => false,
-      'ChannelId' => $channelId,
+      'PriorityId' => $priority_id,
       'Name' => 'Test flight ' + rand(1000000).to_s,
       'StartDate' => "1/1/2011",
       'EndDate' => "12/31/2011",
