@@ -328,7 +328,6 @@ describe "Creative Flight API" do
       }
     }
     response = @@map.create(map)
-    puts response
     false.should == !response.body.scan(/Exception/).empty?
   end
 
