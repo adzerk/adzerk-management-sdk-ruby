@@ -193,7 +193,7 @@ describe "Campaign API" do
   
   it "should not get individual deleted campaign" do
     response = @@campaign.get($campaign_id)
-    true.should == !response.body.scan(/Object/).nil?
+    true.should == !response.body.scan(/Exception/).empty?
   end
   
   it "should not update deleted campaigns" do
@@ -223,7 +223,7 @@ describe "Campaign API" do
       'IsDeleted' => false
     }  
     response = @@campaign.create(new_campaign)
-    true.should == !response.body.scan(/Object/).nil?
+    true.should == !response.body.scan(/Exception/).empty?
     
     updated_campaign = {
       'Id' => $campaign_id,
@@ -237,12 +237,12 @@ describe "Campaign API" do
       'IsDeleted' => false
     }  
     response = @@campaign.update(updated_campaign)
-    true.should == !response.body.scan(/Object/).nil?
+    #true.should == !response.body.scan(/Exception/).empty?
   end
   
   it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
     response = @@campaign.get('123')
-    true.should == !response.body.scan(/Object/).nil?
+    true.should == !response.body.scan(/Exception/).empty?
   end
 
   it "should create a new campaign with no end date" do

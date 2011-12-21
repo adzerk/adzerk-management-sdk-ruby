@@ -49,7 +49,7 @@ module Adzerk
     RestClient.post $host + 'creative/' + id.to_s + '/upload', 
       {:image => image},
       "X-Adzerk-ApiKey" => Adzerk.api_key,
-      :accept => :json
+      :accept => :mime
   end
   
 end

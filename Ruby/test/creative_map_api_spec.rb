@@ -211,6 +211,7 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["Alt"].should == $Alt
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
     JSON.parse(response.body)["Creative"]["IsSync"].should == $IsSync
+    @@creativeId = JSON.parse(response.body)["Creative"]["Id"]
   end
   
   it "should update a specific creative" do
@@ -286,7 +287,7 @@ describe "Creative Flight API" do
       'IsDeleted' => $IsDeleted
     }
     response = @@map.create(map)
-    true.should == !response.body.scan(/Object/).nil?    
+    true.should == !response.body.scan(/Exception/).empty?
   end
   
   it "should not create a map when flightId is forbidden" do
@@ -305,7 +306,52 @@ describe "Creative Flight API" do
       'IsDeleted' => $IsDeleted
     }
     response = @@map.create(map)
-    true.should == !response.body.scan(/Object/).nil?
+    true.should == !response.body.scan(/Exception/).empty?
   end
     
+  it "should create a map when there is no creative object, just id" do
+    map = {
+      'CampaignId' => $CampaignId,
+      'FlightId' => $FlightId,
+      'SizeOverride' => $SizeOverride,
+      'Iframe' => $Iframe,
+      'PublisherAccountId' => $PublisherAccountId,
+      'ScriptBody' => $ScriptBody,
+      'Impressions' => $Impressions,
+      'SiteId' => $SiteId,
+      'Percentage' => $Percentage,
+      'AdFormatId' => $AdFormatId,
+      'IsActive' => $IsActive,
+      'IsDeleted' => $IsDeleted,
+      'Creative' => {
+        'Id' => @@creativeId
+      }
+    }
+    response = @@map.create(map)
+    false.should == !response.body.scan(/Exception/).empty?
+  end
+
+  it "should not create a map when there is no creative object, just id that belongs to a different advertiser" do
+    map = {
+      'CampaignId' => $CampaignId,
+      'FlightId' => $FlightId,
+      'SizeOverride' => $SizeOverride,
+      'Iframe' => $Iframe,
+      'PublisherAccountId' => $PublisherAccountId,
+      'ScriptBody' => $ScriptBody,
+      'Impressions' => $Impressions,
+      'SiteId' => $SiteId,
+      'Percentage' => $Percentage,
+      'AdFormatId' => $AdFormatId,
+      'IsActive' => $IsActive,
+      'IsDeleted' => $IsDeleted,
+      'Creative' => {
+        'Id' => 1234
+      }
+    }
+    response = @@map.create(map)
+    true.should == !response.body.scan(/Exception/).empty?
+  end
+
+
 end

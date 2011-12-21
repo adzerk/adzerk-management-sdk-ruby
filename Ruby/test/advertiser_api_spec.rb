@@ -70,7 +70,7 @@ describe "Advertiser API" do
   
   it "should not get individual deleted advertiser" do
     response = @@advertiser.get($advertiser_id)
-    true.should == !response.body.scan(/Object/).nil?
+    true.should == !response.body.scan(/Exception/).empty?
   end
   
   it "should not update deleted advertisers" do
@@ -79,7 +79,7 @@ describe "Advertiser API" do
       'Title' => "test"
     }
     response = @@advertiser.update(updated_advertiser)
-    true.should == !response.body.scan(/Object/).nil?
+    true.should == !response.body.scan(/Exception/).empty?
   end
   
   it "should create a new advertiser without IsActive or IsDeleted" do
@@ -95,7 +95,7 @@ describe "Advertiser API" do
   it "should require a title" do
     new_advertiser = {}
     response = @@advertiser.create(new_advertiser)
-    true.should == !response.body.scan(/Object/).nil?
+    true.should == !response.body.scan(/Exception/).empty?
   end
 
   it "should search advertiser based on name" do
