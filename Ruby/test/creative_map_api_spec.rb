@@ -124,7 +124,6 @@ describe "Creative Flight API" do
       'IsDeleted' => $IsDeleted,
       'Creative' => {
         'Title' => $Title,
-        'ImageName' => $ImageName,
         'Url' => $Url,
         'Body' => $Body,
         'AdvertiserId' => $AdvertiserId,

@@ -4,12 +4,6 @@ module Adzerk
   class Creative
     
     def create(data={}, imagepath='')      
-      begin
-        image = File.new(imagepath, 'rb')
-      rescue
-        image = ''
-      end
-      
       response = RestClient.post $host + 'creative',
         {:creative => data.to_json},
         :X_Adzerk_ApiKey => Adzerk.api_key,
@@ -17,7 +11,6 @@ module Adzerk
         :accept => :json
         
       Adzerk.uploadCreative(JSON.parse(response)["Id"], imagepath) 
-      response
     end
     
     def get(id)

@@ -39,7 +39,6 @@ describe "Creative API" do
       'IsSync' => $IsSync
     }
     response = @@creative.create(new_creative, '250x250.gif')
-    
     $creative_id = JSON.parse(response)["Id"].to_s
     JSON.parse(response.body)["Title"].should == $Title
     JSON.parse(response.body)["Url"].should == $Url
@@ -164,9 +163,7 @@ describe "Creative API" do
     true.should == !response.body.scan(/Object/).nil?
   end
 
-  it "should create a creative with no url passed in" do
-    $Title = 'Test creative ' + rand(1000000).to_s
-    $ImageName = ""
+  it "should create a creative with no url or image name passed in" do
     $Url = "http://adzerk.com"
     $Body = "Test text"
     $AdvertiserId = $advertiserId
@@ -178,7 +175,6 @@ describe "Creative API" do
     
     new_creative = {
       'Title' => $Title,
-      'ImageName' => $ImageName,
       'Body' => $Body,
       'AdvertiserId' => $AdvertiserId,
       'AdTypeId' => $AdTypeId,
@@ -188,7 +184,6 @@ describe "Creative API" do
       'IsSync' => $IsSync
     }
     response = @@creative.create(new_creative, '250x250.gif')
-    
     $creative_id = JSON.parse(response)["Id"].to_s
     JSON.parse(response.body)["Title"].should == $Title
     JSON.parse(response.body)["Body"].should == $Body
