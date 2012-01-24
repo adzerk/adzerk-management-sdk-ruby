@@ -14,6 +14,7 @@ require "../lib/adzerk/CreativeMap"
 require "../lib/adzerk/Advertiser"
 require "../lib/adzerk/Invitation"
 require "../lib/adzerk/Priority"
+require "../lib/adzerk/ChannelSiteMap"
 
 api_key = ENV["ADZERK_API_KEY"] || 'yourapikey'
 $adzerk = Adzerk.new(api_key)

@@ -11,7 +11,8 @@
   'publisher_api_spec.rb',
   'report_api_spec.rb',
   'site_api_spec.rb',
-  'priority_api_spec.rb'
+  'priority_api_spec.rb',
+  'channel_site_map_api_spec.rb'
 ]
 
 task :runall do
