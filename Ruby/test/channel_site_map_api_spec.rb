@@ -10,7 +10,7 @@ describe "Channel Site Map API" do
   before(:all) do
     new_channel = {
       'Title' => 'Test Channel ' + rand(1000000).to_s,
-      'Commission' => '0',
+      'Commission' => '0.0',
       'Engine' => 'CPM',
       'Keywords' => 'test',
       'CPM' => '10.00',
