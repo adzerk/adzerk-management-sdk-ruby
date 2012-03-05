@@ -34,7 +34,7 @@ describe "Channel API" do
   
   it "should list a specific channel" do
     response = @@channel.get($channel_id)
-    response.body.should == '{"Id":' + $channel_id + ',"Title":"' + $channel_title + '","Commission":' + '0' + ',"Engine":"' + $channel_engine + '","Keywords":"' + $channel_keywords + '","CPM":' + $channel_CPM + ',"AdTypes":' + $channel_AdTypes.to_json + ',"IsDeleted":false}'
+    response.body.should == '{"Id":' + $channel_id + ',"Title":"' + $channel_title + '","Commission":' + '0.00' + ',"Engine":"' + $channel_engine + '","Keywords":"' + $channel_keywords + '","CPM":' + $channel_CPM + ',"AdTypes":' + $channel_AdTypes.to_json + ',"IsDeleted":false}'
   end
   
   it "should update a channel" do
