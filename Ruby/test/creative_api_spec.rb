@@ -81,16 +81,16 @@ describe "Creative API" do
       'IsSync' => $IsSync
     }
     response = @@creative.update(update_creative)
-    # JSON.parse(response.body)["Id"].should == $creative_id
-    # JSON.parse(response.body)["Title"].should == $Title
-    # JSON.parse(response.body)["Url"].should == $Url
-    # JSON.parse(response.body)["Body"].should == $Body
-    # JSON.parse(response.body)["AdvertiserId"].should == $AdvertiserId
-    # JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
-    # JSON.parse(response.body)["IsActive"].should == $IsActive
-    # JSON.parse(response.body)["Alt"].should == $Alt
-    # JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
-    # JSON.parse(response.body)["IsSync"].should == $IsSync
+    JSON.parse(response.body)["Id"].should == $creative_id.to_i
+    JSON.parse(response.body)["Title"].should == $Title
+    JSON.parse(response.body)["Url"].should == $Url
+    JSON.parse(response.body)["Body"].should == $Body
+    JSON.parse(response.body)["AdvertiserId"].should == $AdvertiserId
+    JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
+    JSON.parse(response.body)["IsActive"].should == $IsActive
+    JSON.parse(response.body)["Alt"].should == $Alt
+    JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
+    JSON.parse(response.body)["IsSync"].should == $IsSync
   end
 
   it "should list all creatives for an advertiser" do

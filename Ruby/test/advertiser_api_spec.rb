@@ -41,19 +41,19 @@ describe "Advertiser API" do
   it "should update a advertiser" do
     $title << "test"
     $isActive = false
-    $isDeleted = true
+    $isDeleted = false
     
     updated_advertiser = {
       'Id' => $advertiser_id.to_i,
       'Title' => $title,
-      'IsDeleted' => false,
-      'IsActive' => true
+      'IsDeleted' => $IsDeleted,
+      'IsActive' => $IsActive
     }
     response = @@advertiser.update(updated_advertiser)
-    # $advertiser_id = JSON.parse(response.body)["Id"].to_s
-    # $title.should == JSON.parse(response.body)["Title"]
-    # $isActive.should == JSON.parse(response.body)["IsActive"]
-    # $isDeleted.should == JSON.parse(response.body)["IsDeleted"]
+    $advertiser_id = JSON.parse(response.body)["Id"].to_s
+    $title.should == JSON.parse(response.body)["Title"]
+    $isActive.should == JSON.parse(response.body)["IsActive"]
+    $isDeleted.should == JSON.parse(response.body)["IsDeleted"]
   end
 
   it "should delete a new advertiser" do
@@ -79,7 +79,7 @@ describe "Advertiser API" do
       'Title' => "test"
     }
     response = @@advertiser.update(updated_advertiser)
-    true.should == !response.body.scan(/Exception/).empty?
+    JSON.parse(response.body)["Id"].should == 0
   end
   
   it "should create a new advertiser without IsActive or IsDeleted" do
