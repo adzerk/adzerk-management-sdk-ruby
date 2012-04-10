@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'adzerk'
-  s.version       = '0.1'
+  s.version       = '0.1.2'
   s.summary       = "Adzerk API"
   s.description   = "Ruby library for the Adzerk API"
   s.files         = ['lib/Adzerk.rb'] + Dir['lib/**/*.rb'] + Dir['test/*.rb']
