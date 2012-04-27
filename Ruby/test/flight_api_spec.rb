@@ -1,4 +1,4 @@
-require 'spec_helper'
+require './spec_helper.rb'
 
 describe "Flight API" do
   
@@ -367,5 +367,116 @@ describe "Flight API" do
     response = @@flight.get($flight_id)
     #response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"PriorityId":0,"IsDeleted":false,"IsActive":true,"GeoTargeting":[{"LocationId":' + $location_id + ',"CountryCode":"US","Region":"NC","MetroCode":560}]}'
   end
+
+  it "should create a flight with goal types, rate types, and day parting" do
+    $flight_IsActive = true
+    $flight_IsDeleted = false
+    
+    new_flight = {
+      'NoEndDate' => false,
+      'PriorityId' => $priority_id,
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => $flight_CampaignId,
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted,
+      'GoalType' => 1,
+      'RateType' => 1,
+      'IsSunday' => true,
+      'IsMonday' => true,
+      'IsWednesday' => true,
+      'DatePartingStartTime' => '12:00:00',
+      'DatePartingEndTime' => '18:32:12'
+    }
+    response = @@flight.create(new_flight)
+    $flight_id = JSON.parse(response.body)["Id"].to_s
+    JSON.parse(response.body)["NoEndDate"].should == false
+    JSON.parse(response.body)["PriorityId"].to_s.should == $priority_id
+    JSON.parse(response.body)["Name"].should == $flight_Name
+    # JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
+    # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    JSON.parse(response.body)["NoEndDate"].should == $flight_NoEndDate
+    JSON.parse(response.body)["Price"].should == 15.0
+    JSON.parse(response.body)["OptionType"].should == $flight_OptionType
+    JSON.parse(response.body)["Impressions"].should == $flight_Impressions
+    JSON.parse(response.body)["IsUnlimited"].should == $flight_IsUnlimited
+    JSON.parse(response.body)["IsFullSpeed"].should == $flight_IsFullSpeed
+    JSON.parse(response.body)["Keywords"].should == $flight_Keywords
+    JSON.parse(response.body)["UserAgentKeywords"].should == $flight_UserAgentKeywords
+    JSON.parse(response.body)["WeightOverride"].should == $flight_WeightOverride
+    JSON.parse(response.body)["CampaignId"].should == $flight_CampaignId
+    JSON.parse(response.body)["IsActive"].should == $flight_IsActive
+    JSON.parse(response.body)["IsDeleted"].should == $flight_IsDeleted
+    JSON.parse(response.body)["GoalType"].should == 1
+    JSON.parse(response.body)["RateType"].should == 1
+    JSON.parse(response.body)["IsSunday"].should == true
+    JSON.parse(response.body)["IsMonday"].should == true
+    JSON.parse(response.body)["IsWednesday"].should == true
+    JSON.parse(response.body)["DatePartingStartTime"].should == '12:00:00'
+    JSON.parse(response.body)["DatePartingEndTime"].should == '18:32:12' 
+  end
+
+  it "should create a flight with frequency capping" do
+    $flight_IsActive = true
+    $flight_IsDeleted = false
+    
+    new_flight = {
+      'NoEndDate' => false,
+      'PriorityId' => $priority_id,
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => $flight_CampaignId,
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted,
+      'IsFreqCap' => true,
+      'FreqCap' => 5,
+      'FreqCapDuration' => 6,
+      'FreqCapType' => 1
+    }
+    response = @@flight.create(new_flight)
+    $flight_id = JSON.parse(response.body)["Id"].to_s
+    JSON.parse(response.body)["NoEndDate"].should == false
+    JSON.parse(response.body)["PriorityId"].to_s.should == $priority_id
+    JSON.parse(response.body)["Name"].should == $flight_Name
+    # JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
+    # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    JSON.parse(response.body)["NoEndDate"].should == $flight_NoEndDate
+    JSON.parse(response.body)["Price"].should == 15.0
+    JSON.parse(response.body)["OptionType"].should == $flight_OptionType
+    JSON.parse(response.body)["Impressions"].should == $flight_Impressions
+    JSON.parse(response.body)["IsUnlimited"].should == $flight_IsUnlimited
+    JSON.parse(response.body)["IsFullSpeed"].should == $flight_IsFullSpeed
+    JSON.parse(response.body)["Keywords"].should == $flight_Keywords
+    JSON.parse(response.body)["UserAgentKeywords"].should == $flight_UserAgentKeywords
+    JSON.parse(response.body)["WeightOverride"].should == $flight_WeightOverride
+    JSON.parse(response.body)["CampaignId"].should == $flight_CampaignId
+    JSON.parse(response.body)["IsActive"].should == $flight_IsActive
+    JSON.parse(response.body)["IsDeleted"].should == $flight_IsDeleted
+    JSON.parse(response.body)["IsFreqCap"].should == true
+    JSON.parse(response.body)["FreqCap"].should == 5
+    JSON.parse(response.body)["FreqCapDuration"].should == 6
+    JSON.parse(response.body)["FreqCapType"].should == 1
+  end  
+
 
 end
