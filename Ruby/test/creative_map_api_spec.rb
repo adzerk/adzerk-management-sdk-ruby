@@ -353,5 +353,37 @@ describe "Creative Flight API" do
     true.should == !response.body.scan(/Exception/).empty?
   end
 
+  it "should create a map with and invalid siteId" do
+    new_creative = {
+      'CampaignId' => $CampaignId,
+      'FlightId' => $FlightId,
+      #'MapId' => $MapId,
+      #'ZoneId' => $ZoneId,
+      'SizeOverride' => $SizeOverride,
+      'Iframe' => $Iframe,
+      'PublisherAccountId' => $PublisherAccountId,
+      'ScriptBody' => $ScriptBody,
+      'Impressions' => $Impressions,
+      'Percentage' => $Percentage,
+      'SiteId' => 0,
+      #'DistributionType' => $DistributionType,
+      'AdFormatId' => $AdFormatId,
+      'IsActive' => $IsActive,
+      'IsDeleted' => $IsDeleted,
+      'Creative' => {
+        'Title' => $Title,
+        'Url' => $Url,
+        'Body' => $Body,
+        'AdvertiserId' => $AdvertiserId,
+        'AdTypeId' => $AdTypeId,
+        'IsActive' => $IsActive,
+        'Alt' => $Alt,
+        'IsDeleted' => $IsDeleted,
+        'IsSync' => $IsSync
+      }
+    }
+    response = @@map.create(new_creative)
+    true.should == !response.body.scan(/Exception/).empty?
+  end
 
 end
