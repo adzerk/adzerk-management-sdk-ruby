@@ -10,6 +10,7 @@ describe "Creative Flight API" do
   @@site = $adzerk::Site.new
   @@flight = $adzerk::Flight.new
   @@priority = $adzerk::Priority.new
+  @@zone = $adzerk::Zone.new
   
   before(:all) do
     new_advertiser = {
@@ -79,6 +80,14 @@ describe "Creative Flight API" do
     }
     response = @@site.create(new_site)
     $siteId = JSON.parse(response.body)["Id"]
+    
+    new_zone = {
+      'Name' => 'Test Zone ' + rand(10000000).to_s,
+      'SiteId' => $siteId,
+    }
+    response = @@zone.create(new_zone)
+    $zoneId = JSON.parse(response.body)["Id"]
+
   end
   
   it "should create a creative" do
@@ -110,7 +119,6 @@ describe "Creative Flight API" do
       'CampaignId' => $CampaignId,
       'FlightId' => $FlightId,
       #'MapId' => $MapId,
-      #'ZoneId' => $ZoneId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
@@ -136,7 +144,7 @@ describe "Creative Flight API" do
     }
     response = @@map.create(new_creative)
     Adzerk.uploadCreative(JSON.parse(response.body)["Creative"]["Id"].to_s, "250x250.gif") 
-    $creative_id = JSON.parse(response.body)["Id"].to_s
+    $map_id= JSON.parse(response.body)["Id"].to_s
     JSON.parse(response.body)["Creative"]["Title"].should == $Title
     JSON.parse(response.body)["Creative"]["Url"].should == $Url
     JSON.parse(response.body)["Creative"]["Body"].should == $Body
@@ -163,7 +171,7 @@ describe "Creative Flight API" do
   it "should list all creatives for a flight" do
     response = @@map.list($FlightId)
     entry = response["Items"].last.to_json
-    $creative_id = JSON.parse(entry)["Id"]
+    $map_id = JSON.parse(entry)["Id"]
     JSON.parse(entry)["Creative"]["Title"].should == $Title
     JSON.parse(entry)["Creative"]["Url"].should == $Url
     JSON.parse(entry)["Creative"]["Body"].should == $Body
@@ -188,8 +196,8 @@ describe "Creative Flight API" do
   end
   
   it "should get a specific creative" do
-    response = @@map.get($creative_id, $flightId)
-    JSON.parse(response.body)["Id"].should == $creative_id
+    response = @@map.get($map_id, $flightId)
+    JSON.parse(response.body)["Id"].should == $map_id
     JSON.parse(response.body)["Creative"]["Title"].should == $Title
     JSON.parse(response.body)["Creative"]["Url"].should == $Url
     JSON.parse(response.body)["Creative"]["Body"].should == $Body
@@ -215,59 +223,50 @@ describe "Creative Flight API" do
   end
   
   it "should update a specific creative" do
-    update_creative = {
-      'Id' => $creative_id.to_i,
-      'Title' => $Title,
-      'ImageName' => $ImageName,
-      'Url' => $Url,
-      'Body' => $Body,
-      'AdvertiserId' => $AdvertiserId,
+   updated_creative = {
+      'Id' => $map_id,
       'CampaignId' => $CampaignId,
       'FlightId' => $FlightId,
-      'MapId' => $MapId,
-      'AdTypeId' => $AdTypeId,
-      'ZoneId' => $ZoneId,
-      'SiteId' => $SiteId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
       'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
       'Percentage' => $Percentage,
-      'DistributionType' => $DistributionType,
+      'SiteId' => $SiteId,
+      'ZoneId' => $zoneId,
       'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
-      'Alt' => $Alt,
       'IsDeleted' => $IsDeleted,
-      'IsSync' => $IsSync
+      'Creative' => {
+        'Id' => @@creativeId
+      }
     }
-    response = @@map.update(update_creative)
-    #JSON.parse(response.body)["Id"].should == $creative_id
-    #JSON.parse(response.body)["Creative"]["Title"].should == $Title
-    #JSON.parse(response.body)["Creative"]["Url"].should == $Url
-    #JSON.parse(response.body)["Creative"]["Body"].should == $Body
-    #JSON.parse(response.body)["Creative"]["AdvertiserId"].should == $AdvertiserId
-    #JSON.parse(response.body)["CampaignId"].should == $CampaignId
-    #JSON.parse(response.body)["FlightId"].should == $FlightId
-    #JSON.parse(response.body)["MapId"].should == $MapId
-    #JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
-    #JSON.parse(response.body)["ZoneId"].should == $ZoneId
-    #JSON.parse(response.body)["SiteId"].should == $SiteId
-    #JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
-    #JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
-    #JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
-    #JSON.parse(response.body)["Impressions"].should == $Impressions
-    #JSON.parse(response.body)["Percentage"].should == $Percentage
-    #JSON.parse(response.body)["DistributionType"].should == $DistributionType
-    #JSON.parse(response.body)["AdFormatId"].should == $AdFormatId
-    #JSON.parse(response.body)["Creative"]["IsActive"].should == $IsActive
-    #JSON.parse(response.body)["Creative"]["Alt"].should == $Alt
-    #JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
-    #JSON.parse(response.body)["Creative"]["IsSync"].should == $IsSync
+    response = @@map.create(updated_creative)
+    Adzerk.uploadCreative(JSON.parse(response.body)["Creative"]["Id"].to_s, "250x250.gif") 
+    JSON.parse(response.body)["Creative"]["Title"].should == $Title
+    JSON.parse(response.body)["Creative"]["Url"].should == $Url
+    JSON.parse(response.body)["Creative"]["Body"].should == $Body
+    JSON.parse(response.body)["Creative"]["AdvertiserId"].should == $AdvertiserId
+    JSON.parse(response.body)["CampaignId"].should == $CampaignId
+    JSON.parse(response.body)["FlightId"].should == $FlightId
+    JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
+    JSON.parse(response.body)["ZoneId"].should == $zoneId
+    JSON.parse(response.body)["SiteId"].should == $SiteId
+    JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
+    JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
+    JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
+    JSON.parse(response.body)["Impressions"].should == $Impressions
+    JSON.parse(response.body)["Percentage"].should == $Percentage
+    JSON.parse(response.body)["AdFormatId"].should == $AdFormatId
+    JSON.parse(response.body)["Creative"]["IsActive"].should == $IsActive
+    JSON.parse(response.body)["Creative"]["Alt"].should == $Alt
+    JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
+    JSON.parse(response.body)["Creative"]["IsSync"].should == $IsSync
   end
   
   it "should delete the creatives after creating it" do
-    response = @@map.delete($creative_id, $FlightId)
+    response = @@map.delete($map_id, $FlightId)
     response.body.should == "OK"
   end
   
