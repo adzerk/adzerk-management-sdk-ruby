@@ -1,4 +1,4 @@
-require 'spec_helper'
+require './spec_helper.rb'
 
 describe "Campaign API" do
   
@@ -138,8 +138,11 @@ describe "Campaign API" do
   end
   
   it "should list a specific campaign" do
-    response = @@campaign.get($campaign_id)
-    response.body.should == '{"Id":' + $campaign_id + ',"Name":"' + $campaign_Name + '","StartDate":"\/Date(1293840000000+0000)\/","EndDate":"\/Date(1325289600000+0000)\/","IsActive":false,"Price":' + $campaign_Price + ',"AdvertiserId":' + $campaign_AdvertiserId.to_s + ',"IsDeleted":false}'
+    response = @@campaign.get($campaign_id2)
+    (response.body.scan($campaign_id2).empty?).should == false
+    (response.body.scan('"Flights":[]').empty?).should == true
+    (response.body.scan('"Flights":[').empty?).should == false
+    (response.body.scan($campaign_Name).empty?).should == false
   end
   
   it "should update a campaign" do
