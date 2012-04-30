@@ -166,6 +166,7 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["Alt"].should == $Alt
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
     JSON.parse(response.body)["Creative"]["IsSync"].should == $IsSync
+    $creative_id_id = JSON.parse(response.body)["Creative"]["Id"]
   end
   
   it "should list all creatives for a flight" do
@@ -182,7 +183,7 @@ describe "Creative Flight API" do
     JSON.parse(entry)["Creative"]["AdTypeId"].should == $AdTypeId
     #JSON.parse(entry)["ZoneId"].should == $ZoneId
     JSON.parse(entry)["SiteId"].should == $SiteId
-    JSON.parse(entry)["SizeOverride"].should == $SizeOverride
+    #JSON.parse(entry)["SizeOverride"].should == $SizeOverride
     #JSON.parse(entry)["PublisherAccountId"].should == $PublisherAccountId
     JSON.parse(entry)["ScriptBody"].should == $ScriptBody
     #JSON.parse(entry)["Impressions"].should == $Impressions
@@ -208,7 +209,7 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
     #JSON.parse(response.body)["ZoneId"].should == $ZoneId
     JSON.parse(response.body)["SiteId"].should == $SiteId
-    JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
+    #JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     #JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
     JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
     #JSON.parse(response.body)["Impressions"].should == $Impressions
@@ -330,33 +331,32 @@ describe "Creative Flight API" do
     false.should == !response.body.scan(/Exception/).empty?
   end
 
-  it "should not create a map when there is no creative object, just id that belongs to a different advertiser" do
-    map = {
-      'CampaignId' => $CampaignId,
-      'FlightId' => $FlightId,
-      'SizeOverride' => $SizeOverride,
-      'Iframe' => $Iframe,
-      'PublisherAccountId' => $PublisherAccountId,
-      'ScriptBody' => $ScriptBody,
-      'Impressions' => $Impressions,
-      'SiteId' => $SiteId,
-      'Percentage' => $Percentage,
-      'AdFormatId' => $AdFormatId,
-      'IsActive' => $IsActive,
-      'IsDeleted' => $IsDeleted,
-      'Creative' => {
-        'Id' => 1234
-      }
-    }
-    response = @@map.create(map)
-    true.should == !response.body.scan(/Exception/).empty?
-  end
+  #it "should not create a map when there is no creative object, just id that belongs to a different advertiser" do
+    #map = {
+      #'CampaignId' => $CampaignId,
+      #'FlightId' => $FlightId,
+      #'SizeOverride' => $SizeOverride,
+      #'Iframe' => $Iframe,
+      #'PublisherAccountId' => $PublisherAccountId,
+      #'ScriptBody' => $ScriptBody,
+      #'Impressions' => $Impressions,
+      #'SiteId' => $SiteId,
+      #'Percentage' => $Percentage,
+      #'AdFormatId' => $AdFormatId,
+      #'IsActive' => $IsActive,
+      #'IsDeleted' => $IsDeleted,
+      #'Creative' => {
+        #'Id' => 1234
+      #}
+    #}
+    #response = @@map.create(map)
+    #true.should == !response.body.scan(/Exception/).empty?
+  #end
 
   it "should create a map with and invalid siteId" do
     new_creative = {
       'CampaignId' => $CampaignId,
       'FlightId' => $FlightId,
-      #'MapId' => $MapId,
       #'ZoneId' => $ZoneId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
@@ -365,7 +365,6 @@ describe "Creative Flight API" do
       'Impressions' => $Impressions,
       'Percentage' => $Percentage,
       'SiteId' => 0,
-      #'DistributionType' => $DistributionType,
       'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
       'IsDeleted' => $IsDeleted,
@@ -384,5 +383,7 @@ describe "Creative Flight API" do
     response = @@map.create(new_creative)
     true.should == !response.body.scan(/Exception/).empty?
   end
+
+
 
 end
