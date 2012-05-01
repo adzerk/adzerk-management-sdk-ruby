@@ -109,7 +109,8 @@ describe "Flight API" do
   
   it "should list a specific flight" do
     response = @@flight.get($flight_id)
-    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"PriorityId":' + $priority_id + ',"IsDeleted":false,"IsActive":true,"GeoTargeting":[],"FreqCap":0,"FreqCapDuration":0,"FreqCapType":0}'
+    puts response.body
+    response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"PriorityId":' + $priority_id + ',"IsDeleted":false,"IsActive":true,"GeoTargeting":[],"FreqCap":0,"FreqCapDuration":0,"FreqCapType":0,"CreativeMaps":[]}'
   end
   
   it "should update a flight" do
@@ -396,7 +397,7 @@ describe "Flight API" do
       'IsMonday' => true,
       'IsWednesday' => true,
       'DatePartingStartTime' => '12:00:00',
-      'DatePartingEndTime' => '18:32:12'
+      'DatePartingEndTime' => '12:00:00'
     }
     response = @@flight.create(new_flight)
     $flight_id = JSON.parse(response.body)["Id"].to_s
@@ -423,7 +424,7 @@ describe "Flight API" do
     JSON.parse(response.body)["IsMonday"].should == true
     JSON.parse(response.body)["IsWednesday"].should == true
     JSON.parse(response.body)["DatePartingStartTime"].should == '12:00:00'
-    JSON.parse(response.body)["DatePartingEndTime"].should == '18:32:12' 
+    JSON.parse(response.body)["DatePartingEndTime"].should == '12:00:00' 
   end
 
   it "should create a flight with frequency capping" do
@@ -477,6 +478,62 @@ describe "Flight API" do
     JSON.parse(response.body)["FreqCapDuration"].should == 6
     JSON.parse(response.body)["FreqCapType"].should == 1
   end  
+
+  it "should test day parting without days selected" do
+    new_flight = {
+      'NoEndDate' => false,
+      'PriorityId' => $priority_id,
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => $flight_CampaignId,
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted,
+      'GoalType' => 1,
+      'RateType' => 1,
+      'DatePartingStartTime' => '12:00:00',
+      'DatePartingEndTime' => '18:32:12'
+    }
+    response = @@flight.create(new_flight)
+  end
+
+  it "should test day parting without time selected" do
+    new_flight = {
+      'NoEndDate' => false,
+      'PriorityId' => $priority_id,
+      'Name' => $flight_Name,
+      'StartDate' => $flight_StartDate,
+      'EndDate' => $flight_EndDate,
+      'NoEndDate' => $flight_NoEndDate,
+      'Price' => $flight_Price,
+      'OptionType' => $flight_OptionType,
+      'Impressions' => $flight_Impressions,
+      'IsUnlimited' => $flight_IsUnlimited,
+      'IsFullSpeed' => $flight_IsFullSpeed,
+      'Keywords' => $flight_Keywords,
+      'UserAgentKeywords' => $flight_UserAgentKeywords,
+      'WeightOverride' => $flight_WeightOverride,
+      'CampaignId' => $flight_CampaignId,
+      'IsActive' => $flight_IsActive,
+      'IsDeleted' => $flight_IsDeleted,
+      'GoalType' => 1,
+      'RateType' => 1,      
+      'IsSunday' => true,
+      'IsMonday' => true,
+      'IsWednesday' => true
+    }
+    response = @@flight.create(new_flight)
+  end
+
 
 
 end
