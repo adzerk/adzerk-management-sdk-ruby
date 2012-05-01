@@ -109,7 +109,6 @@ describe "Flight API" do
   
   it "should list a specific flight" do
     response = @@flight.get($flight_id)
-    puts response.body
     response.body.should == '{"Id":' + $flight_id + ',"StartDate":"\\/Date(1293840000000+0000)\\/","EndDate":"\\/Date(1325289600000+0000)\\/","Price":15.00,"OptionType":1,"Impressions":10000,"IsUnlimited":false,"IsNoDuplicates":false,"IsFullSpeed":false,"Keywords":"test, test2","Name":"' + $flight_Name + '","CampaignId":' + $campaignId.to_s + ',"PriorityId":' + $priority_id + ',"IsDeleted":false,"IsActive":true,"GeoTargeting":[],"FreqCap":0,"FreqCapDuration":0,"FreqCapType":0,"CreativeMaps":[]}'
   end
   
