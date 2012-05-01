@@ -1,4 +1,4 @@
-require 'spec_helper'
+require './spec_helper'
 
 describe "Creative API" do
   
@@ -194,6 +194,25 @@ describe "Creative API" do
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
     JSON.parse(response.body)["IsSync"].should == $IsSync
     
+  end
+
+  it "should update a creative with no adtype and preserve the adtype" do
+    updated_creative = {
+      'Id' => $creative_id,
+      'Title' => 'test',
+      'Body' => 'test',
+      'AdvertiserId' => $advertiserId,
+      #'AdTypeId' => 18,
+      'IsActive' => true,
+      'Alt' => "",
+      'IsDeleted' => false,
+      'IsSync' => false 
+    }
+    response = @@creative.update(updated_creative)
+    JSON.parse(response.body)["Title"].should == 'test'
+    JSON.parse(response.body)["Body"].should == 'test'
+    JSON.parse(response.body)["AdvertiserId"].should == $advertiserId
+    JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
   end
 
 end
