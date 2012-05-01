@@ -100,16 +100,16 @@ describe "Creative Flight API" do
     $FlightId = $flightId
     $MapId = 0
     $AdTypeId = 18
-    $ZoneId = 0
+    $ZoneId = $zoneId
     $SiteId = $siteId
     $SizeOverride = false
     $Iframe = false
     $PublisherAccountId = 372
-    $ScriptBody = nil
+    $ScriptBody = '<html>' 
     $Impressions = 100000
-    $Percentage = 0
-    $DistributionType = 0
-    $AdFormatId = 0
+    $Percentage = 50
+    $DistributionType = 1 
+    $IsHTMLJS = true
     $IsActive = true
     $Alt = "test alt"
     $IsDeleted = false
@@ -118,16 +118,14 @@ describe "Creative Flight API" do
     new_creative = {
       'CampaignId' => $CampaignId,
       'FlightId' => $FlightId,
-      #'MapId' => $MapId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
-      'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
       'Percentage' => $Percentage,
       'SiteId' => $SiteId,
-      #'DistributionType' => $DistributionType,
-      'AdFormatId' => $AdFormatId,
+      'ZoneId' => $ZoneId,
+      'DistributionType' => $DistributionType,
       'IsActive' => $IsActive,
       'IsDeleted' => $IsDeleted,
       'Creative' => {
@@ -136,6 +134,8 @@ describe "Creative Flight API" do
         'Body' => $Body,
         'AdvertiserId' => $AdvertiserId,
         'AdTypeId' => $AdTypeId,
+        'IsHTMLJS' => $IsHTMLJS,
+        'ScriptBody' => $ScriptBody,
         'IsActive' => $IsActive,
         'Alt' => $Alt,
         'IsDeleted' => $IsDeleted,
@@ -151,17 +151,16 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["AdvertiserId"].should == $AdvertiserId
     JSON.parse(response.body)["CampaignId"].should == $CampaignId
     JSON.parse(response.body)["FlightId"].should == $FlightId
-    #JSON.parse(response.body)["MapId"].should == $MapId
     JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
-    #JSON.parse(response.body)["ZoneId"].should == $ZoneId
-    JSON.parse(response.body)["SiteId"].should == $SiteId
+    JSON.parse(response.body)["ZoneId"].should == $zoneId
+    JSON.parse(response.body)["SiteId"].should == $siteId
     JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
-    JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
     JSON.parse(response.body)["Impressions"].should == $Impressions
     JSON.parse(response.body)["Percentage"].should == $Percentage
-    #JSON.parse(response.body)["DistributionType"].should == $DistributionType
-    JSON.parse(response.body)["AdFormatId"].should == $AdFormatId
+    JSON.parse(response.body)["DistributionType"].should == $DistributionType
+    JSON.parse(response.body)["Creative"]["IsHTMLJS"].should == $IsHTMLJS
+    JSON.parse(response.body)["Creative"]["ScriptBody"].should == $ScriptBody
     JSON.parse(response.body)["Creative"]["IsActive"].should == $IsActive
     JSON.parse(response.body)["Creative"]["Alt"].should == $Alt
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
@@ -177,19 +176,18 @@ describe "Creative Flight API" do
     JSON.parse(entry)["Creative"]["Url"].should == $Url
     JSON.parse(entry)["Creative"]["Body"].should == $Body
     JSON.parse(entry)["Creative"]["AdvertiserId"].should == $AdvertiserId
-    #JSON.parse(entry)["CampaignId"].should == $CampaignId
-    #JSON.parse(entry)["FlightId"].should == $FlightId
-    #JSON.parse(entry)["MapId"].should == $MapId
+    JSON.parse(entry)["CampaignId"].should == $CampaignId
+    JSON.parse(entry)["FlightId"].should == $FlightId
     JSON.parse(entry)["Creative"]["AdTypeId"].should == $AdTypeId
-    #JSON.parse(entry)["ZoneId"].should == $ZoneId
+    JSON.parse(entry)["ZoneId"].should == $ZoneId
     JSON.parse(entry)["SiteId"].should == $SiteId
     #JSON.parse(entry)["SizeOverride"].should == $SizeOverride
     #JSON.parse(entry)["PublisherAccountId"].should == $PublisherAccountId
-    JSON.parse(entry)["ScriptBody"].should == $ScriptBody
     #JSON.parse(entry)["Impressions"].should == $Impressions
     JSON.parse(entry)["Percentage"].should == $Percentage
-    #JSON.parse(entry)["DistributionType"].should == $DistributionType
-    #JSON.parse(entry)["AdFormatId"].should == $AdFormatId
+    JSON.parse(entry)["DistributionType"].should == $DistributionType
+    JSON.parse(entry)["Creative"]["IsHTMLJS"].should == $IsHTMLJS
+    JSON.parse(entry)["Creative"]["ScriptBody"].should == $ScriptBody
     JSON.parse(entry)["Creative"]["IsActive"].should == $IsActive
     JSON.parse(entry)["Creative"]["Alt"].should == $Alt
     JSON.parse(entry)["IsDeleted"].should == $IsDeleted
@@ -203,19 +201,18 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["Creative"]["Url"].should == $Url
     JSON.parse(response.body)["Creative"]["Body"].should == $Body
     JSON.parse(response.body)["Creative"]["AdvertiserId"].should == $AdvertiserId
-    #JSON.parse(response.body)["CampaignId"].should == $CampaignId
-    #JSON.parse(response.body)["FlightId"].should == $FlightId
-    #JSON.parse(response.body)["MapId"].should == $MapId
+    JSON.parse(response.body)["CampaignId"].should == $CampaignId
+    JSON.parse(response.body)["FlightId"].should == $FlightId
     JSON.parse(response.body)["Creative"]["AdTypeId"].should == $AdTypeId
-    #JSON.parse(response.body)["ZoneId"].should == $ZoneId
+    JSON.parse(response.body)["ZoneId"].should == $ZoneId
     JSON.parse(response.body)["SiteId"].should == $SiteId
     #JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     #JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
-    JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
     #JSON.parse(response.body)["Impressions"].should == $Impressions
+    JSON.parse(response.body)["Creative"]["IsHTMLJS"].should == $IsHTMLJS
+    JSON.parse(response.body)["Creative"]["ScriptBody"].should == $ScriptBody
     JSON.parse(response.body)["Percentage"].should == $Percentage
-    #JSON.parse(response.body)["DistributionType"].should == $DistributionType
-    #JSON.parse(response.body)["AdFormatId"].should == $AdFormatId
+    JSON.parse(response.body)["DistributionType"].should == $DistributionType
     JSON.parse(response.body)["Creative"]["IsActive"].should == $IsActive
     JSON.parse(response.body)["Creative"]["Alt"].should == $Alt
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
@@ -231,12 +228,10 @@ describe "Creative Flight API" do
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
-      'ScriptBody' => $ScriptBody,
-      'Impressions' => $Impressions,
+      'Impressions' => $Impressions + 100,
       'Percentage' => $Percentage,
       'SiteId' => $SiteId,
       'ZoneId' => $zoneId,
-      'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
       'IsDeleted' => $IsDeleted,
       'Creative' => {
@@ -256,14 +251,35 @@ describe "Creative Flight API" do
     JSON.parse(response.body)["SiteId"].should == $SiteId
     JSON.parse(response.body)["SizeOverride"].should == $SizeOverride
     JSON.parse(response.body)["PublisherAccountId"].should == $PublisherAccountId
-    JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
-    JSON.parse(response.body)["Impressions"].should == $Impressions
+    JSON.parse(response.body)["Impressions"].should == $Impressions + 100
     JSON.parse(response.body)["Percentage"].should == $Percentage
-    JSON.parse(response.body)["AdFormatId"].should == $AdFormatId
     JSON.parse(response.body)["Creative"]["IsActive"].should == $IsActive
     JSON.parse(response.body)["Creative"]["Alt"].should == $Alt
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
     JSON.parse(response.body)["Creative"]["IsSync"].should == $IsSync
+  end
+
+  it "should update the scriptBody tag on a nested creative" do
+    updated_creative = {
+      'Id' => $map_id,
+      'CampaignId' => $CampaignId,
+      'FlightId' => $FlightId,
+      'ZoneId' => $ZoneId,
+      'SizeOverride' => $SizeOverride,
+      'Iframe' => $Iframe,
+      'PublisherAccountId' => $PublisherAccountId,
+      'Impressions' => $Impressions,
+      'Percentage' => $Percentage,
+      'SiteId' => $SiteId,
+      #'IsActive' => $IsActive,
+      #'IsDeleted' => $IsDeleted,
+      'Creative' => {
+        'Id' => @@creativeId,
+        'ScriptBody' => '<html></html>'
+      }
+    }
+    response = @@map.update(updated_creative)
+    response.body.scan(/Exception/).should == []
   end
   
   it "should delete the creatives after creating it" do
@@ -278,16 +294,14 @@ describe "Creative Flight API" do
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
-      'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
       'SiteId' => $SiteId,
       'Percentage' => $Percentage,
-      'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
       'IsDeleted' => $IsDeleted
     }
     response = @@map.create(map)
-    true.should == !response.body.scan(/Exception/).empty?
+    response.body.scan(/This campaign is not part/).should_not == []
   end
   
   it "should not create a map when flightId is forbidden" do
@@ -297,16 +311,14 @@ describe "Creative Flight API" do
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
-      'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
       'SiteId' => $SiteId,
       'Percentage' => $Percentage,
-      'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
       'IsDeleted' => $IsDeleted
     }
     response = @@map.create(map)
-    true.should == !response.body.scan(/Exception/).empty?
+    response.body.scan(/This flight is not part/).should_not == []
   end
     
   it "should create a map when there is no creative object, just id" do
@@ -316,11 +328,9 @@ describe "Creative Flight API" do
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
-      'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
       'SiteId' => $SiteId,
       'Percentage' => $Percentage,
-      'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
       'IsDeleted' => $IsDeleted,
       'Creative' => {
@@ -328,44 +338,40 @@ describe "Creative Flight API" do
       }
     }
     response = @@map.create(map)
-    false.should == !response.body.scan(/Exception/).empty?
+    response.body.scan(/Exception/).should == []
   end
 
-  #it "should not create a map when there is no creative object, just id that belongs to a different advertiser" do
-    #map = {
-      #'CampaignId' => $CampaignId,
-      #'FlightId' => $FlightId,
-      #'SizeOverride' => $SizeOverride,
-      #'Iframe' => $Iframe,
-      #'PublisherAccountId' => $PublisherAccountId,
-      #'ScriptBody' => $ScriptBody,
-      #'Impressions' => $Impressions,
-      #'SiteId' => $SiteId,
-      #'Percentage' => $Percentage,
-      #'AdFormatId' => $AdFormatId,
-      #'IsActive' => $IsActive,
-      #'IsDeleted' => $IsDeleted,
-      #'Creative' => {
-        #'Id' => 1234
-      #}
-    #}
-    #response = @@map.create(map)
-    #true.should == !response.body.scan(/Exception/).empty?
-  #end
+  it "should not create a map when there is no creative object, just id that belongs to a different advertiser" do
+    map = {
+      'CampaignId' => $CampaignId,
+      'FlightId' => $FlightId,
+      'SizeOverride' => $SizeOverride,
+      'Iframe' => $Iframe,
+      'PublisherAccountId' => $PublisherAccountId,
+      'Impressions' => $Impressions,
+      'SiteId' => $SiteId,
+      'Percentage' => $Percentage,
+      'IsActive' => $IsActive,
+      'IsDeleted' => $IsDeleted,
+      'Creative' => {
+        'Id' => 1234
+      }
+    }
+    response = @@map.create(map)
+    response.body.scan(/That creative belongs to an advertiser/).should_not == []
+  end
 
   it "should create a map with and invalid siteId" do
     new_creative = {
       'CampaignId' => $CampaignId,
       'FlightId' => $FlightId,
-      #'ZoneId' => $ZoneId,
+      'ZoneId' => $ZoneId,
       'SizeOverride' => $SizeOverride,
       'Iframe' => $Iframe,
       'PublisherAccountId' => $PublisherAccountId,
-      'ScriptBody' => $ScriptBody,
       'Impressions' => $Impressions,
       'Percentage' => $Percentage,
       'SiteId' => 0,
-      'AdFormatId' => $AdFormatId,
       'IsActive' => $IsActive,
       'IsDeleted' => $IsDeleted,
       'Creative' => {
@@ -381,9 +387,7 @@ describe "Creative Flight API" do
       }
     }
     response = @@map.create(new_creative)
-    true.should == !response.body.scan(/Exception/).empty?
+    response.body.scan(/This site does not belong to your network/).should_not == []
   end
-
-
 
 end

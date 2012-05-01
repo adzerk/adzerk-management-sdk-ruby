@@ -14,18 +14,19 @@ describe "Creative API" do
     $advertiserId = JSON.parse(response.body)["Id"]
   end
   
-  it "should create a creative" do
-    $Title = 'Test creative ' + rand(1000000).to_s
-    $ImageName = ""
-    $Url = "http://adzerk.com"
-    $Body = "Test text"
-    $AdvertiserId = $advertiserId
-    $AdTypeId = 18
-    $IsActive = true
-    $Alt = "test alt"
-    $IsDeleted = false
-    $IsSync = false
-    
+  it "should create a creative using old api spec" do
+      $Title = 'Test creative ' + rand(1000000).to_s
+      $ImageName = ""
+      $Url = "http://adzerk.com"
+      $Body = "Test text"
+      $AdvertiserId = $advertiserId
+      $AdTypeId = 18
+      $IsActive = true
+      $Alt = "test alt"
+      $IsDeleted = false
+      $IsSync = false
+      $IsHTMLJS = true
+      $ScriptBody = "<html>"
     new_creative = {
       'Title' => $Title,
       'ImageName' => $ImageName,
@@ -49,7 +50,36 @@ describe "Creative API" do
     JSON.parse(response.body)["Alt"].should == $Alt
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
     JSON.parse(response.body)["IsSync"].should == $IsSync
-    
+  end
+
+  it "should create a creative using new api fields" do
+    new_creative = {
+      'Title' => $Title,
+      'ImageName' => $ImageName,
+      'Url' => $Url,
+      'Body' => $Body,
+      'AdvertiserId' => $AdvertiserId,
+      'AdTypeId' => $AdTypeId,
+      'IsActive' => $IsActive,
+      'Alt' => $Alt,
+      'IsDeleted' => $IsDeleted,
+      'IsSync' => $IsSync,
+      'IsHTMLJS' => $IsHTMLJS,
+      #'ScriptBody' => $ScriptBody
+    }
+    response = @@creative.create(new_creative, '250x250.gif')
+    $creative_id = JSON.parse(response)["Id"].to_s
+    JSON.parse(response.body)["Title"].should == $Title
+    JSON.parse(response.body)["Url"].should == $Url
+    JSON.parse(response.body)["Body"].should == $Body
+    JSON.parse(response.body)["AdvertiserId"].should == $AdvertiserId
+    JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
+    JSON.parse(response.body)["IsActive"].should == $IsActive
+    JSON.parse(response.body)["Alt"].should == $Alt
+    JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
+    JSON.parse(response.body)["IsSync"].should == $IsSync
+    JSON.parse(response.body)["IsHTMLJS"].should == $IsHTMLJS
+    #JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
   end
 
   it "should get a specific creative" do
@@ -202,7 +232,7 @@ describe "Creative API" do
       'Title' => 'test',
       'Body' => 'test',
       'AdvertiserId' => $advertiserId,
-      #'AdTypeId' => 18,
+      'AdTypeId' => 18,
       'IsActive' => true,
       'Alt' => "",
       'IsDeleted' => false,
