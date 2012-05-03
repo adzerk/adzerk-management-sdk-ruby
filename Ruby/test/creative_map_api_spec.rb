@@ -4,6 +4,7 @@ describe "Creative Flight API" do
   
   $creative_url = 'http://www.adzerk.com'
   @@map = $adzerk::CreativeMap.new
+  @@creative = $adzerk::Creative.new
   @@advertiser = $adzerk::Advertiser.new
   @@channel = $adzerk::Channel.new
   @@campaign = $adzerk::Campaign.new
@@ -392,6 +393,46 @@ describe "Creative Flight API" do
     response.body.scan(/This site does not belong to your network/).should_not == []
   end
 
+  it "should test if IsHTMLJS is getting written over" do
+    creative = {
+      'Title' => 'Test Creative ' + rand(1000).to_s,
+      'Url' => 'http://adzerk.com/',
+      'Body' => 'test',
+      'AdvertiserId' => $advertiserId,
+      'AdTypeId' => 18,
+      'IsHTMLJS' => true,
+      'ScriptBody' => '<html>test</html>',
+      'IsActive' => true,
+      'Alt' => 'test',
+      'IsDeleted' => false,
+      'IsSync' => false
+    }
+    response = @@creative.create(creative, '250x250.gif')
+    creativeId = JSON.parse(response.body)["Id"]
+    JSON.parse(response.body)["IsHTMLJS"].should == true
+    JSON.parse(response.body)["ScriptBody"].should == '<html>test</html>'
 
+    map = {
+      'CampaignId' => $campaignId,
+      'FlightId' => $flightId,
+      'ZoneId' => $zoneId,
+      'SizeOverride' => $SizeOverride,
+      'Iframe' => $Iframe,
+      'PublisherAccountId' => $PublisherAccountId,
+      'Impressions' => $Impressions,
+      'Percentage' => $Percentage,
+      'SiteId' => $siteId,
+      'IsActive' => $IsActive,
+      'IsDeleted' => $IsDeleted,
+      'Creative' => {
+        'Id' => creativeId
+      }
+    }
+    map_response = @@map.create(map)
+
+    puts map_response.body
+    JSON.parse(map_response.body)["Creative"]["IsHTMLJS"].should == true
+    JSON.parse(map_response.body)["Creative"]["ScriptBody"].should == '<html>test</html>'
+  end
 
 end
