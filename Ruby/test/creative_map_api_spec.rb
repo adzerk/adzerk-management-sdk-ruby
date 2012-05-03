@@ -271,11 +271,13 @@ describe "Creative Flight API" do
       'Impressions' => $Impressions,
       'Percentage' => $Percentage,
       'SiteId' => $SiteId,
-      #'IsActive' => $IsActive,
-      #'IsDeleted' => $IsDeleted,
+      'IsActive' => $IsActive,
+      'IsDeleted' => nil,
       'Creative' => {
         'Id' => @@creativeId,
-        'ScriptBody' => '<html></html>'
+        'IsHTMLJS' => true,
+        'ScriptBody' => '<html></html>',
+        'Title' => 'test'
       }
     }
     response = @@map.update(updated_creative)
@@ -389,5 +391,7 @@ describe "Creative Flight API" do
     response = @@map.create(new_creative)
     response.body.scan(/This site does not belong to your network/).should_not == []
   end
+
+
 
 end

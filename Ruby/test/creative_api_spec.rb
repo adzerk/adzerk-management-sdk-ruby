@@ -65,7 +65,7 @@ describe "Creative API" do
       'IsDeleted' => $IsDeleted,
       'IsSync' => $IsSync,
       'IsHTMLJS' => $IsHTMLJS,
-      #'ScriptBody' => $ScriptBody
+      'ScriptBody' => $ScriptBody
     }
     response = @@creative.create(new_creative, '250x250.gif')
     $creative_id = JSON.parse(response)["Id"].to_s
@@ -79,7 +79,7 @@ describe "Creative API" do
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
     JSON.parse(response.body)["IsSync"].should == $IsSync
     JSON.parse(response.body)["IsHTMLJS"].should == $IsHTMLJS
-    #JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
+    JSON.parse(response.body)["ScriptBody"].should == $ScriptBody
   end
 
   it "should get a specific creative" do
@@ -123,6 +123,38 @@ describe "Creative API" do
     JSON.parse(response.body)["IsSync"].should == $IsSync
   end
 
+  it "should update a specific creative with html ad" do
+    update_creative = {
+      'Id' => $creative_id.to_i,
+      'Title' => $Title,
+      'ImageName' => $ImageName,
+      'Url' => $Url,
+      'Body' => $Body,
+      'AdvertiserId' => $AdvertiserId,
+      'AdTypeId' => $AdTypeId,
+      'IsActive' => $IsActive,
+      'Alt' => $Alt,
+      'IsDeleted' => $IsDeleted,
+      'IsSync' => $IsSync,
+      'IsHTMLJS' => true,
+      'ScriptBody' => "<html></html>"
+    }
+    response = @@creative.update(update_creative)
+    JSON.parse(response.body)["Id"].should == $creative_id.to_i
+    JSON.parse(response.body)["Title"].should == $Title
+    JSON.parse(response.body)["Url"].should == $Url
+    JSON.parse(response.body)["Body"].should == $Body
+    JSON.parse(response.body)["AdvertiserId"].should == $AdvertiserId
+    JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
+    JSON.parse(response.body)["IsActive"].should == $IsActive
+    JSON.parse(response.body)["Alt"].should == $Alt
+    JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
+    JSON.parse(response.body)["IsSync"].should == $IsSync
+    JSON.parse(response.body)["IsHTMLJS"].should == true 
+    JSON.parse(response.body)["ScriptBody"].should == "<html></html>"
+  end
+
+
   it "should list all creatives for an advertiser" do
     response = @@creative.list($AdvertiserId)
     entry = response["Items"].last.to_json
@@ -137,6 +169,25 @@ describe "Creative API" do
     JSON.parse(entry)["IsDeleted"].should == $IsDeleted
     JSON.parse(entry)["IsSync"].should == $IsSync
   end
+
+  #it "should update a creative with no adtype and preserve the adtype" do
+    #updated_creative = {
+      #'Id' => $creative_id,
+      #'Title' => 'test',
+      #'Body' => 'test',
+      #'AdvertiserId' => $advertiserId,
+      ##'AdTypeId' => 18,
+      #'IsActive' => true,
+      #'Alt' => "",
+      #'IsDeleted' => false,
+      #'IsSync' => false 
+    #}
+    #response = @@creative.update(updated_creative)
+    #JSON.parse(response.body)["Title"].should == 'test'
+    #JSON.parse(response.body)["Body"].should == 'test'
+    #JSON.parse(response.body)["AdvertiserId"].should == $advertiserId
+    #JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
+  #end
 
   it "should delete the creatives after creating it" do
     response = @@creative.delete($creative_id)
@@ -224,25 +275,6 @@ describe "Creative API" do
     JSON.parse(response.body)["IsDeleted"].should == $IsDeleted
     JSON.parse(response.body)["IsSync"].should == $IsSync
     
-  end
-
-  it "should update a creative with no adtype and preserve the adtype" do
-    updated_creative = {
-      'Id' => $creative_id,
-      'Title' => 'test',
-      'Body' => 'test',
-      'AdvertiserId' => $advertiserId,
-      'AdTypeId' => 18,
-      'IsActive' => true,
-      'Alt' => "",
-      'IsDeleted' => false,
-      'IsSync' => false 
-    }
-    response = @@creative.update(updated_creative)
-    JSON.parse(response.body)["Title"].should == 'test'
-    JSON.parse(response.body)["Body"].should == 'test'
-    JSON.parse(response.body)["AdvertiserId"].should == $advertiserId
-    JSON.parse(response.body)["AdTypeId"].should == $AdTypeId
   end
 
 end
