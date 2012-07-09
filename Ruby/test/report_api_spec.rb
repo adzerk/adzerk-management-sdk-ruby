@@ -26,5 +26,12 @@ describe "Report API" do
     # response.body.should == '{"StartDate":"\/Date(1295067600000-0500)\/","EndDate":"\/Date(1325307600000-0500)\/","Critiera":[],"LoginId":0,"Records":[],"OptionRecords":[],"IsTotal":true,"Grouping":["month"],"TotalImpressions":0,"TotalClicks":0,"TotalCTR":0}'
   end
 
-  
+
+  it "should pull a saved custom report" do
+    $savedReportId = 5280
+    response = @@report.get($savedReportId.to_s)
+
+    csv_report = response.body
+  end      
 end
+
