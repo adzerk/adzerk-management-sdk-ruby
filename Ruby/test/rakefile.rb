@@ -10,6 +10,7 @@
   'login_api_spec.rb',
   'publisher_api_spec.rb',
   'report_api_spec.rb',
+  'csv_export_spec.rb',
   'site_api_spec.rb',
   'priority_api_spec.rb',
   'zone_api_spec.rb',
