@@ -1,4 +1,4 @@
-require 'spec_helper'
+require './spec_helper'
 
 describe "Publisher API" do
   
@@ -142,6 +142,31 @@ describe "Publisher API" do
     }
     response = @@publisher.update($updated_publisher)
     response.body.should == '{"Id":0,"IsDeleted":false}'
+  end
+
+  it "should retrieve publisher earnings" do
+    earnings = {
+      'Channel' => 'all'
+    }
+    #response = @@publisher.earnings earnings
+    #response.first.length.should == 12
+  end
+
+  it "should retrieve publisher earnings for previous month" do
+    earnings = {
+      'Channel' => 'all',
+      'Month' => 'previous'
+    }
+    #response = @@publisher.earnings earnings
+    #response.first.length.should == 12
+  end
+
+  it "should retrieve publisher earnings for individual channel" do
+    earnings = {
+      'Channel' => '1127'
+    }
+    #response = @@publisher.earnings earnings
+    #response.first.length.should == 12
   end
 
 end

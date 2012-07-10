@@ -28,6 +28,13 @@ module Adzerk
       uri = URI.parse($host + 'publisher/' + id + '/delete')
       Adzerk.get_request(uri)
     end
+
+    def earnings(data={})
+      uri = URI.parse($host + '/earnings')
+      data = { 'earnings' => data.to_json }
+      response = Adzerk.post_request(uri, data)
+      JSON.parse(response.body)
+    end
     
   end
 end
