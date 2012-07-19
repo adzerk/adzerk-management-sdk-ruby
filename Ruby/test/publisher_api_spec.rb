@@ -194,14 +194,14 @@ describe "Publisher API" do
 
   it "should retrieve publisher payments for a site" do
     payments = { 
-      'SiteId' => 6872
+      #'SiteId' => 6872
     }
     response = @@publisher.payments payments
   end
 
   it "should retrieve publisher payments for a publisher" do
     payments = { 
-      'PublisherAccountId' => 644
+      #'PublisherAccountId' => 644
     }
     response = @@publisher.payments payments
   end
