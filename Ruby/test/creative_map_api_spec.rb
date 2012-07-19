@@ -430,7 +430,6 @@ describe "Creative Flight API" do
     }
     map_response = @@map.create(map)
 
-    puts map_response.body
     JSON.parse(map_response.body)["Creative"]["IsHTMLJS"].should == true
     JSON.parse(map_response.body)["Creative"]["ScriptBody"].should == '<html>test</html>'
   end

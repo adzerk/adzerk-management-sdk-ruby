@@ -169,4 +169,41 @@ describe "Publisher API" do
     #response.first.length.should == 12
   end
 
+  it "should retrieve publisher payments for a network" do
+    payments = { }
+    response = @@publisher.payments payments
+    #response.first.length.should == 5
+  end
+
+  it "should retrieve publisher payments for a network with start and end date" do
+    payments = { 
+      'StartDate' => '01/01/2000',
+      'EndDate' => '03/01/2000'
+    }
+    response = @@publisher.payments payments
+    response.first.should == nil
+  end
+
+  it "should retrieve publisher payments for a network with only start date" do
+    payments = { 
+      'StartDate' => '01/01/2012'
+    }
+    response = @@publisher.payments payments
+    #response.first.length.should == 5
+  end
+
+  it "should retrieve publisher payments for a site" do
+    payments = { 
+      'SiteId' => 6872
+    }
+    response = @@publisher.payments payments
+  end
+
+  it "should retrieve publisher payments for a publisher" do
+    payments = { 
+      'PublisherAccountId' => 644
+    }
+    response = @@publisher.payments payments
+  end
+
 end

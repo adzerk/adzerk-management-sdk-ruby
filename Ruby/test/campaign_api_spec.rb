@@ -176,6 +176,38 @@ describe "Campaign API" do
     JSON.parse(response.body)["IsDeleted"].should == false
     $campaign_Flights.should == JSON.parse(response.body)["Flights"]
   end
+
+  it "should deactivate a campaign" do
+    $campaign_Name = 'Test campaign ' + rand(1000000).to_s
+    $campaign_StartDate = "1/1/2011"
+    $campaign_EndDate = "12/31/2011"
+    $campaign_IsActive = false
+    $campaign_Price = '10.00'
+    $campaign_Flights = []
+    
+    new_campaign = {
+      'Id' => $campaign_id,
+      'Name' => $campaign_Name,
+      'StartDate' => $campaign_StartDate,
+      'EndDate' => $campaign_EndDate,
+      'IsActive' => $campaign_IsActive,
+      'Price' => $campaign_Price,
+      'AdvertiserId' => $campaign_AdvertiserId,
+      'Flights' => $campaign_Flights,
+      'IsDeleted' => false
+    }
+  
+    response = @@campaign.update(new_campaign)
+    $campaign_id = JSON.parse(response.body)["Id"].to_s
+    $campaign_Name.should == JSON.parse(response.body)["Name"]
+    # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
+    # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
+    $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
+    $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
+    $campaign_AdvertiserId.should == JSON.parse(response.body)["AdvertiserId"]
+    JSON.parse(response.body)["IsDeleted"].should == false
+    $campaign_Flights.should == JSON.parse(response.body)["Flights"]
+  end
   
   it "should list all campaigns" do
     result = @@campaign.list()

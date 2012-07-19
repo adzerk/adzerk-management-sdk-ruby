@@ -1,4 +1,4 @@
-require 'spec_helper'
+require './spec_helper'
 
 describe "Advertiser API" do
   
@@ -100,6 +100,7 @@ describe "Advertiser API" do
 
   it "should search advertiser based on name" do
     response = @@advertiser.search("test")
+
     JSON.parse(response.body)["TotalItems"].should > 0
   end
 end
