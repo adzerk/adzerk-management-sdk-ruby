@@ -27,7 +27,8 @@ or
     require 'adzerk'
     require 'adzerk/advertiser'
     adzerk = Adzerk.new 'your_api_key'
-    adzerk::Advertiser.create {
+    advertiser = adzerk::Advertiser.new
+    advertiser.create {
       'Title' => "Example Advertiser",
       'IsActive' => true,
       'IsDeleted' => false
