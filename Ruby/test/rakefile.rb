@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'rake'
 @files = [
   'advertiser_api_spec.rb',
   'campaign_api_spec.rb',

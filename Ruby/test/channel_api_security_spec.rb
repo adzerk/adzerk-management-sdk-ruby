@@ -1,5 +1,6 @@
-require './spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'net/http'
+
 describe "Channel API security" do
 
   channel_url = 'http://www.adzerk.com'
