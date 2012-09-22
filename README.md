@@ -19,7 +19,8 @@ Refer to the [https://github.com/adzerk/adzerk-api/wiki](wiki) of this repositor
     require 'adzerk'
     require 'adzerk/site'
     adzerk = Adzerk.new('your_api_key')
-    adzerk::Site.list()
+    site = adzerk::Site.new
+    site.list
 
 or
 
