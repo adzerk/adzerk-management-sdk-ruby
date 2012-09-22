@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "Site API" do
   
   $site_url = 'http://www.adzerk.com'
-  @@site = $adzerk::Site.new
+  @@site = $adzerk::Site
   
   it "should create a new site" do
     $site_title = 'Test Site ' + rand(1000000).to_s
