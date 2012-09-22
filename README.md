@@ -28,10 +28,10 @@ or
     require 'adzerk/advertiser'
     adzerk = Adzerk.new 'your_api_key'
     advertiser = adzerk::Advertiser.new
-    advertiser.create {
+    advertiser.create({
       'Title' => "Example Advertiser",
       'IsActive' => true,
       'IsDeleted' => false
-    }
+    })
 
 Copyright (c) 2011 Adzerk, Inc.
