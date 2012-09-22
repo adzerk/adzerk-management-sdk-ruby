@@ -1,6 +1,9 @@
+$:.push File.expand_path("../lib", __FILE__)
+require 'adzerk/version'
+
 Gem::Specification.new do |s|
   s.name          = 'adzerk'
-  s.version       = '0.1.4'
+  s.version       =  Adzerk::VERSION
   s.summary       = "Adzerk API"
   s.description   = "Ruby library for the Adzerk API"
   s.files         = ['lib/adzerk.rb'] + Dir['lib/**/*.rb'] + Dir['test/*.rb']
