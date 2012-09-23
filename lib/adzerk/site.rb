@@ -7,8 +7,8 @@ module Adzerk
       @client = client
     end
 
-    def create(data={})
-      data = { 'site' => data.to_json }
+    def create(opts={})
+      data = { 'site' => Adzerk::Util.camelize_data(opts).to_json }
       @client.post_request('site', data)
     end
 
@@ -21,9 +21,9 @@ module Adzerk
       JSON.parse(response.body)
     end
 
-    def update(data={})
-      id = data["Id"].to_s
-      data = { 'site' => data.to_json }
+    def update(opts={})
+      id = opts[:id].to_s
+      data = { 'site' => Adzerk::Util.camelize_data(opts).to_json }
       @client.put_request('site/' + id, data)
     end
 

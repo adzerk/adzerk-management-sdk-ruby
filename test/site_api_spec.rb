@@ -1,25 +1,25 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Site API" do
-  
+
   before(:each) do
     @site_url = 'http://www.adzerk.com'
     @client = Adzerk::Client.new(API_KEY)
   end
-  
+
   it "should create a new site" do
     $site_title = 'Test Site ' + rand(1000000).to_s
     new_site = {
      'Title' => $site_title,
      'Url' => @site_url
     }
-    response = @client.sites.create(new_site)
+    response = @client.sites.create(:title => $site_title, :url => @site_url)
     $site_id = JSON.parse(response.body)["Id"].to_s
     $site_title.should == JSON.parse(response.body)["Title"]
     @site_url.should == JSON.parse(response.body)["Url"]
     $site_pub_id = JSON.parse(response.body)["PublisherAccountId"].to_s
   end
-  
+
   it "should list a specific site" do
     response = @client.sites.get($site_id)
     response.body.should == '{"Id":' + $site_id + ',"Title":"' + $site_title + '","Url":"' + @site_url + '","PublisherAccountId":' + $site_pub_id + ',"IsDeleted":false}'
@@ -27,12 +27,9 @@ describe "Site API" do
 
   it "should update a site" do
     $site_title = 'Test Site ' + rand(1000000).to_s
-    updated_site = {
-      'Id' => $site_id,
-      'Title' => $site_title + "test",
-      'Url' => @site_url + "test"
-    }
-    response = @client.sites.update(updated_site)
+    response = @client.sites.update(:id => $site_id,
+                                    :title => $site_title + "test",
+                                    :url => @site_url + "test")
     $site_id = JSON.parse(response.body)["Id"].to_s
     ($site_title + "test").should == JSON.parse(response.body)["Title"]
     (@site_url + "test").should == JSON.parse(response.body)["Url"]
@@ -67,12 +64,9 @@ describe "Site API" do
 
   it "should not update deleted sites" do
     $site_title = 'Test Site ' + rand(1000000).to_s
-    updated_site = {
-      'Id' => $site_id,
-      'Title' => $site_title,
-      'Url' => @site_url
-    }
-    response = @client.sites.update(updated_site)
+    response = @client.sites.update(:id => $site_id,
+                                    :title => $site_title,
+                                    :url => @site_url)
     response.body.should == '{"Id":0,"PublisherAccountId":0,"IsDeleted":false}'
   end
 
