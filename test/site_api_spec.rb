@@ -13,16 +13,19 @@ describe "Site API" do
      'Title' => $site_title,
      'Url' => @site_url
     }
-    response = @client.sites.create(:title => $site_title, :url => @site_url)
-    $site_id = JSON.parse(response.body)["Id"].to_s
-    $site_title.should == JSON.parse(response.body)["Title"]
-    @site_url.should == JSON.parse(response.body)["Url"]
-    $site_pub_id = JSON.parse(response.body)["PublisherAccountId"].to_s
+    site = @client.sites.create(:title => $site_title, :url => @site_url)
+    $site_id = site[:id].to_s
+    $site_title.should == site[:title]
+    @site_url.should == site[:url]
+    $site_pub_id = site[:publisher_account_id].to_s
   end
 
   it "should list a specific site" do
-    response = @client.sites.get($site_id)
-    response.body.should == '{"Id":' + $site_id + ',"Title":"' + $site_title + '","Url":"' + @site_url + '","PublisherAccountId":' + $site_pub_id + ',"IsDeleted":false}'
+    site = @client.sites.get($site_id)
+    site[:id].should eq($site_id.to_i)
+    site[:title].should eq($site_title)
+    site[:url].should eq(@site_url)
+    site[:publisher_account_id].should eq($site_pub_id.to_i)
   end
 
   it "should update a site" do
@@ -39,10 +42,10 @@ describe "Site API" do
   it "should list all sites" do
     result = @client.sites.list
     result.length.should > 0
-    result["Items"].last["Id"].to_s.should == $site_id
-    result["Items"].last["Title"].should == $site_title + "test"
-    result["Items"].last["Url"].should == @site_url + "test"
-    result["Items"].last["PublisherAccountId"].to_s.should == $site_pub_id
+    result[:items].last[:id].to_s.should == $site_id
+    result[:items].last[:title].should == $site_title + "test"
+    result[:items].last[:url].should == @site_url + "test"
+    result[:items].last[:publisher_account_id].to_s.should == $site_pub_id
   end
 
   it "should delete a new site" do
@@ -52,14 +55,16 @@ describe "Site API" do
 
   it "should not list deleted sites" do
     result = @client.sites.list
-    result["Items"].each do |r|
-      r["Id"].to_s.should_not == $site_id
+    result[:items].each do |site|
+      site[:id].to_s.should_not == $site_id
     end
   end
 
   it "should not get individual deleted sites" do
-    response = @client.sites.get($site_id)
-    response.body.should == '{"Id":0,"PublisherAccountId":0,"IsDeleted":false}'
+    site = @client.sites.get($site_id)
+    site[:id].should eq(0)
+    site[:publisher_account_id].should eq(0)
+    site[:is_deleted].should eq(false)
   end
 
   it "should not update deleted sites" do

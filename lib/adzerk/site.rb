@@ -9,16 +9,18 @@ module Adzerk
 
     def create(opts={})
       data = { 'site' => Adzerk::Util.camelize_data(opts).to_json }
-      @client.post_request('site', data)
+      response = @client.post_request('site', data)
+      Adzerk::Util.parse_response(response)
     end
 
     def get(id)
-      @client.get_request('site/' + id)
+      response = @client.get_request('site/' + id)
+      Adzerk::Util.parse_response(response)
     end
 
     def list
       response = @client.get_request('site')
-      JSON.parse(response.body)
+      Adzerk::Util.parse_response(response)
     end
 
     def update(opts={})
