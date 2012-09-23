@@ -17,21 +17,8 @@ Refer to the [https://github.com/adzerk/adzerk-api/wiki](wiki) of this repositor
 ### Examples
 
     require 'adzerk'
-    require 'adzerk/site'
-    adzerk = Adzerk.new('your_api_key')
-    site = adzerk::Site.new
-    site.list
+    client = Adzerk::Client.new('your_api_key')
+    client.sites.list
 
-or
-
-    require 'adzerk'
-    require 'adzerk/advertiser'
-    adzerk = Adzerk.new 'your_api_key'
-    advertiser = adzerk::Advertiser.new
-    advertiser.create({
-      'Title' => "Example Advertiser",
-      'IsActive' => true,
-      'IsDeleted' => false
-    })
 
 Copyright (c) 2011 Adzerk, Inc.
