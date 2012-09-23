@@ -1,24 +1,25 @@
 require "rspec"
 require "json"
 require "net/http"
-require "../lib/adzerk"
-require "../lib/adzerk/site"
-require "../lib/adzerk/zone"
-require "../lib/adzerk/publisher"
-require "../lib/adzerk/channel"
-require "../lib/adzerk/campaign"
-require "../lib/adzerk/flight"
-require "../lib/adzerk/login"
-require "../lib/adzerk/reporting"
-require "../lib/adzerk/creative"
-require "../lib/adzerk/creative_map"
-require "../lib/adzerk/advertiser"
-require "../lib/adzerk/invitation"
-require "../lib/adzerk/priority"
-require "../lib/adzerk/channel_site_map"
+$:.push File.expand_path("../lib", __FILE__)
+require "adzerk"
+require "adzerk/site"
+require "adzerk/zone"
+require "adzerk/publisher"
+require "adzerk/channel"
+require "adzerk/campaign"
+require "adzerk/flight"
+require "adzerk/login"
+require "adzerk/reporting"
+require "adzerk/creative"
+require "adzerk/creative_map"
+require "adzerk/advertiser"
+require "adzerk/invitation"
+require "adzerk/priority"
+require "adzerk/channel_site_map"
 
-api_key = ENV["ADZERK_API_KEY"] || 'yourapikey'
-$adzerk = Adzerk.new(api_key)
+API_KEY = ENV["ADZERK_API_KEY"] || 'your_api_key'
+# $adzerk = Adzerk.new(API_KEY)
 
 RSpec.configure do |config|
   config.color_enabled = true

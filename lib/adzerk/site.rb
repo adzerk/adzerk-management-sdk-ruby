@@ -2,36 +2,34 @@ require 'rest_client'
 
 module Adzerk
   class Site
-    class << self
 
-      def create(data={})
-        uri = URI.parse($host + 'site')
-        data = { 'site' => data.to_json }
-        Adzerk.post_request(uri, data)
-      end
+    def initialize(client)
+      @client = client
+    end
 
-      def get(id)
-        uri = URI.parse($host + 'site/' + id)
-        Adzerk.get_request(uri)
-      end
+    def create(data={})
+      data = { 'site' => data.to_json }
+      @client.post_request('site', data)
+    end
 
-      def list()
-        uri = URI.parse($host + 'site')
-        response = Adzerk.get_request(uri)
-        JSON.parse(response.body)
-      end
+    def get(id)
+      @client.get_request('site/' + id)
+    end
 
-      def update(data={})
-        uri = URI.parse($host + 'site/' + data["Id"].to_s)
-        data = { 'site' => data.to_json }
-        Adzerk.put_request(uri, data)
-      end
+    def list
+      response = @client.get_request('site')
+      JSON.parse(response.body)
+    end
 
-      def delete(id)
-        uri = URI.parse($host + 'site/' + id + '/delete')
-        Adzerk.get_request(uri)
-      end
+    def update(data={})
+      id = data["Id"].to_s
+      data = { 'site' => data.to_json }
+      @client.put_request('site/' + id, data)
+    end
 
+    def delete(id)
+      url = 'site/' + id + '/delete'
+      @client.get_request(url)
     end
   end
 end
