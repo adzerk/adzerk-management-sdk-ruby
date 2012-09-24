@@ -1,6 +1,6 @@
 module Adzerk
   class Client
-    attr_reader :sites
+    attr_reader :sites, :zones
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/',
@@ -11,6 +11,7 @@ module Adzerk
       @api_key = key
       @config = DEFAULTS.merge!(opts)
       @sites = Adzerk::Site.new(self)
+      @zones = Adzerk::Zone.new(self)
     end
 
     def get_request(url)
@@ -22,7 +23,7 @@ module Adzerk
     end
 
     def post_request(url, data)
-      uri = URI.parse(@config[:host] + 'site')
+      uri = URI.parse(@config[:host] + url)
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Post.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)

@@ -18,7 +18,7 @@ require "adzerk/invitation"
 require "adzerk/priority"
 require "adzerk/channel_site_map"
 
-API_KEY = ENV["ADZERK_API_KEY"] || 'your_api_key'
+API_KEY = 'EBE6A7D8A49CBA419FAB08AA996E293A14B9'
 # $adzerk = Adzerk.new(API_KEY)
 
 RSpec.configure do |config|

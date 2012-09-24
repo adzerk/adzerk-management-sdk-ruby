@@ -2,34 +2,41 @@ require 'rest_client'
 
 module Adzerk
   class Zone 
-    
+
+    include Adzerk::Util
+    attr_reader :client
+
+    def initialize(client)
+      @client = client
+    end
+
     def create(data={})
-      uri = URI.parse($host + 'zone')
-      data = { 'zone' => data.to_json }
-      Adzerk.post_request(uri, data)
+      data = { 'zone' => camelize_data(data).to_json }
+      response = client.post_request('zone', data)
+      parse_response(response)
     end
     
     def get(id)        
-      uri = URI.parse($host + 'zone/' + id)
-      Adzerk.get_request(uri)
+      url = 'zone/' + id
+      response = client.get_request(url)
+      parse_response(response)
     end
     
-    def list()
-      uri = URI.parse($host + 'zone')
-      response = Adzerk.get_request(uri)
-      JSON.parse(response.body)
+    def list
+      response = client.get_request('zone')
+      parse_response(response)
     end
     
     def update(data={})
-      uri = URI.parse($host + 'zone/' + data["Id"].to_s)
-      data = { 'zone' => data.to_json }
-      Adzerk.put_request(uri, data)
+      url = 'zone/' + data[:id].to_s
+      data = { 'zone' => camelize_data(data).to_json }
+      response = client.put_request(url, data)
+      parse_response(response)
     end
     
     def delete(id)
-      uri = URI.parse($host + 'zone/' + id + '/delete')
-      Adzerk.get_request(uri)
+      url = 'zone/' + id + '/delete'
+      client.get_request(url)
     end
-    
   end
 end
