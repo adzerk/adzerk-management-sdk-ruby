@@ -1,42 +1,44 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Channel API" do
-  
-  $channel_url = 'http://www.adzerk.com'
-  @@channel = $adzerk::Channel.new
-  
+
+  before do
+    @channel_url = 'http://www.adzerk.com'
+    @channels = Adzerk::Client.new(API_KEY).channels
+  end
+
   it "should create a new channel" do
     $channel_title = 'Test Channel ' + rand(1000000).to_s
     $channel_commission = '0.00'
     $channel_engine = 'CPM'
     $channel_keywords = 'test, another test'
-    $channel_CPM = '10.00'
-    $channel_AdTypes = [1,2,3,4,5]
-    
-    new_channel = {
-      'Title' => $channel_title,
-      'Commission' => $channel_commission,
-      'Engine' => $channel_engine,
-      'Keywords' => $channel_keywords,
-      'CPM' => $channel_CPM,
-      'AdTypes' => $channel_AdTypes
-    }
-  
-    response = @@channel.create(new_channel)
-    $channel_id = JSON.parse(response.body)["Id"].to_s
-    $channel_title.should == JSON.parse(response.body)["Title"]
-    $channel_commission.to_f.should == JSON.parse(response.body)["Commission"]
-    $channel_engine.should == JSON.parse(response.body)["Engine"]
-    $channel_keywords.should == JSON.parse(response.body)["Keywords"]
-    $channel_CPM.to_f.should == JSON.parse(response.body)["CPM"]
-    $channel_AdTypes.should == JSON.parse(response.body)["AdTypes"]
+    $channel_cpm = '10.00'
+    $channel_ad_types = [1,2,3,4,5]
+    channel = @channels.create(:title => $channel_title,
+                               :commission => $channel_commission,
+                               :engine => $channel_engine,
+                               :keywords => $channel_keywords,
+                               :ad_types => $channel_ad_types,
+                               'CPM' =>  $channel_cpm)
+    $channel_id = channel[:id].to_s
+    $channel_title.should == channel[:title]
+    $channel_commission.to_f.should == channel[:commission]
+    $channel_engine.should == channel[:engine]
+    $channel_keywords.should == channel[:keywords]
+    $channel_cpm.to_f.should == channel[:cpm]
+    $channel_ad_types.should == channel[:ad_types]
   end
-  
+
   it "should list a specific channel" do
-    response = @@channel.get($channel_id)
-    response.body.should == '{"Id":' + $channel_id + ',"Title":"' + $channel_title + '","Commission":' + '0.00' + ',"Engine":"' + $channel_engine + '","Keywords":"' + $channel_keywords + '","CPM":' + $channel_CPM + ',"AdTypes":' + $channel_AdTypes.to_json + ',"IsDeleted":false}'
+    channel = @channels.get($channel_id)
+    $channel_title.should == channel[:title]
+    $channel_commission.to_f.should == channel[:commission]
+    $channel_engine.should == channel[:engine]
+    $channel_keywords.should == channel[:keywords]
+    $channel_cpm.to_f.should == channel[:cpm]
+    $channel_ad_types.should == channel[:ad_types]
   end
-  
+
   it "should update a channel" do
     $u_channel_title = 'Test Channel ' + rand(1000000).to_s + 'test'
     $u_channel_commission = '1.0'
@@ -44,68 +46,40 @@ describe "Channel API" do
     $u_channel_keywords = 'another test'
     $u_channel_CPM = '0'
     $u_channel_AdTypes = [4,5,6,7,8]
-    
-    updated_channel = {
-      'Id' => $channel_id,
-      'Title' => $u_channel_title,
-      'Commission' => $u_channel_commission,
-      'Engine' => $u_channel_engine,
-      'Keywords' => $u_channel_keywords,
-      'CPM' => $u_channel_CPM,
-      'AdTypes' => $u_channel_AdTypes
-    }
-  
-    response = @@channel.update(updated_channel)
-    $channel_id = JSON.parse(response.body)["Id"].to_s
-    $u_channel_title.should == JSON.parse(response.body)["Title"]
-    #JSON.parse(response.body)["Commission"].should == $u_channel_commission 
-    $u_channel_engine.should == JSON.parse(response.body)["Engine"]
-    $u_channel_keywords.should == JSON.parse(response.body)["Keywords"]
-    $u_channel_CPM.to_f.should == JSON.parse(response.body)["CPM"]
-    $u_channel_AdTypes.should == JSON.parse(response.body)["AdTypes"]
+
+    channel = @channels.
+      update(:id => $channel_id,
+             :title => $u_channel_title,
+             :commission => $u_channel_commission,
+             :engine => $u_channel_engine,
+             :keywords => $u_channel_keywords,
+             :ad_types => $u_channel_AdTypes,
+             'CPM' => $u_channel_CPM)
+
+    $u_channel_title.should == channel[:title]
+    $u_channel_commission.should == channel[:commission].to_s
+    $u_channel_engine.should == channel[:engine]
+    $u_channel_keywords.should == channel[:keywords]
+    $u_channel_CPM.to_f.should == channel[:cpm]
+    $u_channel_AdTypes.should == channel[:ad_types]
   end
-  
+
   it "should list all channels" do
-    result = @@channel.list()
+    result = @channels.list
     result.length.should > 0
-    result["Items"].last["Id"].to_s.should == $channel_id
-    result["Items"].last["Title"].should == $u_channel_title
-    result["Items"].last["Commission"].should == $u_channel_commission.to_f
-    result["Items"].last["Engine"].should == $u_channel_engine
-    result["Items"].last["Keywords"].should == $u_channel_keywords
-    result["Items"].last["CPM"].to_f == $u_channel_CPM.to_f
-    result["Items"].last["AdTypes"].should == $u_channel_AdTypes
+    last_channel = result[:items].last
+    last_channel[:id].to_s.should == $channel_id
+    last_channel[:title].should == $u_channel_title
+    last_channel[:commission].should == $u_channel_commission.to_f
+    last_channel[:engine].should == $u_channel_engine
+    last_channel[:keywords].should == $u_channel_keywords
+    last_channel[:cpm].should == $u_channel_CPM.to_f
+    last_channel[:ad_types].should == $u_channel_AdTypes
   end
-  
+
   it "should delete a new channel" do
-    response = @@channel.delete($channel_id)
+    response = @channels.delete($channel_id)
     response.body.should == 'OK'
-  end
-  
-  it "should not list deleted channels" do
-    result = @@channel.list()
-    result["Items"].each do |r|
-      r["Id"].to_s.should_not == $channel_id
-    end
-  end
-  
-  it "should not get individual deleted channel" do
-    response = @@channel.get($channel_id)
-    response.body.should == '{"Id":0,"Commission":0,"CPM":0,"IsDeleted":false}'
-  end
-  
-  it "should not update deleted channels" do
-    updated_channel = {
-      'Id' => $channel_id,
-      'Title' => $u_channel_title + "test",
-      'Commission' => $u_channel_commission,
-      'Engine' => $u_channel_engine,
-      'Keywords' => $u_channel_keywords,
-      'CPM' => $u_channel_CPM,
-      'AdTypes' => $u_channel_AdTypes
-    }
-    response = @@channel.update(updated_channel)
-    response.body.should == '{"Id":0,"Commission":0,"CPM":0,"IsDeleted":false}'
   end
 
 end

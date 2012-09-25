@@ -10,6 +10,8 @@ module Adzerk
     end
 
     def uncamelize_data(data)
+      # stop condition for the recursion
+      return data unless data.respond_to?(:reduce)
       data.reduce({}) do |acc, (key, val)|
         acc[key.underscore.to_sym] = case val
                                        when Hash then uncamelize_data(val)

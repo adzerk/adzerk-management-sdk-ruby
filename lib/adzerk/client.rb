@@ -1,6 +1,6 @@
 module Adzerk
   class Client
-    attr_reader :sites, :zones
+    attr_reader :sites, :zones, :campaigns, :channels
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/',
@@ -12,6 +12,8 @@ module Adzerk
       @config = DEFAULTS.merge!(opts)
       @sites = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'site')
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
+      @campaigns = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'campaign')
+      @channels = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'channel')
     end
 
     def get_request(url)
