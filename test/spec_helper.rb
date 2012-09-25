@@ -3,8 +3,6 @@ require "json"
 require "net/http"
 $:.push File.expand_path("../lib", __FILE__)
 require "adzerk"
-require "adzerk/site"
-require "adzerk/zone"
 require "adzerk/publisher"
 require "adzerk/channel"
 require "adzerk/campaign"

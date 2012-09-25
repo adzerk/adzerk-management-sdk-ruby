@@ -10,8 +10,8 @@ module Adzerk
     def initialize(key, opts = {})
       @api_key = key
       @config = DEFAULTS.merge!(opts)
-      @sites = Adzerk::Site.new(self)
-      @zones = Adzerk::Zone.new(self)
+      @sites = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'site')
+      @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
     end
 
     def get_request(url)

@@ -30,13 +30,13 @@ describe "Site API" do
 
   it "should update a site" do
     $site_title = 'Test Site ' + rand(1000000).to_s
-    response = @client.sites.update(:id => $site_id,
+    site = @client.sites.update(:id => $site_id,
                                     :title => $site_title + "test",
                                     :url => @site_url + "test")
-    $site_id = JSON.parse(response.body)["Id"].to_s
-    ($site_title + "test").should == JSON.parse(response.body)["Title"]
-    (@site_url + "test").should == JSON.parse(response.body)["Url"]
-    $site_pub_id = JSON.parse(response.body)["PublisherAccountId"].to_s
+    $site_id = site[:id].to_s
+    ($site_title + "test").should == site[:title]
+    (@site_url + "test").should == site[:url]
+    $site_pub_id = site[:publisher_account_id].to_s
   end
 
   it "should list all sites" do
@@ -69,10 +69,12 @@ describe "Site API" do
 
   it "should not update deleted sites" do
     $site_title = 'Test Site ' + rand(1000000).to_s
-    response = @client.sites.update(:id => $site_id,
+    site = @client.sites.update(:id => $site_id,
                                     :title => $site_title,
                                     :url => @site_url)
-    response.body.should == '{"Id":0,"PublisherAccountId":0,"IsDeleted":false}'
+    site[:id].should eq(0)
+    site[:publisher_account_id].should eq(0)
+    site[:is_deleted].should eq(false)
   end
 
 end
