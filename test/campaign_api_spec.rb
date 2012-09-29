@@ -1,311 +1,144 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Campaign API" do
-  
-  $campaign_url = 'http://www.adzerk.com'
-  @@campaign = $adzerk::Campaign.new
-  @@advertiser = $adzerk::Advertiser.new
-  @@channel = $adzerk::Channel.new
-  @@priority = $adzerk::Priority.new
 
   before(:all) do
-    new_advertiser = {
-      'Title' => "Test"
-    }
-    response = @@advertiser.create(new_advertiser)
-    $advertiserId = JSON.parse(response.body)["Id"].to_s
+    client = Adzerk::Client.new(API_KEY)
+    @campaigns = client.campaigns
+    @advertisers = client.advertisers
+    @channels = client.channels
+    @priorities = client.priorities
 
-    new_channel = {
-      'Title' => 'Test Channel ' + rand(1000000).to_s,
-      'Commission' => '0.0',
-      'Engine' => 'CPM',
-      'Keywords' => 'test',
-      'CPM' => '10.00',
-      'AdTypes' => [1,2,3,4]
-    }  
-    response = @@channel.create(new_channel)
-    $channelId = JSON.parse(response.body)["Id"].to_s
+    advertiser = @advertisers.create(:title => "test")
+    $advertiserId = advertiser[:id].to_s
 
-    new_priority = {
-      'Name' => "High Priority Test",
-      'ChannelId' => $channelId,
-      'Weight' => 1,
-      'IsDeleted' => false
-    }
-    response = @@priority.create(new_priority)
-    $priority_id = JSON.parse(response.body)["Id"].to_s
-    
+    channel = @channels.create(:title => 'Test Channel ' + rand(1000000).to_s,
+                               :commission => '0.0',
+                               :engine => 'CPM',
+                               :keywords => 'test',
+                               'CPM' => '10.00',
+                               :ad_types =>  [1,2,3,4])
+    $channel_id = channel[:id].to_s
+
+    priority = @priorities.create(:name => "High Priority Test",
+                                :channel_id => $channel_id,
+                                :weight => 1,
+                                :is_deleted => false)
+    $priority_id = priority[:id].to_s
   end
-  
+
+
+
   it "should create a new campaign with no flights" do
-    $campaign_Name = 'Test campaign ' + rand(1000000).to_s
-    $campaign_StartDate = "1/1/2011"
-    $campaign_EndDate = "12/31/2011"
-    $campaign_IsActive = false
-    $campaign_Price = '10.00'
-    $campaign_AdvertiserId = $advertiserId.to_i
-    $campaign_Flights = []
-    
-    new_campaign = {
-      'Name' => $campaign_Name,
-      'StartDate' => $campaign_StartDate,
-      'EndDate' => $campaign_EndDate,
-      'IsActive' => $campaign_IsActive,
-      'Price' => $campaign_Price,
-      'AdvertiserId' => $campaign_AdvertiserId,
-      'Flights' => $campaign_Flights,
-      'IsDeleted' => false
-    }
-  
-    response = @@campaign.create(new_campaign)
-    $campaign_id = JSON.parse(response.body)["Id"].to_s
-    $campaign_Name.should == JSON.parse(response.body)["Name"]
+    $campaign_name = 'Test campaign ' + rand(1000000).to_s
+    $campaign_start_date = "1/1/2011"
+    $campaign_end_date = "12/31/2011"
+    $campaign_is_active = false
+    $campaign_price = '10.00'
+    $campaign_advertiser_id = $advertiserId.to_i
+    $campaign_flights = []
+
+    campaign = @campaigns.create(:name => $campaign_name,
+                                 :start_date => $campaign_start_date,
+                                 :end_date => $campaign_end_date,
+                                 :is_active => $campaign_is_active,
+                                 :price => $campaign_price,
+                                 :advertiser_id => $campaign_advertiser_id,
+                                 :flights => $campaign_flights,
+                                 :is_deleted => false)
+
+    $campaign_id = campaign[:id].to_s
+    $campaign_name.should == campaign[:name]
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
-    $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
-    $campaign_AdvertiserId.should == JSON.parse(response.body)["AdvertiserId"]
-    JSON.parse(response.body)["IsDeleted"].should == false
-    $campaign_Flights.should == JSON.parse(response.body)["Flights"]
+    $campaign_is_active.should == campaign[:is_active]
+    $campaign_price.to_f.should == campaign[:price]
+    $campaign_advertiser_id.should == campaign[:advertiser_id]
+    campaign[:is_deleted].should == false
+    campaign[:flights].should eq([])
   end
-  
+
   it "should create a new campaign with one flight" do
-    $campaign_Flights1 = [{
-      'StartDate' => "1/1/2011",
-      'EndDate' => "12/31/2011",
-      'NoEndDate' => false,
-      'Price' => "5.00",
-      'Keywords' => "test, test2",
-      'Name' => "Test",
-      'PriorityId' => $priority_id,
-      'Impressions' => 10000,
-      'IsDeleted' => false
+    @campaign_flights_1 = [{
+      :start_date => "1/1/2011",
+      :end_date => "12/31/2011",
+      :no_end_date => false,
+      :price => "5.00",
+      :keywords => "test, test2",
+      :name => "Test",
+      :priority_id => $priority_id,
+      :impressions => 10000,
+      :is_deleted => false
     }]
     new1_campaign = {
-      'Name' => $campaign_Name,
-      'StartDate' => $campaign_StartDate,
-      'EndDate' => $campaign_EndDate,
-      'IsActive' => $campaign_IsActive,
-      'Price' => $campaign_Price,
-      'AdvertiserId' => $campaign_AdvertiserId,
-      'IsDeleted' => false,
-      'Flights' => $campaign_Flights1
+      :name => $campaign_name,
+      :start_date => $campaign_start_date,
+      :end_date => $campaign_end_date,
+      :is_active => $campaign_is_active,
+      :price => $campaign_price,
+      :advertiser_id => $campaign_advertiser_id,
+      :is_deleted => false,
+      :flights => @campaign_flights_1
     }
-    response = @@campaign.create(new1_campaign)
-    $campaign_id1 = JSON.parse(response.body)["Id"].to_s
-    $campaign_Name.should == JSON.parse(response.body)["Name"]
+    campaign = @campaigns.create(new1_campaign)
+    $campaign_id_1 = campaign[:id].to_s
+    $campaign_name.should == campaign[:name]
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
-    JSON.parse(response.body)["IsDeleted"].should == false
-    $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
-    $campaign_AdvertiserId.should == JSON.parse(response.body)["AdvertiserId"]
-    #$campaign_Flights1.to_json.should == JSON.parse(response.body)["Flights"]
+    $campaign_is_active.should == campaign[:is_active]
+    campaign[:is_deleted].should == false
+    $campaign_price.to_f.should == campaign[:price]
+    $campaign_advertiser_id.should == campaign[:advertiser_id]
+    # $campaign_Flights1.to_json.should == JSON.parse(response.body)["Flights"]
   end
-  
-  it "should create a new campaign with two flights" do
-    $campaign_Flights2 = [{
-      'StartDate' => "1/1/2011",
-      'EndDate' => "12/31/2011",
-      'NoEndDate' => false,
-      'Price' => "5.00",
-      'Keywords' => "test, test2",
-      'Name' => "Test",
-      'PriorityId' => $priority_id,
-      'Impressions' => 10000
-    },{
-      'StartDate' => "1/1/2010",
-      'EndDate' => "12/31/2012",
-      'NoEndDate' => false,
-      'Price' => "10.00",
-      'Keywords' => "test, test2, test3",
-      'Name' => "Test3",
-      'PriorityId' => $priority_id,
-      'Impressions' => 15000
-    }]
-    new2_campaign = {
-      'Name' => $campaign_Name,
-      'StartDate' => $campaign_StartDate,
-      'EndDate' => $campaign_EndDate,
-      'IsActive' => $campaign_IsActive,
-      'Price' => $campaign_Price,
-      'AdvertiserId' => $campaign_AdvertiserId,
-      'Flights' => $campaign_Flights2
-    }
-    response = @@campaign.create(new2_campaign)
-    $campaign_id2 = JSON.parse(response.body)["Id"].to_s
-    JSON.parse(response.body)["Flights"].length.should == 2
-  end
-  
+
+
   it "should list a specific campaign" do
-    response = @@campaign.get($campaign_id2)
-    (response.body.scan($campaign_id2).empty?).should == false
-    (response.body.scan('"Flights":[]').empty?).should == true
-    (response.body.scan('"Flights":[').empty?).should == false
-    (response.body.scan($campaign_Name).empty?).should == false
+    campaign = @campaigns.get($campaign_id_1)
+    campaign[:id].should eq($campaign_id_1.to_i)
+    campaign[:flights].should_not be_empty
+    campaign[:name].should eq($campaign_name)
   end
-  
+
   it "should update a campaign" do
-    $campaign_Name = 'Test campaign ' + rand(1000000).to_s
-    $campaign_StartDate = "1/1/2011"
-    $campaign_EndDate = "12/31/2011"
-    $campaign_IsActive = false
-    $campaign_Price = '10.00'
-    $campaign_Flights = []
-    
-    new_campaign = {
-      'Id' => $campaign_id,
-      'Name' => $campaign_Name,
-      'StartDate' => $campaign_StartDate,
-      'EndDate' => $campaign_EndDate,
-      'IsActive' => $campaign_IsActive,
-      'Price' => $campaign_Price,
-      'AdvertiserId' => $campaign_AdvertiserId,
-      'Flights' => $campaign_Flights,
-      'IsDeleted' => false
+    $campaign_name = 'Test campaign ' + rand(1000000).to_s
+    $campaign_start_date = "1/1/2011"
+    $campaign_end_date = "12/31/2011"
+    $campaign_is_active = false
+    $campaign_price = '12.00'
+    $campaign_flights = []
+
+    campaign_to_update = {
+      :id => $campaign_id,
+      :name => $campaign_name,
+      :start_date => $campaign_start_date,
+      :end_date => $campaign_end_date,
+      :is_active => $campaign_is_active,
+      :price => $campaign_price,
+      :advertiser_id => $campaign_advertiser_id,
+      :flights => $campaign_flights,
+      :is_deleted => false
     }
-  
-    response = @@campaign.update(new_campaign)
-    $campaign_id = JSON.parse(response.body)["Id"].to_s
-    $campaign_Name.should == JSON.parse(response.body)["Name"]
+
+    campaign = @campaigns.update(campaign_to_update)
+    campaign[:name].should eq($campaign_name)
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
-    $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
-    $campaign_AdvertiserId.should == JSON.parse(response.body)["AdvertiserId"]
-    JSON.parse(response.body)["IsDeleted"].should == false
-    $campaign_Flights.should == JSON.parse(response.body)["Flights"]
+    campaign[:is_active].should eq($campaign_is_active)
+    campaign[:price].should eq($campaign_price.to_f)
+    campaign[:advertiser_id].should eq($campaign_advertiser_id)
+    campaign[:is_deleted].should eq(false)
+    campaign[:flights].should eq($campaign_flights)
   end
 
-  it "should deactivate a campaign" do
-    $campaign_Name = 'Test campaign ' + rand(1000000).to_s
-    $campaign_StartDate = "1/1/2011"
-    $campaign_EndDate = "12/31/2011"
-    $campaign_IsActive = false
-    $campaign_Price = '10.00'
-    $campaign_Flights = []
-    
-    new_campaign = {
-      'Id' => $campaign_id,
-      'Name' => $campaign_Name,
-      'StartDate' => $campaign_StartDate,
-      'EndDate' => $campaign_EndDate,
-      'IsActive' => $campaign_IsActive,
-      'Price' => $campaign_Price,
-      'AdvertiserId' => $campaign_AdvertiserId,
-      'Flights' => $campaign_Flights,
-      'IsDeleted' => false
-    }
-  
-    response = @@campaign.update(new_campaign)
-    $campaign_id = JSON.parse(response.body)["Id"].to_s
-    $campaign_Name.should == JSON.parse(response.body)["Name"]
-    # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
-    # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
-    $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
-    $campaign_AdvertiserId.should == JSON.parse(response.body)["AdvertiserId"]
-    JSON.parse(response.body)["IsDeleted"].should == false
-    $campaign_Flights.should == JSON.parse(response.body)["Flights"]
-  end
-  
   it "should list all campaigns" do
-    result = @@campaign.list()
-    result.length.should > 0
-    # result["Items"].last["Id"].to_s.should == $campaign_id
-    # result["Items"].last["Title"].should == $u_campaign_title
-    # result["Items"].last["Commission"].should == $u_campaign_commission.to_f
-    # result["Items"].last["Engine"].should == $u_campaign_engine
-    # result["Items"].last["Keywords"].should == $u_campaign_keywords
-    # result["Items"].last["CPM"].to_s.should == $u_campaign_CPM.to_f.to_s
-    # result["Items"].last["AdTypes"].should == $u_campaign_AdTypes
-  end
-  
-  it "should delete a new campaign" do
-    response = @@campaign.delete($campaign_id)
-    response.body.should == 'OK'
-  end
-  
-  it "should not get individual deleted campaign" do
-    response = @@campaign.get($campaign_id)
-    true.should == !response.body.scan(/Exception/).empty?
-  end
-  
-  it "should not update deleted campaigns" do
-    updated_campaign = {
-      'Id' => $campaign_id,
-      'Name' => $campaign_Name,
-      'StartDate' => $campaign_StartDate,
-      'EndDate' => $campaign_EndDate,
-      'IsActive' => $campaign_IsActive,
-      'Price' => $campaign_Price,
-      'AdvertiserId' => $campaign_AdvertiserId,
-      'Flights' => $campaign_Flights,
-      'IsDeleted' => false
-    }
-    response = @@campaign.update(updated_campaign)
-  end
-  
-  it "should not create/update a campaign with a advertiserId that doesn't belong to it" do
-    new_campaign = {
-      'Name' => 'Test campaign ' + rand(1000000).to_s,
-      'StartDate' => "1/1/2011",
-      'EndDate' => "12/31/2011",
-      'IsActive' => false,
-      'Price' => '10.00',
-      'AdvertiserId' => '123',
-      'Flights' => [],
-      'IsDeleted' => false
-    }  
-    response = @@campaign.create(new_campaign)
-    true.should == !response.body.scan(/Exception/).empty?
-    
-    updated_campaign = {
-      'Id' => $campaign_id,
-      'Name' => 'Test campaign ' + rand(1000000).to_s,
-      'StartDate' => "1/1/2011",
-      'EndDate' => "12/31/2011",
-      'IsActive' => false,
-      'Price' => '10.00',
-      'AdvertiserId' => '123',
-      'Flights' => [],
-      'IsDeleted' => false
-    }  
-    response = @@campaign.update(updated_campaign)
-    #true.should == !response.body.scan(/Exception/).empty?
-  end
-  
-  it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
-    response = @@campaign.get('123')
-    true.should == !response.body.scan(/Exception/).empty?
+    campaigns = @campaigns.list
+    campaigns.length.should > 0
   end
 
-  it "should create a new campaign with no end date" do
-    $campaign_Name = 'Test campaign ' + rand(1000000).to_s
-    $campaign_StartDate = "1/1/2011"
-    $campaign_EndDate = "12/31/2011"
-    $campaign_IsActive = false
-    $campaign_Price = '10.00'
-    $campaign_AdvertiserId = $advertiserId.to_i
-    $campaign_Flights = []
-    
-    new_campaign = {
-      'Name' => $campaign_Name,
-      'StartDate' => $campaign_StartDate,
-      'IsActive' => $campaign_IsActive,
-      'Price' => $campaign_Price,
-      'AdvertiserId' => $campaign_AdvertiserId,
-      'Flights' => $campaign_Flights,
-      'IsDeleted' => false
-    }
-  
-    response = @@campaign.create(new_campaign)
-    $campaign_Name.should == JSON.parse(response.body)["Name"]
-    $campaign_IsActive.should == JSON.parse(response.body)["IsActive"]
-    $campaign_Price.to_f.should == JSON.parse(response.body)["Price"]
-    $campaign_AdvertiserId.should == JSON.parse(response.body)["AdvertiserId"]
-    JSON.parse(response.body)["IsDeleted"].should == false
-    $campaign_Flights.should == JSON.parse(response.body)["Flights"]
+  it "should delete a new campaign" do
+    response = @campaigns.delete($campaign_id)
+    response.body.should == 'OK'
   end
 
 end

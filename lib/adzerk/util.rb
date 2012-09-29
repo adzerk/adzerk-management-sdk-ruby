@@ -3,8 +3,13 @@ module Adzerk
     extend self 
 
     def camelize_data(data)
+      return data unless data.respond_to?(:reduce)
       data.reduce({}) do |acc, (sym, val)|
-        acc[sym.to_s.camelize] = val
+        acc[sym.to_s.camelize] = case val
+                                   when Hash then camilize_data(val)
+                                   when Array then val.map { |elem| camelize_data(elem) }
+                                   else val
+                                 end
         acc
       end
     end
