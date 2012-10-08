@@ -9,18 +9,6 @@ describe "Creative API" do
   end
   
   it "should create a creative using old api spec" do
-      $title = 'Test creative ' + rand(1000000).to_s
-      $image_name = ""
-      $url = "http://adzerk.com"
-      $body = "Test text"
-      $AdvertiserId = $advertiserId
-      $AdTypeId = 18
-      $IsActive = true
-      $Alt = "test alt"
-      $IsDeleted = false
-      $IsSync = false
-      $IsHTMLJS = true
-      $ScriptBody = "<html>"
     new_creative = {
       :title => 'Test Creative Old API',
       :image_name => "",
