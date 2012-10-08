@@ -17,7 +17,7 @@ module Adzerk
     end
 
     def get(id)
-      response = @client.get_request("#{endpoint}/" + id)
+      response = @client.get_request("#{endpoint}/#{id}")
       parse_response(response)
     end
 
@@ -29,12 +29,12 @@ module Adzerk
     def update(opts={})
       id = opts[:id].to_s
       data = { endpoint => camelize_data(opts).to_json }
-      response = @client.put_request("#{endpoint}/" + id, data)
+      response = @client.put_request("#{endpoint}/#{id}", data)
       parse_response(response)
     end
 
     def delete(id)
-      url = endpoint + "/" + id + '/delete'
+      url = "#{endpoint}/#{id}/delete"
       @client.get_request(url)
     end
   end
