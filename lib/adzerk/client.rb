@@ -1,7 +1,10 @@
 module Adzerk
   class Client
+
+    include Adzerk::Util
+
     attr_reader :sites, :zones, :campaigns, :channels, :priorities,
-                :advertisers, :flights
+                :advertisers, :flights, :creatives
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/',
@@ -18,6 +21,7 @@ module Adzerk
       @channels = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'channel')
       @priorities = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'priority')
       @advertisers = Adzerk::Advertiser.new(:client => self, :endpoint => 'advertiser')
+      @creatives = Adzerk::Creative.new(:client => self, :endpoint => 'creative')
     end
 
     def get_request(url)
@@ -46,17 +50,23 @@ module Adzerk
       http.request(request)
     end
 
-    def upload_creative(id, imagepath)
-      begin
-        image = File.new(imagepath, 'rb')
-      rescue
-        image = ''
-      end
+    def create_creative(data={}, image_path='')      
+      response = RestClient.post(@config[:host] + 'creative',
+                                 {:creative => camelize_data(data).to_json},
+                                 :X_Adzerk_ApiKey => @api_key,
+                                 :content_type => :json, 
+                                 :accept => :json)
+      response = upload_creative(JSON.parse(response)["Id"], image_path) unless image_path.empty?
+      response
+    end
 
-      RestClient.post @config[:host] + 'creative/' + id.to_s + '/upload',
+    def upload_creative(id, image_path)
+      image = File.new(image_path, 'rb')
+      RestClient.post(@config[:host] + 'creative/' + id.to_s + '/upload',
       {:image => image},
       "X-Adzerk-ApiKey" => @api_key,
-      :accept => :mime
+      :accept => :mime)
     end
+
   end
 end
