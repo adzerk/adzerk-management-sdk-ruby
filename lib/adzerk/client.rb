@@ -4,8 +4,9 @@ module Adzerk
     include Adzerk::Util
 
     attr_reader :sites, :zones, :campaigns, :channels, :priorities,
-                :advertisers, :flights, :creatives
-
+                :advertisers, :flights, :creatives, :creative_maps,
+                :publishers
+      
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/',
       :header => 'X-Adzerk-ApiKey'
@@ -21,7 +22,9 @@ module Adzerk
       @channels = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'channel')
       @priorities = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'priority')
       @advertisers = Adzerk::Advertiser.new(:client => self, :endpoint => 'advertiser')
+      @publishers = Adzerk::Publisher.new(:client => self, :endpoint => 'publisher')
       @creatives = Adzerk::Creative.new(:client => self, :endpoint => 'creative')
+      @creative_maps = Adzerk::CreativeMap.new(:client => self)
     end
 
     def get_request(url)

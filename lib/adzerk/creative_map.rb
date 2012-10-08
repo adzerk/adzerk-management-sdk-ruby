@@ -1,33 +1,38 @@
 module Adzerk
   class CreativeMap
-    
+
+    include Adzerk::Util
+
+    def initialize(args={})
+      @client = args[:client]
+    end
+
     def create(data={})
-      uri = URI.parse($host + "flight/" + data["FlightId"].to_s + '/creative')
-      data = { 'creative' => data.to_json }
-      Adzerk.post_request(uri, data)
+      url = "flight/#{data[:flight_id]}/creative"
+      data = { 'creative' => camelize_data(data).to_json }
+      parse_response(@client.post_request(url, data))
     end
-    
-    def get(id, flightId)
-      uri = URI.parse($host + "flight/" + flightId.to_s + '/creative/' + id.to_s)
-      Adzerk.get_request(uri)
+
+    def get(id, flight_id)
+      url = "flight/#{flight_id}/creative/#{id}"
+      parse_response(@client.get_request(url))
     end
-    
-    def list(flightId)
-      uri = URI.parse($host + 'flight/' + flightId.to_s + "/creatives")
-      response = Adzerk.get_request(uri)
-      JSON.parse(response.body)
+
+    def list(flight_id)
+      url = "flight/#{flight_id}/creatives"
+      parse_response(@client.get_request(url))
     end
-    
+
     def update(data={})
-      uri = URI.parse($host + "flight/" + data["FlightId"].to_s + '/creative/' + data["Id"].to_s)
-      data = { 'creative' => data.to_json }
-      Adzerk.put_request(uri, data)
+      url = "flight/#{data[:flight_id]}/creative/#{data[:id]}"
+      data = { 'creative' => camelize_data(data).to_json }
+      parse_response(@client.put_request(url, data))
     end
-    
-    def delete(id, flightId)
-      uri = URI.parse($host + "flight/" + flightId.to_s + '/creative/' + id.to_s + '/delete')
-      Adzerk.get_request(uri)
+
+    def delete(id, flight_id)
+      url = "flight/#{flight_id}/creative/#{id}/delete"
+      @client.get_request(url)
     end
-    
+
   end
 end
