@@ -26,9 +26,9 @@ describe "Flight API" do
     $channel_id = channel[:id].to_s
 
     priority = @priorities.create(:name => "High Priority Test",
-                                :channel_id => $channel_id,
-                                :weight => 1,
-                                :is_deleted => false)
+                                  :channel_id => $channel_id,
+                                  :weight => 1,
+                                  :is_deleted => false)
     $priority_id = priority[:id].to_s
  
     campaign = @campaigns.
