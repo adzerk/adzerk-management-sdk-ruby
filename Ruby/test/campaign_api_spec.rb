@@ -223,12 +223,12 @@ describe "Campaign API" do
   
   it "should delete a new campaign" do
     response = @@campaign.delete($campaign_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted."'
   end
   
   it "should not get individual deleted campaign" do
     response = @@campaign.get($campaign_id)
-    true.should == !response.body.scan(/Exception/).empty?
+    response.body.should == '"This campaign has been deleted"'
   end
   
   it "should not update deleted campaigns" do
@@ -244,6 +244,7 @@ describe "Campaign API" do
       'IsDeleted' => false
     }
     response = @@campaign.update(updated_campaign)
+    response.body.should == '"This campaign has been deleted"'
   end
   
   it "should not create/update a campaign with a advertiserId that doesn't belong to it" do
@@ -256,10 +257,10 @@ describe "Campaign API" do
       'AdvertiserId' => '123',
       'Flights' => [],
       'IsDeleted' => false
-    }  
+    }
     response = @@campaign.create(new_campaign)
-    true.should == !response.body.scan(/Exception/).empty?
-    
+    response.body.should == '"This advertiser is not part of your network"'
+
     updated_campaign = {
       'Id' => $campaign_id,
       'Name' => 'Test campaign ' + rand(1000000).to_s,
@@ -270,14 +271,14 @@ describe "Campaign API" do
       'AdvertiserId' => '123',
       'Flights' => [],
       'IsDeleted' => false
-    }  
+    }
     response = @@campaign.update(updated_campaign)
-    #true.should == !response.body.scan(/Exception/).empty?
+    response.body.should == '"This advertiser is not part of your network"'
   end
-  
+
   it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
     response = @@campaign.get('123')
-    true.should == !response.body.scan(/Exception/).empty?
+    response.body.should == '"This campaign is not part of your network"'
   end
 
   it "should create a new campaign with no end date" do

@@ -79,7 +79,7 @@ describe "Channel API" do
   
   it "should delete a new channel" do
     response = @@channel.delete($channel_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
   
   it "should not list deleted channels" do
@@ -91,7 +91,7 @@ describe "Channel API" do
   
   it "should not get individual deleted channel" do
     response = @@channel.get($channel_id)
-    response.body.should == '{"Id":0,"Commission":0,"CPM":0,"IsDeleted":false}'
+    response.body.should == '"This channel has been deleted"'
   end
   
   it "should not update deleted channels" do
@@ -105,7 +105,7 @@ describe "Channel API" do
       'AdTypes' => $u_channel_AdTypes
     }
     response = @@channel.update(updated_channel)
-    response.body.should == '{"Id":0,"Commission":0,"CPM":0,"IsDeleted":false}'
+    response.body.should == '"This channel has been deleted"'
   end
 
 end

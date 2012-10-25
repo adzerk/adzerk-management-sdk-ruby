@@ -1,4 +1,4 @@
-require 'spec_helper'
+require './spec_helper'
 
 describe "Channel Site Map API" do
   
@@ -71,12 +71,11 @@ describe "Channel Site Map API" do
     result.length.should > 0
     result["Items"].last["SiteId"].should == $siteId
     result["Items"].last["ChannelId"].should == $channelId
-    result["Items"].last["Priority"].should == 200 
   end
 
   it "should delete a new maps" do
     response = @@csm.delete($channelId, $siteId)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted."'
   end
 
   it "should not list deleted maps" do
@@ -89,7 +88,7 @@ describe "Channel Site Map API" do
 
   it "should not get individual deleted maps" do
     response = @@csm.get($channelId, $siteId)
-    response.body.should == '{"SiteId":0,"ChannelId":0,"Priority":0}'
+    response.body.should == '"There is no record for a channel with that id"'
   end
 
   it "should not update deleted maps" do
@@ -99,7 +98,7 @@ describe "Channel Site Map API" do
      'Priority' => 300
     }
     response = @@csm.update(u_map)
-    response.body.should == '{"SiteId":0,"ChannelId":0,"Priority":0}'
+    response.body.should == '"There is no record for a channel with that id"'
   end
 
   it "should not create if the site is in a different network" do
@@ -109,7 +108,7 @@ describe "Channel Site Map API" do
      'Priority' => 10
     }
     response = @@csm.create(new_map)
-    true.should == response.body.scan(/This site is not part of your network/).length > 1
+    response.body.should == '"This site is not part of your network"'
   end
 
   it "should not create if the channel is in a different netowork" do
@@ -119,7 +118,7 @@ describe "Channel Site Map API" do
      'Priority' => 10
     }
     response = @@csm.create(new_map)
-    true.should == response.body.scan(/This channel is not part of your network/).length > 1
+    response.body.should == '"This channel is not part of your network"'
   end
 
 end

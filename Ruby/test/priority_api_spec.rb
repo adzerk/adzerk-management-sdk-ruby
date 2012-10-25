@@ -1,4 +1,4 @@
-require 'spec_helper'
+require './spec_helper'
 
 describe "Priority API" do
   
@@ -73,7 +73,7 @@ describe "Priority API" do
   
   it "should delete a new priority" do
     response = @@priority.delete($priority_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
   
   it "should not list deleted priorities" do
@@ -85,7 +85,7 @@ describe "Priority API" do
   
   it "should not get individual deleted priority" do
     response = @@priority.get $priority_id
-    response.body.should == '{"Id":0,"ChannelId":0,"Weight":0,"IsDeleted":false}'
+    response.body.should == '"This priority has been deleted"'
   end
   
   it "should not update deleted priorities" do
@@ -98,7 +98,7 @@ describe "Priority API" do
     }
   
     response = @@priority.update(u_priority)
-    response.body.should == '{"Id":0,"ChannelId":0,"Weight":0,"IsDeleted":false}'
+    response.body.should == '"This priority has been deleted"'
   end
 
 end

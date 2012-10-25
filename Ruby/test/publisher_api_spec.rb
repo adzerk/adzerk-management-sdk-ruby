@@ -108,7 +108,7 @@ describe "Publisher API" do
 
   it "should delete a new publisher" do
     response = @@publisher.delete($publisher_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
 
   it "should not list deleted publishers" do
@@ -120,7 +120,7 @@ describe "Publisher API" do
 
   it "should not get individual deleted publishers" do
     response = @@publisher.get($publisher_id)
-    response.body.should == '{"Id":0,"IsDeleted":false}'
+    response.body.should == '"This publisher account has been deleted"'
   end
 
   it "should not update deleted publishers" do
@@ -141,7 +141,7 @@ describe "Publisher API" do
       'PaypalEmail' => $publisher_paypal_email + "test"
     }
     response = @@publisher.update($updated_publisher)
-    response.body.should == '{"Id":0,"IsDeleted":false}'
+    response.body.should == '"This publisher account has been deleted"'
   end
 
   it "should retrieve publisher earnings" do

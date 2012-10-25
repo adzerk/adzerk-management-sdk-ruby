@@ -201,12 +201,12 @@ describe "Flight API" do
   
   it "should delete a new flight" do
     response = @@flight.delete($flight_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
 
   it "should not get individual deleted flight" do
     response = @@flight.get($flight_id)
-    response.body.should == '{"Id":0,"PriorityId":0,"IsDeleted":false,"IsActive":false}'
+    response.body.should == '"This flight has been deleted"'
   end
   
   it "should not create/update if campaignId is forbidden" do

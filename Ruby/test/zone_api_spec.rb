@@ -59,7 +59,7 @@ describe "Zone API" do
 
   it "should delete a new zone" do
     response = @@zone.delete($zone_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
 
   it "should not list deleted zones" do
@@ -71,7 +71,7 @@ describe "Zone API" do
 
   it "should not get individual deleted zones" do
     response = @@zone.get($zone_id)
-    response.body.should == '{"Id":0,"SiteId":0}'
+    response.body.should == '"This zone has been deleted"'
   end
 
   it "should not update deleted zones" do
@@ -83,7 +83,7 @@ describe "Zone API" do
      'IsDeleted' => false
     }
     response = @@zone.update(updated_zone)
-    response.body.should == '{"Id":0,"SiteId":0}'
+    response.body.should == '"This zone has been deleted"'
   end
 
 end

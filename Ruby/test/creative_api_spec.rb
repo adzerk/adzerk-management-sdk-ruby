@@ -191,7 +191,7 @@ describe "Creative API" do
 
   it "should delete the creatives after creating it" do
     response = @@creative.delete($creative_id)
-    response.body.should == "OK"
+    response.body.should == '"Successfully deleted"'
   end
 
   it "should not use a AdvertiserId it doesn't have access to when creating" do 

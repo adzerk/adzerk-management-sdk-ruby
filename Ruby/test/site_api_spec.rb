@@ -1,4 +1,4 @@
-require 'spec_helper'
+require './spec_helper'
 
 describe "Site API" do
   
@@ -17,7 +17,7 @@ describe "Site API" do
     $site_url.should == JSON.parse(response.body)["Url"]
     $site_pub_id = JSON.parse(response.body)["PublisherAccountId"].to_s
   end
-  
+
   it "should list a specific site" do
     response = @@site.get($site_id)
     response.body.should == '{"Id":' + $site_id + ',"Title":"' + $site_title + '","Url":"' + $site_url + '","PublisherAccountId":' + $site_pub_id + ',"IsDeleted":false}'
@@ -48,7 +48,7 @@ describe "Site API" do
 
   it "should delete a new site" do
     response = @@site.delete($site_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted."'
   end
 
   it "should not list deleted sites" do
@@ -60,7 +60,7 @@ describe "Site API" do
 
   it "should not get individual deleted sites" do
     response = @@site.get($site_id)
-    response.body.should == '{"Id":0,"PublisherAccountId":0,"IsDeleted":false}'
+    response.body.should == '"This site has been deleted."'
   end
 
   it "should not update deleted sites" do
@@ -71,7 +71,7 @@ describe "Site API" do
       'Url' => $site_url
     }
     response = @@site.update(updated_site)
-    response.body.should == '{"Id":0,"PublisherAccountId":0,"IsDeleted":false}'
+    response.body.should == '"This site has been deleted."'
   end
 
 end

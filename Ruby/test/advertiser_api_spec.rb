@@ -58,7 +58,7 @@ describe "Advertiser API" do
 
   it "should delete a new advertiser" do
     response = @@advertiser.delete($advertiser_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted."'
   end
   
   it "should not list deleted advertisers" do
@@ -70,7 +70,7 @@ describe "Advertiser API" do
   
   it "should not get individual deleted advertiser" do
     response = @@advertiser.get($advertiser_id)
-    true.should == !response.body.scan(/Exception/).empty?
+    response.body.should == '"This advertiser is deleted."'
   end
   
   it "should not update deleted advertisers" do
@@ -79,7 +79,7 @@ describe "Advertiser API" do
       'Title' => "test"
     }
     response = @@advertiser.update(updated_advertiser)
-    JSON.parse(response.body)["Id"].should == 0
+    response.body.should == '"This advertiser is deleted."'
   end
   
   it "should create a new advertiser without IsActive or IsDeleted" do
