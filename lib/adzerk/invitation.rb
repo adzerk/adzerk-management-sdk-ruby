@@ -1,16 +1,22 @@
 module Adzerk
   class Invitation
 
+    include Adzerk::Util
+
+    attr_reader :client
+
+    def initialize(args= {})
+      @client = args[:client]
+    end
+
     def invite_publisher(data={})
-      uri = URI.parse($host + 'invite-publisher')
-      data = { 'invitation' => data.to_json }
-      Adzerk.post_request(uri, data)
+      data = { 'invitation' => camelize_data(data).to_json }
+      @client.post_request('invite-publisher', data)
     end
 
     def invite_advertiser(data={})
-      uri = URI.parse($host + 'invite-advertiser')
-      data = { 'invitation' => data.to_json }
-      Adzerk.post_request(uri, data)
+      data = { 'invitation' => camelize_data(data).to_json }
+      @client.post_request('invite-advertiser', data)
     end
 
   end

@@ -2,35 +2,29 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Report API" do
   
-  $report_url = 'http://www.adzerk.com/'
-  @@report = $adzerk::Reporting.new
-
-  it "create a report" do
-    $startdate = "1/15/2011"
-    $enddate = "12/31/2011"
-    $groupby = ["month"]
-    $top30 = false
-    $exclude3rd = false
-    $istotal = true
-    $params = []
-    new_report = {
-      'StartDate' => $startdate,
-      'EndDate' => $enddate,
-      'GroupBy' => $groupby,
-      'Top30countries' => $top30,
-      'Exclude3rdParty' => $exclude3rd,
-      'IsTotal' => $istotal,
-      'Parameters' => $params
-    }
-    response = @@report.create_report(new_report)
-    # response.body.should == '{"StartDate":"\/Date(1295067600000-0500)\/","EndDate":"\/Date(1325307600000-0500)\/","Critiera":[],"LoginId":0,"Records":[],"OptionRecords":[],"IsTotal":true,"Grouping":["month"],"TotalImpressions":0,"TotalClicks":0,"TotalCTR":0}'
+  before do
+    @reports = Adzerk::Client.new(API_KEY).reports
   end
 
+  it "create a report" do
+    new_report = {
+      :start_date => "1/15/2011",
+      :end_date => "12/31/2011",
+      :group_by => ['month'],
+      'Top30countries' => false,
+      :exclude_3rd_party => false,
+      :is_total => true,
+      :parameters => []
+    }
+    report = @reports.create_report(new_report)
+    report[:is_total].should eq(true)
+    report[:grouping].should eq(["month"])
+  end
 
   it "should pull a saved custom report" do
+    pending
     $savedReportId = 5280
-    response = @@report.get($savedReportId.to_s)
-
+    response = @reports.retrieve_report($savedReportId.to_s)
     csv_report = response.body
   end      
 end

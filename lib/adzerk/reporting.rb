@@ -1,16 +1,21 @@
 module Adzerk
   class Reporting
-    
+    include Adzerk::Util
+
+    attr_accessor :client
+
+    def initialize(args = {})
+      @client = args.fetch(:client)
+    end
+
     def create_report(data={})
-      uri = URI.parse($host + 'report')
-      data = { 'criteria' => data.to_json }
-      Adzerk.post_request(uri, data)
+      data = { 'criteria' => camelize_data(data).to_json }
+      parse_response(client.post_request('report', data))
     end
 
-    def get(id)
-      uri = URI.parse($host + 'report/' + id)
-      Adzerk.get_request(uri)
+    def retrieve_report(id)
+      url = 'report/' + id
+      client.get_request(url)
     end
-
   end
 end

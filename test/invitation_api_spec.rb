@@ -1,55 +1,32 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Invitation API" do
-
-  $invitation_url = 'http://www.adzerk.com/'
-  @@invite = $adzerk::Invitation.new
-  @@advertiser = $adzerk::Advertiser.new
-  $email = "test+apitest@adzerk.com"
-  
-  before(:all) do
-    site = $adzerk::Site.new
-    site_url = "http://adzerk.com"
-    site_title = 'Test Site ' + rand(1000000).to_s
-    new_site = {
-     'Title' => site_title,
-     'Url' => site_url
-    }
-    response = site.create(new_site)
-    $siteId = JSON.parse(response.body)["Id"].to_s
-    new_advertiser = {
-      'Title' => "Test"
-    }
-    response = @@advertiser.create(new_advertiser)
-    $advertiserId = JSON.parse(response.body)["Id"].to_s
+  before do
+    @client = Adzerk::Client.new(API_KEY)
+    advertiser = @client.advertisers.create(:title => "Coca cola",
+                                     :is_active => true,
+                                     :is_deleted => false)
+    site = @client.sites.create(:title => 'Adzerk', :url => 'http://www.adzerk.com')
+    @advertiser_id = advertiser[:id].to_s
+    @site_id = site[:id].to_s
   end
 
   it "should create a new publisher invitation" do
-
-    invitation = {
-      'Email' => $email,
-      'SiteId' => $siteId,
-      'AdvertiserId' => $advertiserId
-    }
-  
-    response = @@invite.invite_publisher(invitation)
+    response = @client.invitations.invite_publisher(:email => 'test@adzerk.com',
+                                        :site_id => @site_id,
+                                        :advertiser_id => @advertiser_id)
     response.body.should_not == ""
     response.body.length.should > 10
     response.body.length.should < 100
   end
-  
+
   it "should create a new advertiser invitation" do
-
-    invitation = {
-      'Email' => $email,
-      'SiteId' => $siteId,
-      'AdvertiserId' => $advertiserId
-    }
-  
-    response = @@invite.invite_advertiser(invitation)
+    response = @client.invitations.invite_advertiser(:email => 'test@adzerk.com',
+                                                 :site_id => @site_id,
+                                                 :advertiser_id => @advertiser_id)
     response.body.should_not == ""
     response.body.length.should > 10
     response.body.length.should < 100
   end
-  
+
 end
