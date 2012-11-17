@@ -69,7 +69,7 @@ describe "Priority API" do
   
   it "should delete a new priority" do
     response = @priorities.delete($priority_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
 end
 

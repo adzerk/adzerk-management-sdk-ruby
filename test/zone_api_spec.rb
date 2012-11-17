@@ -57,19 +57,7 @@ describe "Zone API" do
 
   it "should delete a new zone" do
     response = @zones.delete($zone_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
 
-  it "should not list deleted zones" do
-    result = @zones.list
-    result[:items].each do |zone|
-      zone[:id].to_s.should_not == $zone_id
-    end
-  end
-
-  it "should not get individual deleted zones" do
-    zone = @zones.get($zone_id)
-    zone[:id].should eq(0)
-    zone[:site_id].should eq(0)
-  end
 end

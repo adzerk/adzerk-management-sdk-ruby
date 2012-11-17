@@ -79,7 +79,7 @@ describe "Channel API" do
 
   it "should delete a new channel" do
     response = @channels.delete($channel_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
 
 end

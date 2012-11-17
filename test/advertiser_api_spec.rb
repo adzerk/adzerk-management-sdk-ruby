@@ -52,6 +52,6 @@ describe "Advertiser API" do
 
   it "should delete a new advertiser" do
     response = @advertisers.delete($advertiser_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted."'
   end
 end

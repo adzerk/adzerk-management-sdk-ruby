@@ -105,7 +105,7 @@ describe "Creative API" do
 
   it "should delete the creatives after creating it" do
     response = @creatives.delete($creative_id)
-    response.body.should == "OK"
+    response.body.should == '"Successfully deleted"'
   end
 
 end

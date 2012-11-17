@@ -50,7 +50,7 @@ describe "Site API" do
 
   it "should delete a new site" do
     response = @client.sites.delete($site_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted."'
   end
 
   it "should not list deleted sites" do
@@ -58,23 +58,6 @@ describe "Site API" do
     result[:items].each do |site|
       site[:id].to_s.should_not == $site_id
     end
-  end
-
-  it "should not get individual deleted sites" do
-    site = @client.sites.get($site_id)
-    site[:id].should eq(0)
-    site[:publisher_account_id].should eq(0)
-    site[:is_deleted].should eq(false)
-  end
-
-  it "should not update deleted sites" do
-    $site_title = 'Test Site ' + rand(1000000).to_s
-    site = @client.sites.update(:id => $site_id,
-                                    :title => $site_title,
-                                    :url => @site_url)
-    site[:id].should eq(0)
-    site[:publisher_account_id].should eq(0)
-    site[:is_deleted].should eq(false)
   end
 
 end

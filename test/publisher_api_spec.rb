@@ -75,7 +75,7 @@ describe "Publisher API" do
 
   it "should delete a new publisher" do
     response = @publishers.delete($publisher_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
 
   it "should retrieve publisher earnings" do

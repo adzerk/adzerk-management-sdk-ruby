@@ -132,7 +132,7 @@ describe "Flight API" do
 
   it "should delete a new flight" do
     response = @flights.delete($flight_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted"'
   end
 
   it "should create a flight with geotargeting" do

@@ -29,7 +29,7 @@ describe "Login_API" do
 
   it "should update a login" do
     login = @logins.update(:id => $login_id,
-                             :name => "New Name")
+                           :name => "New Name")
     login[:name].should eq("New Name")
   end
 

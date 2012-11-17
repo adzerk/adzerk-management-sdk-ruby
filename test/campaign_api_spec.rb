@@ -138,7 +138,7 @@ describe "Campaign API" do
 
   it "should delete a new campaign" do
     response = @campaigns.delete($campaign_id)
-    response.body.should == 'OK'
+    response.body.should == '"Successfully deleted."'
   end
 
 end
