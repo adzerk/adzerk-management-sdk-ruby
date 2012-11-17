@@ -5,7 +5,7 @@ module Adzerk
 
     attr_reader :sites, :zones, :campaigns, :channels, :priorities,
                 :advertisers, :flights, :creatives, :creative_maps,
-                :publishers, :invitations, :reports
+                :publishers, :invitations, :reports, :channel_site_maps
       
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/',
@@ -27,6 +27,7 @@ module Adzerk
       @creative_maps = Adzerk::CreativeMap.new(:client => self)
       @invitations = Adzerk::Invitation.new(:client => self)
       @reports = Adzerk::Reporting.new(:client => self)
+      @channel_site_maps = Adzerk::ChannelSiteMap.new(:client => self)
     end
 
     def get_request(url)

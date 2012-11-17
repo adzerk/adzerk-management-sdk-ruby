@@ -1,44 +1,53 @@
 module Adzerk
   class ChannelSiteMap
+
+    include Adzerk::Util
+
+    attr_reader :client
+
+    def initialize(args= {})
+      @client = args[:client]
+    end
     
     def create(data={})
-      uri = URI.parse($host + 'channelSite')
-      data = { 'channelSite' => data.to_json }
-      Adzerk.post_request(uri, data)
+      data = { 'channelSite' => camelize_data(data).to_json }
+      response = client.post_request('channelSite', data)
+      parse_response(response)
     end
     
-    def get(channelId, siteId)
-      uri = URI.parse($host + 'channel/' + channelId.to_s + '/site/' + siteId.to_s)
-      Adzerk.get_request(uri)
+    def get(channel_id, site_id)
+      url = "channel/#{channel_id}/site/#{site_id}"
+      response = client.get_request(url)
+      response = parse_response(response)
     end
     
-    def list()
-      uri = URI.parse($host + 'channelSite')
-      response = Adzerk.get_request(uri)
-      JSON.parse(response.body)
+    def list
+      response = client.get_request('channelSite')
+      parse_response(response)
     end
     
     def update(data={})
-      uri = URI.parse($host + 'channelSite')
-      data = { 'channelSite' => data.to_json }
-      Adzerk.put_request(uri, data)
+      data = { 'channelSite' => camelize_data(data).to_json }
+      response = client.put_request('channelSite', data)
+      parse_response(response)
     end
     
-    def delete(channelId, siteId)
-      uri = URI.parse($host + 'channel/' + channelId.to_s + '/site/'+ siteId.to_s + '/delete')
-      Adzerk.get_request(uri)
+    def delete(channel_id, site_id)
+      url = "channel/#{channel_id}/site/#{site_id}/delete"
+      client.get_request(url)
     end
 
-    def sitesInChannel(channelId)
-      uri = URI.parse($host + 'sitesInChannel/' + channelId.to_s)
-      Adzerk.get_request(uri)      
+    def sites_in_channel(channel_id)
+      url = "sitesInChannel/#{channel_id}"
+      response = client.get_request(url)
+      parse_response(response)
     end
 
-    def channelsInSite(siteId)
-      uri = URI.parse($host + 'channelsInSite/' + siteId.to_s)
-      Adzerk.get_request(uri)
+    def channels_in_site(site_id)
+      url = "channelsInSite/#{site_id}"
+      response = client.get_request(url)
+      parse_response(response)
     end
-
   end
 end
 

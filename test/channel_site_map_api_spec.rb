@@ -1,125 +1,74 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Channel Site Map API" do
-  
-  $site_url = 'http://www.adzerk.com'
-  @@csm = $adzerk::ChannelSiteMap.new
-  @@channel = $adzerk::Channel.new
-  @@site = $adzerk::Site.new
 
   before(:all) do
-    new_channel = {
-      'Title' => 'Test Channel ' + rand(1000000).to_s,
-      'Commission' => '0.0',
-      'Engine' => 'CPM',
-      'Keywords' => 'test',
-      'CPM' => '10.00',
-      'AdTypes' => [1,2,3,4]
-    }  
-    response = @@channel.create(new_channel)
-    $channelId = JSON.parse(response.body)["Id"]
-
+    client = Adzerk::Client.new(API_KEY)
+    @csm = client.channel_site_maps
+    @sites = client.sites
+    @channels = client.channels
+    channel = @channels.create(:title => 'Test Channel ' + rand(1000000).to_s,
+                               :commission => '0.0',
+                               :engine => 'CPM',
+                               :keywords => 'test',
+                               'CPM' => '10.00',
+                               :ad_types =>  [1,2,3,4])
+    @channel_id = channel[:id]
     new_site = {
-     'Title' => 'Test Site ' + rand(1000000).to_s,
-     'Url' => 'http://www.adzerk.com'
+     :title => 'Test Site ' + rand(1000000).to_s,
+     :url => 'http://www.adzerk.com'
     }
-    response = @@site.create(new_site)
-    $siteId = JSON.parse(response.body)["Id"]
+    site = @sites.create(new_site)
+    @site_id = site[:id]
   end
-  
+
   it "should create a new map" do
     new_map = {
-     'SiteId' => $siteId,
-     'ChannelId' => $channelId,
-     'Priority' => 10
+     :site_id => @site_id,
+     :channel_id => @channel_id,
+     :priority => 10
     }
-    response = @@csm.create(new_map)
-    JSON.parse(response.body)["SiteId"].should == $siteId
-    JSON.parse(response.body)["ChannelId"].should == $channelId 
-    JSON.parse(response.body)["Priority"].should == 10
+    channel_site_map = @csm.create(new_map)
+    channel_site_map[:site_id].should eq(@site_id)
+    channel_site_map[:channel_id].should eq(@channel_id)
+    channel_site_map[:priority].should eq(10)
   end
 
   it "should retrieve a list of sites in a channel" do
-    response = @@csm.sitesInChannel($channelId)
-    true.should ==  response.body.scan(/#{$siteId}/).length >= 1
+    sites = @csm.sites_in_channel(@channel_id)
+    sites[:site_ids].should include(@site_id)
   end
 
   it "should retrieve a list of channels in a site" do
-    response = @@csm.channelsInSite($siteId)
-    true.should ==  response.body.scan(/#{$channelId}/).length >= 1
+    channels = @csm.channels_in_site(@site_id)
+    channels[:channel_ids].should include(@channel_id)
   end
-  
+
   it "should list a specific map" do
-    response = @@csm.get($channelId, $siteId)
-    response.body.should == '{"SiteId":' + $siteId.to_s + ',"ChannelId":' + $channelId.to_s + ',"FixedPaymentAmount":0' + ',"Priority":' + '10}'
+    channel_site_map = @csm.get(@channel_id, @site_id)
+    channel_site_map[:site_id].should eq(@site_id)
+    channel_site_map[:channel_id].should eq(@channel_id)
+    channel_site_map[:priority].should eq(10)
   end
 
   it "should update a map" do
     u_map = {
-     'SiteId' => $siteId,
-     'ChannelId' => $channelId,
-     'Priority' => 200
+     :site_id => @site_id,
+     :channel_id => @channel_id,
+     :priority => 200
     }
-    response = @@csm.update(u_map)
-    JSON.parse(response.body)["SiteId"].should == $siteId
-    JSON.parse(response.body)["ChannelId"].should == $channelId 
-    JSON.parse(response.body)["Priority"].should == 200
+    channel_map = @csm.update(u_map)
+    channel_map[:priority].should eq(200)
   end
 
   it "should list all maps for network" do
-    result = @@csm.list()
-    result.length.should > 0
-    result["Items"].last["SiteId"].should == $siteId
-    result["Items"].last["ChannelId"].should == $channelId
-    result["Items"].last["Priority"].should == 200 
+    channel_maps = @csm.list
+    channel_maps[:items].last[:site_id].should eq(@site_id)
   end
 
   it "should delete a new maps" do
-    response = @@csm.delete($channelId, $siteId)
-    response.body.should == 'OK'
-  end
-
-  it "should not list deleted maps" do
-    result = @@csm.list()
-    #result["Items"].each do |r|
-    #  r["SiteId"].should_not == $siteId and 
-    #  r["ChannelId"].should_not == $channelId
-    #end
-  end
-
-  it "should not get individual deleted maps" do
-    response = @@csm.get($channelId, $siteId)
-    response.body.should == '{"SiteId":0,"ChannelId":0,"Priority":0}'
-  end
-
-  it "should not update deleted maps" do
-    u_map = {
-     'SiteId' => $siteId,
-     'ChannelId' => $channelId,
-     'Priority' => 300
-    }
-    response = @@csm.update(u_map)
-    response.body.should == '{"SiteId":0,"ChannelId":0,"Priority":0}'
-  end
-
-  it "should not create if the site is in a different network" do
-    new_map = {
-     'SiteId' => 1,
-     'ChannelId' => $channelId,
-     'Priority' => 10
-    }
-    response = @@csm.create(new_map)
-    true.should == response.body.scan(/This site is not part of your network/).length > 1
-  end
-
-  it "should not create if the channel is in a different netowork" do
-    new_map = {
-     'SiteId' => $siteId,
-     'ChannelId' => 1,
-     'Priority' => 10
-    }
-    response = @@csm.create(new_map)
-    true.should == response.body.scan(/This channel is not part of your network/).length > 1
+    response = @csm.delete(@channel_id, @site_id)
+    response.body.should == '"Successfully deleted."'
   end
 
 end
