@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Report API" do
-  
+
   before do
     @reports = Adzerk::Client.new(API_KEY).reports
   end
@@ -26,6 +26,6 @@ describe "Report API" do
     $savedReportId = 5280
     response = @reports.retrieve_report($savedReportId.to_s)
     csv_report = response.body
-  end      
+  end
 end
 

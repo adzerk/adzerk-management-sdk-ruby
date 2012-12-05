@@ -1,6 +1,6 @@
 module Adzerk
   module Util
-    extend self 
+    extend self
 
     def camelize_data(data)
       return data unless data.respond_to?(:reduce)
@@ -28,10 +28,9 @@ module Adzerk
     end
 
     def parse_response(response)
-      if response.code == "200"
+      if response.code == "200" or response.code == "400"
         uncamelize_data(JSON.parse(response.body))
-      elsif
-        response
+      else
       end
     end
   end

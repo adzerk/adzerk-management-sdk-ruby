@@ -1,13 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Publisher API" do
-  
+
   before(:all) do
     client = Adzerk::Client.new(API_KEY)
     @publishers = client.publishers
     @rand = rand(1000000).to_s
   end
-  
+
   it "should create a new publisher" do
     new_publisher = {
      :first_Name => 'John' + @rand,
@@ -34,7 +34,7 @@ describe "Publisher API" do
     publisher[:address].should_not be_nil
     $address_id = publisher[:address][:id].to_s
   end
-  
+
   it "should list a specific publisher" do
     publisher = @publishers.get($publisher_id)
     publisher[:first_name].should eq('John' + @rand)

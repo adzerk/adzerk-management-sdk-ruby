@@ -89,7 +89,7 @@ describe "Campaign API" do
     campaign[:is_deleted].should == false
     $campaign_price.to_f.should == campaign[:price]
     $campaign_advertiser_id.should == campaign[:advertiser_id]
-    # $campaign_Flights1.to_json.should == JSON.parse(response.body)["Flights"]
+    campaign[:flights].first[:id].should_not == nil
   end
 
 
@@ -139,6 +139,52 @@ describe "Campaign API" do
   it "should delete a new campaign" do
     response = @campaigns.delete($campaign_id)
     response.body.should == '"Successfully deleted."'
+  end
+
+  it "should not update a deleted campaign" do
+    campaign_to_update = {
+      :id => $campaign_id,
+      :name => "test"
+    }
+
+    campaign = @campaigns.update(campaign_to_update)
+    campaign[:message].should eq("This advertiser is not part of your network")
+  end
+
+  it "should not create/update a campaign with a advertiserId that doesn't belong to it" do
+    new_campaign = {
+      :name => 'Test campaign ' + rand(1000000).to_s,
+      :start_date => "1/1/2011",
+      :end_date => "12/31/2011",
+      :is_active => false,
+      :price => '10.00',
+      :advertiser_id => '123',
+      :flights => [],
+      :is_deleted => false
+    }
+
+    campaign = @campaigns.create(new_campaign)
+    campaign[:message].should eq("This advertiser is not part of your network")
+
+    updated_campaign = {
+      :id => $campaign_id,
+      :name => 'Test campaign ' + rand(1000000).to_s,
+      :start_date => "1/1/2011",
+      :end_date => "12/31/2011",
+      :is_active => false,
+      :price => '10.00',
+      :advertiser_id => '123',
+      :flights => [],
+      :is_deleted => false
+    }
+
+    campaign = @campaigns.update(updated_campaign)
+    campaign[:message].should eq("This advertiser is not part of your network")
+  end
+
+  it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
+    response = @campaigns.get('123')
+    response[:message].should eq("This campaign is not part of your network")
   end
 
 end

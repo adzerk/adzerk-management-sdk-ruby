@@ -30,7 +30,7 @@ describe "Flight API" do
                                   :weight => 1,
                                   :is_deleted => false)
     $priority_id = priority[:id].to_s
- 
+
     campaign = @campaigns.
       create(:name => 'Test campaign ' + rand(1000000).to_s,
              :start_date => "1/1/2011",
@@ -184,5 +184,28 @@ describe "Flight API" do
     geotargeting[:country_code].should eq("US")
     geotargeting[:region].should eq("NC")
     geotargeting[:metro_code].should eq(560)
+  end
+
+  it "should not create a flight for a campaign in a different network" do
+    flight = @flights.create(
+      :no_end_date => false,
+      :priority_id => $priority_id,
+      :name => $flight_Name,
+      :start_date => $flight_StartDate,
+      :end_date => $flight_EndDate,
+      :no_end_date => $flight_NoEndDate,
+      :price => $flight_Price,
+      :option_type => $flight_OptionType,
+      :impressions => $flight_Impressions,
+      :is_unlimited => $flight_IsUnlimited,
+      :is_full_speed => $flight_IsFullSpeed,
+      :keywords => $flight_Keywords,
+      :user_agent_keywords => $flight_UserAgentKeywords,
+      :weight_override => $flight_WeightOverride,
+      :campaign_id => 123,
+      :is_active => $flight_IsActive,
+      :is_deleted => $flight_IsDeleted
+    )
+    flight[:message].should == "This campaign is not part of your network"
   end
 end

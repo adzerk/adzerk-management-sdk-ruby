@@ -1,13 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Creative API" do
-  
+
   before(:all) do
     client = Adzerk::Client.new(API_KEY)
     @creatives = client.creatives
     @advertiser_id = client.advertisers.create(:title => "Test")[:id]
   end
-  
+
   it "should create a creative using old api spec" do
     new_creative = {
       :title => 'Test Creative Old API',

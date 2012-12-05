@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Priority API" do
-  
+
   before(:all) do
     client = Adzerk::Client.new(API_KEY)
     channels = client.channels
@@ -32,7 +32,7 @@ describe "Priority API" do
     $priority_weight.should == priority[:weight]
     $priority_is_deleted.should == priority[:is_deleted]
   end
-  
+
   it "should list a specific priority" do
     priority = @priorities.get($priority_id)
     $priority_name.should == priority[:name]
@@ -41,7 +41,7 @@ describe "Priority API" do
     $priority_is_deleted.should == priority[:is_deleted]
     priority = @priorities.get($priority_id)
   end
-  
+
   it "should update a priority" do
     priority = @priorities.
       update(:id => $priority_id,
@@ -49,13 +49,13 @@ describe "Priority API" do
              :channel_id => $priority_channel_id,
              :weight => 2,
              :is_deleted => $priority_is_deleted)
-  
+
     $priority_name.should == priority[:name]
     $priority_channel_id.to_f.should == priority[:channel_id]
     priority[:weight].should == 2
     $priority_is_deleted.should == priority[:is_deleted]
   end
-  
+
   it "should list all priorities" do
     result = @priorities.list
     result.length.should > 0
@@ -66,7 +66,7 @@ describe "Priority API" do
     priority[:weight].should == 2
     $priority_is_deleted.should == priority[:is_deleted]
   end
-  
+
   it "should delete a new priority" do
     response = @priorities.delete($priority_id)
     response.body.should == '"Successfully deleted"'

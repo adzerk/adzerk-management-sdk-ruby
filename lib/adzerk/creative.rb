@@ -12,6 +12,6 @@ module Adzerk
       url = 'advertiser/' + advertiserId.to_s + "/creatives"
       parse_response(@client.get_request(url))
     end
-    
+
   end
 end

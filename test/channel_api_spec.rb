@@ -82,4 +82,24 @@ describe "Channel API" do
     response.body.should == '"Successfully deleted"'
   end
 
+  it "should not get individual deleted channel" do
+    response = @channels.get($channel_id)
+    puts response
+    response[:message].should == 'This channel has been deleted'
+  end
+
+  it "should not update deleted channels" do
+    updated_channel = {
+      :id => $channel_id,
+      :title => $u_channel_title + "test",
+      :commission => $u_channel_commission,
+      :engine => $u_channel_engine,
+      :keywords => $u_channel_keywords,
+      :cpm => $u_channel_CPM,
+      :adtypes => $u_channel_AdTypes
+    }
+    response = @channels.update(updated_channel)
+    response[:message].should == "This channel has been deleted"
+  end
+
 end

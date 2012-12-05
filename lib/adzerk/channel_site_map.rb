@@ -8,30 +8,30 @@ module Adzerk
     def initialize(args= {})
       @client = args[:client]
     end
-    
+
     def create(data={})
       data = { 'channelSite' => camelize_data(data).to_json }
       response = client.post_request('channelSite', data)
       parse_response(response)
     end
-    
+
     def get(channel_id, site_id)
       url = "channel/#{channel_id}/site/#{site_id}"
       response = client.get_request(url)
       response = parse_response(response)
     end
-    
+
     def list
       response = client.get_request('channelSite')
       parse_response(response)
     end
-    
+
     def update(data={})
       data = { 'channelSite' => camelize_data(data).to_json }
       response = client.put_request('channelSite', data)
       parse_response(response)
     end
-    
+
     def delete(channel_id, site_id)
       url = "channel/#{channel_id}/site/#{site_id}/delete"
       client.get_request(url)
