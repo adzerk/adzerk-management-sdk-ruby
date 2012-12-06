@@ -84,7 +84,6 @@ describe "Channel API" do
 
   it "should not get individual deleted channel" do
     response = @channels.get($channel_id)
-    puts response
     response[:message].should == 'This channel has been deleted'
   end
 
