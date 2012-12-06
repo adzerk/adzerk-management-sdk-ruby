@@ -94,8 +94,8 @@ describe "Channel API" do
       :commission => $u_channel_commission,
       :engine => $u_channel_engine,
       :keywords => $u_channel_keywords,
-      :cpm => $u_channel_CPM,
-      :adtypes => $u_channel_AdTypes
+      'CPM' => $u_channel_CPM,
+      :ad_types => $u_channel_AdTypes
     }
     response = @channels.update(updated_channel)
     response[:message].should == "This channel has been deleted"
