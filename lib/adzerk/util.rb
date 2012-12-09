@@ -28,11 +28,7 @@ module Adzerk
     end
 
     def parse_response(response)
-      if response.code == "200"
-        uncamelize_data(JSON.parse(response.body))
-      elsif
-        response
-      end
+      uncamelize_data(JSON.parse(response.body))
     end
   end
 end
