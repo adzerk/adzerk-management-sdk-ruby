@@ -47,7 +47,7 @@ describe "Creative API" do
       :alt => "alt text",
       :is_deleted => false, 
       :is_sync => true,
-      'isHTMLJS' => true,
+      :'isHTMLJS' => true,
       :script_body => "<html></html>"
     }
     creative = @creatives.create(new_creative)
