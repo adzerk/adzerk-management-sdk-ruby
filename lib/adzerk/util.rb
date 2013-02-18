@@ -5,11 +5,12 @@ module Adzerk
     def camelize_data(data)
       return data unless data.respond_to?(:reduce)
       data.reduce({}) do |acc, (sym, val)|
-        acc[sym.to_s.camelize] = case val
-                                   when Hash then camelize_data(val)
-                                   when Array then val.map { |elem| camelize_data(elem) }
-                                   else val
-                                 end
+        sym = sym.to_s.camelize if sym.class == Symbol
+        acc[sym] = case val
+                     when Hash then camelize_data(val)
+                     when Array then val.map { |elem| camelize_data(elem) }
+                     else val
+                   end
         acc
       end
     end

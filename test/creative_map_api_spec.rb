@@ -207,7 +207,6 @@ describe "Creative Flight API" do
 
   it "should delete the creatives after creating it" do
     response = @creative_maps.delete($map_id, @flight_id)
-    response.body.should == "OK"
+    response.body.should include("This creative map has been deleted")
   end
-
 end
