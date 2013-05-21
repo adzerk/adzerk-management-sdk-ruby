@@ -147,8 +147,7 @@ describe "Campaign API" do
       :name => "test"
     }
 
-    campaign = @campaigns.update(campaign_to_update)
-    campaign[:message].should eq("This advertiser is not part of your network")
+    lambda { @campaigns.update(campaign_to_update) }.should raise_error("This advertiser is not part of your network")
   end
 
   it "should not create/update a campaign with a advertiserId that doesn't belong to it" do
@@ -163,8 +162,7 @@ describe "Campaign API" do
       :is_deleted => false
     }
 
-    campaign = @campaigns.create(new_campaign)
-    campaign[:message].should eq("This advertiser is not part of your network")
+    lambda{ @campaigns.create(new_campaign) }.should raise_error("This advertiser is not part of your network")
 
     updated_campaign = {
       :id => $campaign_id,
@@ -178,13 +176,11 @@ describe "Campaign API" do
       :is_deleted => false
     }
 
-    campaign = @campaigns.update(updated_campaign)
-    campaign[:message].should eq("This advertiser is not part of your network")
+    lambda{ @campaigns.update(updated_campaign) }.should raise_error("This advertiser is not part of your network")
   end
 
   it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
-    response = @campaigns.get('123')
-    response[:message].should eq("This campaign is not part of your network")
+    lambda { @campaigns.get('123') }.should raise_error("This campaign is not part of your network")
   end
 
 end

@@ -63,19 +63,15 @@ describe "Advertiser API" do
   end
 
   it "should not get individual deleted advertiser" do
-    response = @advertisers.get $advertiser_id
-    response[:message].should eq("This advertiser is deleted.")
+    lambda { @advertisers.get $advertiser_id }.should raise_error("This advertiser is deleted.")
   end
 
   it "should not update a deleted advertiser" do
-    advertiser = @advertisers.update(:id => $advertiser_id,
-                                     :title => "Cocacola")
-    advertiser[:message].should eq("This advertiser is deleted.")
+    lambda { @advertisers.update(:id => $advertiser_id, :title => "Cocacola") }.should raise_error("This advertiser is deleted.")
   end
 
   it "should require a title" do
-    response = @advertisers.create()
-    response[:message].should eq("A title is required.")
+    lambda{ @advertisers.create() }.should raise_error("A title is required.")
   end
 
 end

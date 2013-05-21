@@ -2,6 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Login_API" do
 
+  puts ENV['ADZERK_API_KEY']
+
   before do
     @logins = Adzerk::Client.new(API_KEY).logins
   end

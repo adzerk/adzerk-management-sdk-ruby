@@ -34,28 +34,25 @@ module Adzerk
 
     def get_request(url)
       uri = URI.parse(@config[:host] + url)
-      http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Get.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
-      http.request(request)
+      send_request(request, uri)
     end
 
     def post_request(url, data)
       uri = URI.parse(@config[:host] + url)
-      http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Post.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
       request.set_form_data(data)
-      http.request(request)
+      send_request(request, uri)
     end
 
     def put_request(url, data)
       uri = URI.parse(@config[:host] + url)
-      http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Put.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
       request.set_form_data(data)
-      http.request(request)
+      send_request(request, uri)
     end
 
     def create_creative(data={}, image_path='')      
@@ -74,6 +71,16 @@ module Adzerk
       {:image => image},
       "X-Adzerk-ApiKey" => @api_key,
       :accept => :mime)
+    end
+
+    def send_request(request, uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      response = http.request(request)
+      if response.kind_of? Net::HTTPClientError
+        error_response = JSON.parse(response.body)
+        raise Adzerk::ApiError.new(error_response["message"])
+      end
+      response
     end
 
   end

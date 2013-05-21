@@ -83,8 +83,7 @@ describe "Channel API" do
   end
 
   it "should not get individual deleted channel" do
-    response = @channels.get($channel_id)
-    response[:message].should == 'This channel has been deleted'
+    lambda{ @channels.get($channel_id) }.should raise_error 'This channel has been deleted'
   end
 
   it "should not update deleted channels" do
@@ -97,8 +96,7 @@ describe "Channel API" do
       'CPM' => $u_channel_CPM,
       :ad_types => $u_channel_AdTypes
     }
-    response = @channels.update(updated_channel)
-    response[:message].should == "This channel has been deleted"
+    lambda { @channels.update(updated_channel) }.should raise_error "This channel has been deleted"
   end
 
 end

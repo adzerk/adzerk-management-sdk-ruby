@@ -211,143 +211,145 @@ describe "Creative Flight API" do
   end
 
   it "should not get a map in a different network" do
-    creative_map = @creative_maps.get(123, @flight_id)
-    creative_map[:message].should == "This flight is not part of your network"
+    lambda{ @creative_maps.get(123, @flight_id) }.should raise_error "This flight is not part of your network"
   end
 
   it "should not get a map that's been deleted" do
-    creative_map = @creative_maps.get($map_id, @flight_id)
-    creative_map[:message].should == "This creative map has been deleted"
+    lambda{ @creative_maps.get($map_id, @flight_id) }.should raise_error "This creative map has been deleted"
   end
 
   it "should not update a map that's in a different network" do
-    creative_map = @creative_maps.update(
-      :id => $map_id,
-      :campaign_id => @campaign_id,
-      :flight_id => 123,
-      :size_override => false,
-      :iframe => false,
-      :impressions => 200000,
-      :percentage => 50,
-      :site_id => @site_id,
-      :zone_id => @zone_id,
-      :is_active => true,
-      :is_deleted => false,
-      :creative => {
-        :id => $creative_id_id
-      }
-    )
-    creative_map[:message].should == "This flight is not part of your network"
+    lambda {
+      creative_map = @creative_maps.update(
+        :id => $map_id,
+        :campaign_id => @campaign_id,
+        :flight_id => 123,
+        :size_override => false,
+        :iframe => false,
+        :impressions => 200000,
+        :percentage => 50,
+        :site_id => @site_id,
+        :zone_id => @zone_id,
+        :is_active => true,
+        :is_deleted => false,
+        :creative => {
+          :id => $creative_id_id
+        }
+      )
+    }.should raise_error "This flight is not part of your network"
   end
 
   it "should not update a map that's been deleted" do
-    creative_map = @creative_maps.update(
-      :id => $map_id,
-      :campaign_id => @campaign_id,
-      :flight_id => @flight_id,
-      :size_override => false,
-      :iframe => false,
-      :impressions => 200000,
-      :percentage => 50,
-      :site_id => @site_id,
-      :zone_id => @zone_id,
-      :is_active => true,
-      :is_deleted => false,
-      :creative => {
-        :id => $creative_id_id
-      }
-    )
-    creative_map[:message].should == "This creative map has been deleted"
+    lambda {
+      creative_map = @creative_maps.update(
+        :id => $map_id,
+        :campaign_id => @campaign_id,
+        :flight_id => @flight_id,
+        :size_override => false,
+        :iframe => false,
+        :impressions => 200000,
+        :percentage => 50,
+        :site_id => @site_id,
+        :zone_id => @zone_id,
+        :is_active => true,
+        :is_deleted => false,
+        :creative => {
+          :id => $creative_id_id
+        }
+      )
+    }.should raise_error "This creative map has been deleted"
   end
 
   it "should fail when creating a map for a campaign in a different network" do
-    creative_map = @creative_maps.create(
-      :campaign_id => 123,
-      :flight_id => @flight_id,
-      :size_override => false,
-      :iframe => false,
-      :impressions => 100000,
-      :percentage => 50,
-      :siteId => @site_id,
-      :zoneId => @zone_id,
-      :distributionType => 1,
-      :isActive => true,
-      :isDeleted => false,
-      :creative => {
-        :title => "Creative Title",
-        :url => "http://www.adzerk.com",
-        :body => "Test Body",
-        :advertiser_id => @advertiser_id,
-        :ad_type_id => 18,
-        'IsHTMLJS' => true,
-        :script_body => "<html></html>",
-        :is_active => true,
-        :alt => "alt text",
-        :is_deleted => false,
-        :is_sync => false
-      }
-    )
-    creative_map[:message].should == "This campaign is not part of your network"
+    lambda {
+      creative_map = @creative_maps.create(
+        :campaign_id => 123,
+        :flight_id => @flight_id,
+        :size_override => false,
+        :iframe => false,
+        :impressions => 100000,
+        :percentage => 50,
+        :siteId => @site_id,
+        :zoneId => @zone_id,
+        :distributionType => 1,
+        :isActive => true,
+        :isDeleted => false,
+        :creative => {
+          :title => "Creative Title",
+          :url => "http://www.adzerk.com",
+          :body => "Test Body",
+          :advertiser_id => @advertiser_id,
+          :ad_type_id => 18,
+          'IsHTMLJS' => true,
+          :script_body => "<html></html>",
+          :is_active => true,
+          :alt => "alt text",
+          :is_deleted => false,
+          :is_sync => false
+        }
+      )
+    }.should raise_error "This campaign is not part of your network"
   end
 
   it "should fail when creating a map for a site in a different network" do
-    creative_map = @creative_maps.create(
-      :campaign_id => @campaign_id,
-      :flight_id => @flight_id,
-      :size_override => false,
-      :iframe => false,
-      :impressions => 100000,
-      :percentage => 50,
-      :siteId => 123,
-      :zoneId => @zone_id,
-      :distributionType => 1,
-      :isActive => true,
-      :isDeleted => false,
-      :creative => {
-        :title => "Creative Title",
-        :url => "http://www.adzerk.com",
-        :body => "Test Body",
-        :advertiser_id => @advertiser_id,
-        :ad_type_id => 18,
-        'IsHTMLJS' => true,
-        :script_body => "<html></html>",
-        :is_active => true,
-        :alt => "alt text",
-        :is_deleted => false,
-        :is_sync => false
-      }
-    )
-    creative_map[:message].should == "This site does not belong to your network"
+    lambda {
+      creative_map = @creative_maps.create(
+        :campaign_id => @campaign_id,
+        :flight_id => @flight_id,
+        :size_override => false,
+        :iframe => false,
+        :impressions => 100000,
+        :percentage => 50,
+        :siteId => 123,
+        :zoneId => @zone_id,
+        :distributionType => 1,
+        :isActive => true,
+        :isDeleted => false,
+        :creative => {
+          :title => "Creative Title",
+          :url => "http://www.adzerk.com",
+          :body => "Test Body",
+          :advertiser_id => @advertiser_id,
+          :ad_type_id => 18,
+          'IsHTMLJS' => true,
+          :script_body => "<html></html>",
+          :is_active => true,
+          :alt => "alt text",
+          :is_deleted => false,
+          :is_sync => false
+        }
+      )
+    }.should raise_error "This site does not belong to your network"
   end
 
   it "should fail when creating a map for a zone in a different network" do
-    creative_map = @creative_maps.create(
-      :campaign_id => @campaign_id,
-      :flight_id => @flight_id,
-      :size_override => false,
-      :iframe => false,
-      :impressions => 100000,
-      :percentage => 50,
-      :siteId => @site_id,
-      :zoneId => 11,
-      :distributionType => 1,
-      :isActive => true,
-      :isDeleted => false,
-      :creative => {
-        :title => "Creative Title",
-        :url => "http://www.adzerk.com",
-        :body => "Test Body",
-        :advertiser_id => @advertiser_id,
-        :ad_type_id => 18,
-        'IsHTMLJS' => true,
-        :script_body => "<html></html>",
-        :is_active => true,
-        :alt => "alt text",
-        :is_deleted => false,
-        :is_sync => false
-      }
-    )
-    creative_map[:message].should == "The site associated with that zone does not belong to your network"
+    lambda {
+      creative_map = @creative_maps.create(
+        :campaign_id => @campaign_id,
+        :flight_id => @flight_id,
+        :size_override => false,
+        :iframe => false,
+        :impressions => 100000,
+        :percentage => 50,
+        :siteId => @site_id,
+        :zoneId => 11,
+        :distributionType => 1,
+        :isActive => true,
+        :isDeleted => false,
+        :creative => {
+          :title => "Creative Title",
+          :url => "http://www.adzerk.com",
+          :body => "Test Body",
+          :advertiser_id => @advertiser_id,
+          :ad_type_id => 18,
+          'IsHTMLJS' => true,
+          :script_body => "<html></html>",
+          :is_active => true,
+          :alt => "alt text",
+          :is_deleted => false,
+          :is_sync => false
+        }
+      )
+    }.should raise_error "The site associated with that zone does not belong to your network"
   end
-
 end
