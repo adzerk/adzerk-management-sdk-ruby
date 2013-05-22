@@ -121,7 +121,8 @@ describe "Flight API" do
     flight = @flights.update(:id => $flight_id,
                              :campaign_id => $flight_CampaignId,
                              :name => "New Flight Name",
-                             :priority_id => $priority_id)
+                             :priority_id => $priority_id,
+                             :start_date => $flight_StartDate)
     flight[:name].should eq("New Flight Name")
   end
 
