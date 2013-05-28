@@ -15,6 +15,8 @@ require 'rake'
   'security_api_spec.rb',
   'site_api_spec.rb',
   'zone_api_spec.rb'
+  'site_zone_targeting_api_spec.rb'
+  'geo_targeting_api_spec.rb'
 ]
 
 task :runall do

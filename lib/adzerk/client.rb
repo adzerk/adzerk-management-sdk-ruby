@@ -6,7 +6,7 @@ module Adzerk
     attr_reader :sites, :zones, :campaigns, :channels, :priorities,
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
-                :logins
+                :logins, :geotargetings, :sitezonetargetings
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/',
@@ -30,6 +30,9 @@ module Adzerk
       @reports = Adzerk::Reporting.new(:client => self)
       @channel_site_maps = Adzerk::ChannelSiteMap.new(:client => self)
       @logins = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'login')
+      @geotargetings = Adzerk::GeoTargeting.new(:client => self, :endpoint => 'geotargeting')
+      @sitezonetargetings = Adzerk::SiteZoneTargeting.new(:client => self, :endpoint => 'sitezone')
+
     end
 
     def get_request(url)
