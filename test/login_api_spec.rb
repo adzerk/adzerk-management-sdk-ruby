@@ -9,7 +9,7 @@ describe "Login_API" do
   end
 
   it "should create a new login" do
-    email = "test@email_#{rand(1000)}.com"
+    email = "test@email_#{rand(1000000)}.com"
     login = @logins.create(:email => email,
                            :password => '1234567',
                            :name => "John Doe")
