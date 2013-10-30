@@ -12,7 +12,7 @@ Be sure and get your API key. Log into the management application at [http://man
 
 ## Usage
 
-Refer to the [https://github.com/adzerk/adzerk-api/wiki](wiki) of this repository for the properties needed for update and create. 
+Refer to the [https://github.com/adzerk/adzerk-api/wiki](https://github.com/adzerk/adzerk-api/wiki) of this repository for the properties needed for update and create. 
 
 ### Examples
 
