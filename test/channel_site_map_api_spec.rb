@@ -61,10 +61,10 @@ describe "Channel Site Map API" do
     channel_map[:priority].should eq(200)
   end
 
-  it "should list all maps for network" do
-    channel_maps = @csm.list
-    channel_maps[:items].last[:site_id].should eq(@site_id)
-  end
+  # it "should list all maps for network" do
+  #   channel_maps = @csm.list
+  #   channel_maps[:items].last[:site_id].should eq(@site_id)
+  # end
 
   it "should delete a new maps" do
     response = @csm.delete(@channel_id, @site_id)
