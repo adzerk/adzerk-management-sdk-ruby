@@ -136,20 +136,6 @@ describe "Campaign API" do
     campaigns.length.should > 0
   end
 
-  it "should delete a new campaign" do
-    response = @campaigns.delete($campaign_id)
-    response.body.should == '"Successfully deleted."'
-  end
-
-  it "should not update a deleted campaign" do
-    campaign_to_update = {
-      :id => $campaign_id,
-      :name => "test"
-    }
-
-    lambda { @campaigns.update(campaign_to_update) }.should raise_error("This advertiser is not part of your network")
-  end
-
   it "should not create/update a campaign with a advertiserId that doesn't belong to it" do
     new_campaign = {
       :name => 'Test campaign ' + rand(1000000).to_s,
@@ -181,6 +167,20 @@ describe "Campaign API" do
 
   it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
     lambda { @campaigns.get('123') }.should raise_error("This campaign is not part of your network")
+  end
+
+    it "should delete a new campaign" do
+    response = @campaigns.delete($campaign_id)
+    response.body.should == '"Successfully deleted."'
+  end
+
+  it "should not update a deleted campaign" do
+    campaign_to_update = {
+      :id => $campaign_id,
+      :name => "test"
+    }
+
+    lambda { @campaigns.update(campaign_to_update) }.should raise_error("This campaign has been deleted")
   end
 
 end
