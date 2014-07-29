@@ -128,28 +128,28 @@ describe "Creative Flight API" do
 
     # size_override and iframe are left out because they are optional
     # and always return null
-    creative_map[:campaign_id].should eq(@campaign_id)
-    creative_map[:flight_id].should eq(@flight_id)
+    expect(creative_map[:campaign_id]).to eq(@campaign_id)
+    expect(creative_map[:flight_id]).to eq(@flight_id)
     #unless distribution type is Fixed (3) this value is ignored
-    creative_map[:impressions].should eq($Impressions)
-    creative_map[:percentage].should eq($Percentage)
-    creative_map[:site_id].should eq(@site_id)
-    creative_map[:zone_id].should eq(@zone_id)
-    creative_map[:distribution_type].should eq($DistributionType)
-    creative_map[:is_active].should eq($IsMapActive)
-    creative_map[:is_deleted].should eq($IsMapDeleted)
+    expect(creative_map[:impressions]).to eq($Impressions)
+    expect(creative_map[:percentage]).to eq($Percentage)
+    expect(creative_map[:site_id]).to eq(@site_id)
+    expect(creative_map[:zone_id]).to eq(@zone_id)
+    expect(creative_map[:distribution_type]).to eq($DistributionType)
+    expect(creative_map[:is_active]).to eq($IsMapActive)
+    expect(creative_map[:is_deleted]).to eq($IsMapDeleted)
 
-    creative_map[:creative][:title].should eq($Title)
-    creative_map[:creative][:url].should eq($Url)
-    creative_map[:creative][:body].should eq($Body)
-    creative_map[:creative][:advertiser_id].should eq(@advertiser_id)
-    creative_map[:creative][:ad_type_id].should eq($AdTypeId)
-    creative_map[:creative][:is_htmljs].should eq($IsHTMLJS)
-    creative_map[:creative][:script_body].should eq($ScriptBody)
-    creative_map[:creative][:is_active].should eq($IsCreativeActive)
-    creative_map[:creative][:is_deleted].should eq($IsCreativeDeleted)
-    creative_map[:creative][:alt].should eq($Alt)
-    creative_map[:creative][:is_sync].should eq($IsSync)
+    expect(creative_map[:creative][:title]).to eq($Title)
+    expect(creative_map[:creative][:url]).to eq($Url)
+    expect(creative_map[:creative][:body]).to eq($Body)
+    expect(creative_map[:creative][:advertiser_id]).to eq(@advertiser_id)
+    expect(creative_map[:creative][:ad_type_id]).to eq($AdTypeId)
+    expect(creative_map[:creative][:is_htmljs]).to eq($IsHTMLJS)
+    expect(creative_map[:creative][:script_body]).to eq($ScriptBody)
+    expect(creative_map[:creative][:is_active]).to eq($IsCreativeActive)
+    expect(creative_map[:creative][:is_deleted]).to eq($IsCreativeDeleted)
+    expect(creative_map[:creative][:alt]).to eq($Alt)
+    expect(creative_map[:creative][:is_sync]).to eq($IsSync)
 
     $creative_id = creative_map[:creative][:id]
   end
@@ -159,53 +159,53 @@ describe "Creative Flight API" do
     creative_map = creative_maps[:items].last
     $map_id= creative_map[:id]
 
-    creative_map[:campaign_id].should eq(@campaign_id)
-    creative_map[:flight_id].should eq(@flight_id)
-    creative_map[:impressions].should eq($Impressions)
-    creative_map[:percentage].should eq($Percentage)
-    creative_map[:site_id].should eq(@site_id)
-    creative_map[:zone_id].should eq(@zone_id)
-    creative_map[:distribution_type].should eq($DistributionType)
-    creative_map[:is_active].should eq($IsMapActive)
-    creative_map[:is_deleted].should eq($IsMapDeleted)
+    expect(creative_map[:campaign_id]).to eq(@campaign_id)
+    expect(creative_map[:flight_id]).to eq(@flight_id)
+    expect(creative_map[:impressions]).to eq($Impressions)
+    expect(creative_map[:percentage]).to eq($Percentage)
+    expect(creative_map[:site_id]).to eq(@site_id)
+    expect(creative_map[:zone_id]).to eq(@zone_id)
+    expect(creative_map[:distribution_type]).to eq($DistributionType)
+    expect(creative_map[:is_active]).to eq($IsMapActive)
+    expect(creative_map[:is_deleted]).to eq($IsMapDeleted)
 
-    creative_map[:creative][:title].should eq($Title)
-    creative_map[:creative][:url].should eq($Url)
-    creative_map[:creative][:body].should eq($Body)
-    creative_map[:creative][:advertiser_id].should eq(@advertiser_id)
-    creative_map[:creative][:ad_type_id].should eq($AdTypeId)
-    creative_map[:creative][:is_htmljs].should eq($IsHTMLJS)
-    creative_map[:creative][:script_body].should eq($ScriptBody)
-    creative_map[:creative][:is_active].should eq($IsCreativeActive)
-    creative_map[:creative][:is_deleted].should eq($IsCreativeDeleted)
-    creative_map[:creative][:alt].should eq($Alt)
-    creative_map[:creative][:is_sync].should eq($IsSync)
+    expect(creative_map[:creative][:title]).to eq($Title)
+    expect(creative_map[:creative][:url]).to eq($Url)
+    expect(creative_map[:creative][:body]).to eq($Body)
+    expect(creative_map[:creative][:advertiser_id]).to eq(@advertiser_id)
+    expect(creative_map[:creative][:ad_type_id]).to eq($AdTypeId)
+    expect(creative_map[:creative][:is_htmljs]).to eq($IsHTMLJS)
+    expect(creative_map[:creative][:script_body]).to eq($ScriptBody)
+    expect(creative_map[:creative][:is_active]).to eq($IsCreativeActive)
+    expect(creative_map[:creative][:is_deleted]).to eq($IsCreativeDeleted)
+    expect(creative_map[:creative][:alt]).to eq($Alt)
+    expect(creative_map[:creative][:is_sync]).to eq($IsSync)
   end
 
   it "should get a specific creative map" do
     creative_map = @creative_maps.get($map_id, @flight_id)
     
-    creative_map[:campaign_id].should eq(@campaign_id)
-    creative_map[:flight_id].should eq(@flight_id)
-    creative_map[:impressions].should eq($Impressions)
-    creative_map[:percentage].should eq($Percentage)
-    creative_map[:site_id].should eq(@site_id)
-    creative_map[:zone_id].should eq(@zone_id)
-    creative_map[:distribution_type].should eq($DistributionType)
-    creative_map[:is_active].should eq($IsMapActive)
-    creative_map[:is_deleted].should eq($IsMapDeleted)
+    expect(creative_map[:campaign_id]).to eq(@campaign_id)
+    expect(creative_map[:flight_id]).to eq(@flight_id)
+    expect(creative_map[:impressions]).to eq($Impressions)
+    expect(creative_map[:percentage]).to eq($Percentage)
+    expect(creative_map[:site_id]).to eq(@site_id)
+    expect(creative_map[:zone_id]).to eq(@zone_id)
+    expect(creative_map[:distribution_type]).to eq($DistributionType)
+    expect(creative_map[:is_active]).to eq($IsMapActive)
+    expect(creative_map[:is_deleted]).to eq($IsMapDeleted)
 
-    creative_map[:creative][:title].should eq($Title)
-    creative_map[:creative][:url].should eq($Url)
-    creative_map[:creative][:body].should eq($Body)
-    creative_map[:creative][:advertiser_id].should eq(@advertiser_id)
-    creative_map[:creative][:ad_type_id].should eq($AdTypeId)
-    creative_map[:creative][:is_htmljs].should eq($IsHTMLJS)
-    creative_map[:creative][:script_body].should eq($ScriptBody)
-    creative_map[:creative][:is_active].should eq($IsCreativeActive)
-    creative_map[:creative][:is_deleted].should eq($IsCreativeDeleted)
-    creative_map[:creative][:alt].should eq($Alt)
-    creative_map[:creative][:is_sync].should eq($IsSync)
+    expect(creative_map[:creative][:title]).to eq($Title)
+    expect(creative_map[:creative][:url]).to eq($Url)
+    expect(creative_map[:creative][:body]).to eq($Body)
+    expect(creative_map[:creative][:advertiser_id]).to eq(@advertiser_id)
+    expect(creative_map[:creative][:ad_type_id]).to eq($AdTypeId)
+    expect(creative_map[:creative][:is_htmljs]).to eq($IsHTMLJS)
+    expect(creative_map[:creative][:script_body]).to eq($ScriptBody)
+    expect(creative_map[:creative][:is_active]).to eq($IsCreativeActive)
+    expect(creative_map[:creative][:is_deleted]).to eq($IsCreativeDeleted)
+    expect(creative_map[:creative][:alt]).to eq($Alt)
+    expect(creative_map[:creative][:is_sync]).to eq($IsSync)
  end
 
   it "should update a specific creative map" do
@@ -234,29 +234,29 @@ describe "Creative Flight API" do
     creative_map = @creative_maps.update(updated_creative)
     
     #test new values
-    creative_map[:percentage].should eq(new_percentage)
-    creative_map[:impressions].should eq(new_impressions)
-    creative_map[:is_active].should eq(new_is_active)
+    expect(creative_map[:percentage]).to eq(new_percentage)
+    expect(creative_map[:impressions]).to eq(new_impressions)
+    expect(creative_map[:is_active]).to eq(new_is_active)
 
     #make sure old values are unchanged
-    creative_map[:campaign_id].should eq(@campaign_id)
-    creative_map[:flight_id].should eq(@flight_id)
-    creative_map[:site_id].should eq(@site_id)
-    creative_map[:zone_id].should eq(@zone_id)
-    creative_map[:distribution_type].should eq($DistributionType)
-    creative_map[:is_deleted].should eq($IsMapDeleted)
+    expect(creative_map[:campaign_id]).to eq(@campaign_id)
+    expect(creative_map[:flight_id]).to eq(@flight_id)
+    expect(creative_map[:site_id]).to eq(@site_id)
+    expect(creative_map[:zone_id]).to eq(@zone_id)
+    expect(creative_map[:distribution_type]).to eq($DistributionType)
+    expect(creative_map[:is_deleted]).to eq($IsMapDeleted)
 
-    creative_map[:creative][:title].should eq($Title)
-    creative_map[:creative][:url].should eq($Url)
-    creative_map[:creative][:body].should eq($Body)
-    creative_map[:creative][:advertiser_id].should eq(@advertiser_id)
-    creative_map[:creative][:ad_type_id].should eq($AdTypeId)
-    creative_map[:creative][:is_htmljs].should eq($IsHTMLJS)
-    creative_map[:creative][:script_body].should eq($ScriptBody)
-    creative_map[:creative][:is_active].should eq($IsCreativeActive)
-    creative_map[:creative][:is_deleted].should eq($IsCreativeDeleted)
-    creative_map[:creative][:alt].should eq($Alt)
-    creative_map[:creative][:is_sync].should eq($IsSync)
+    expect(creative_map[:creative][:title]).to eq($Title)
+    expect(creative_map[:creative][:url]).to eq($Url)
+    expect(creative_map[:creative][:body]).to eq($Body)
+    expect(creative_map[:creative][:advertiser_id]).to eq(@advertiser_id)
+    expect(creative_map[:creative][:ad_type_id]).to eq($AdTypeId)
+    expect(creative_map[:creative][:is_htmljs]).to eq($IsHTMLJS)
+    expect(creative_map[:creative][:script_body]).to eq($ScriptBody)
+    expect(creative_map[:creative][:is_active]).to eq($IsCreativeActive)
+    expect(creative_map[:creative][:is_deleted]).to eq($IsCreativeDeleted)
+    expect(creative_map[:creative][:alt]).to eq($Alt)
+    expect(creative_map[:creative][:is_sync]).to eq($IsSync)
   end
 
   it "should update the nested creative" do
@@ -300,33 +300,33 @@ describe "Creative Flight API" do
       }
     }
     creative_map = @creative_maps.update(updated_creative)
-    creative_map[:creative][:title].should eq new_title
-    creative_map[:creative][:url].should eq new_url
-    creative_map[:creative][:body].should eq new_body
-    creative_map[:creative][:ad_type_id].should eq new_ad_type_id
-    creative_map[:creative][:script_body].should eq new_script_body
-    creative_map[:creative][:is_active].should eq new_is_active
-    creative_map[:creative][:alt].should eq new_alt
-    creative_map[:creative][:is_sync].should eq new_is_sync
-    creative_map[:creative][:image_name].should eq new_image_name
+    expect(creative_map[:creative][:title]).to eq new_title
+    expect(creative_map[:creative][:url]).to eq new_url
+    expect(creative_map[:creative][:body]).to eq new_body
+    expect(creative_map[:creative][:ad_type_id]).to eq new_ad_type_id
+    expect(creative_map[:creative][:script_body]).to eq new_script_body
+    expect(creative_map[:creative][:is_active]).to eq new_is_active
+    expect(creative_map[:creative][:alt]).to eq new_alt
+    expect(creative_map[:creative][:is_sync]).to eq new_is_sync
+    expect(creative_map[:creative][:image_name]).to eq new_image_name
     
   end
 
   it "should delete the creatives after creating it" do
     response = @creative_maps.delete($map_id, @flight_id)
-    response.body.should == "\"This creative map has been deleted\""
+    expect(response.body).to eq("\"This creative map has been deleted\"")
   end
 
   it "should not get a map in a different network" do
-    lambda{ @creative_maps.get(123, @flight_id) }.should raise_error "This flight is not part of your network"
+    expect{ @creative_maps.get(123, @flight_id) }.to raise_error "This flight is not part of your network"
   end
 
   it "should not get a map that's been deleted" do
-    lambda{ @creative_maps.get($map_id, @flight_id) }.should raise_error "This creative map has been deleted"
+    expect{ @creative_maps.get($map_id, @flight_id) }.to raise_error "This creative map has been deleted"
   end
 
   it "should not update a map that's in a different network" do
-    lambda {
+    expect {
       creative_map = @creative_maps.update(
         :id => $map_id,
         :campaign_id => @campaign_id,
@@ -343,11 +343,11 @@ describe "Creative Flight API" do
           :id => $creative_id
         }
       )
-    }.should raise_error "This flight is not part of your network"
+    }.to raise_error "This flight is not part of your network"
   end
 
   it "should not update a map that's been deleted" do
-    lambda {
+    expect {
       creative_map = @creative_maps.update(
         :id => $map_id,
         :campaign_id => @campaign_id,
@@ -364,11 +364,11 @@ describe "Creative Flight API" do
           :id => $creative_id
         }
       )
-    }.should raise_error "This creative map has been deleted"
+    }.to raise_error "This creative map has been deleted"
   end
 
   it "should fail when creating a map for a campaign in a different network" do
-    lambda {
+    expect {
       creative_map = @creative_maps.create(
         :campaign_id => 123,
         :flight_id => @flight_id,
@@ -395,11 +395,11 @@ describe "Creative Flight API" do
           :is_sync => false
         }
       )
-    }.should raise_error "This campaign is not part of your network"
+    }.to raise_error "This campaign is not part of your network"
   end
 
   it "should fail when creating a map for a site in a different network" do
-    lambda {
+    expect {
       creative_map = @creative_maps.create(
         :campaign_id => @campaign_id,
         :flight_id => @flight_id,
@@ -426,11 +426,11 @@ describe "Creative Flight API" do
           :is_sync => false
         }
       )
-    }.should raise_error "This site does not belong to your network"
+    }.to raise_error "This site does not belong to your network"
   end
 
   it "should fail when creating a map for a zone in a different network" do
-    lambda {
+    expect {
       creative_map = @creative_maps.create(
         :campaign_id => @campaign_id,
         :flight_id => @flight_id,
@@ -457,6 +457,6 @@ describe "Creative Flight API" do
           :is_sync => false
         }
       )
-    }.should raise_error "The site associated with that zone does not belong to your network"
+    }.to raise_error "The site associated with that zone does not belong to your network"
   end
 end

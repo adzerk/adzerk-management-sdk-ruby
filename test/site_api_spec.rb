@@ -15,17 +15,17 @@ describe "Site API" do
     }
     site = @client.sites.create(:title => $site_title, :url => @site_url)
     $site_id = site[:id].to_s
-    $site_title.should == site[:title]
-    @site_url.should == site[:url]
+    expect($site_title).to eq(site[:title])
+    expect(@site_url).to eq(site[:url])
     $site_pub_id = site[:publisher_account_id].to_s
   end
 
   it "should list a specific site" do
     site = @client.sites.get($site_id)
-    site[:id].should eq($site_id.to_i)
-    site[:title].should eq($site_title)
-    site[:url].should eq(@site_url)
-    site[:publisher_account_id].should eq($site_pub_id.to_i)
+    expect(site[:id]).to eq($site_id.to_i)
+    expect(site[:title]).to eq($site_title)
+    expect(site[:url]).to eq(@site_url)
+    expect(site[:publisher_account_id]).to eq($site_pub_id.to_i)
   end
 
   it "should update a site" do
@@ -34,29 +34,29 @@ describe "Site API" do
                                     :title => $site_title + "test",
                                     :url => @site_url + "test")
     $site_id = site[:id].to_s
-    ($site_title + "test").should == site[:title]
-    (@site_url + "test").should == site[:url]
+    expect($site_title + "test").to eq(site[:title])
+    expect(@site_url + "test").to eq(site[:url])
     $site_pub_id = site[:publisher_account_id].to_s
   end
 
   it "should list all sites" do
     result = @client.sites.list
-    result.length.should > 0
-    result[:items].last[:id].to_s.should == $site_id
-    result[:items].last[:title].should == $site_title + "test"
-    result[:items].last[:url].should == @site_url + "test"
-    result[:items].last[:publisher_account_id].to_s.should == $site_pub_id
+    expect(result.length).to be > 0
+    expect(result[:items].last[:id].to_s).to eq($site_id)
+    expect(result[:items].last[:title]).to eq($site_title + "test")
+    expect(result[:items].last[:url]).to eq(@site_url + "test")
+    expect(result[:items].last[:publisher_account_id].to_s).to eq($site_pub_id)
   end
 
   it "should delete a new site" do
     response = @client.sites.delete($site_id)
-    response.body.should == '"Successfully deleted."'
+    expect(response.body).to eq('"Successfully deleted."')
   end
 
   it "should not list deleted sites" do
     result = @client.sites.list
     result[:items].each do |site|
-      site[:id].to_s.should_not == $site_id
+      expect(site[:id].to_s).not_to eq($site_id)
     end
   end
 

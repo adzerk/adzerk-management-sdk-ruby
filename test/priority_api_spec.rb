@@ -27,18 +27,18 @@ describe "Priority API" do
                                   :weight => $priority_weight,
                                   :is_deleted => $priority_is_deleted)
     $priority_id = priority[:id].to_s
-    $priority_name.should == priority[:name]
-    $priority_channel_id.to_f.should == priority[:channel_id]
-    $priority_weight.should == priority[:weight]
-    $priority_is_deleted.should == priority[:is_deleted]
+    expect($priority_name).to eq(priority[:name])
+    expect($priority_channel_id.to_f).to eq(priority[:channel_id])
+    expect($priority_weight).to eq(priority[:weight])
+    expect($priority_is_deleted).to eq(priority[:is_deleted])
   end
 
   it "should list a specific priority" do
     priority = @priorities.get($priority_id)
-    $priority_name.should == priority[:name]
-    $priority_channel_id.to_f.should == priority[:channel_id]
-    $priority_weight.should == priority[:weight]
-    $priority_is_deleted.should == priority[:is_deleted]
+    expect($priority_name).to eq(priority[:name])
+    expect($priority_channel_id.to_f).to eq(priority[:channel_id])
+    expect($priority_weight).to eq(priority[:weight])
+    expect($priority_is_deleted).to eq(priority[:is_deleted])
     priority = @priorities.get($priority_id)
   end
 
@@ -50,26 +50,26 @@ describe "Priority API" do
              :weight => 2,
              :is_deleted => $priority_is_deleted)
 
-    $priority_name.should == priority[:name]
-    $priority_channel_id.to_f.should == priority[:channel_id]
-    priority[:weight].should == 2
-    $priority_is_deleted.should == priority[:is_deleted]
+    expect($priority_name).to eq(priority[:name])
+    expect($priority_channel_id.to_f).to eq(priority[:channel_id])
+    expect(priority[:weight]).to eq(2)
+    expect($priority_is_deleted).to eq(priority[:is_deleted])
   end
 
   it "should list all priorities" do
     result = @priorities.list
-    result.length.should > 0
+    expect(result.length).to be > 0
     priority = result[:items].last
     priority[:id].to_s == $priority_id 
-    $priority_name.should == priority[:name]
-    $priority_channel_id.to_f.should == priority[:channel_id]
-    priority[:weight].should == 2
-    $priority_is_deleted.should == priority[:is_deleted]
+    expect($priority_name).to eq(priority[:name])
+    expect($priority_channel_id.to_f).to eq(priority[:channel_id])
+    expect(priority[:weight]).to eq(2)
+    expect($priority_is_deleted).to eq(priority[:is_deleted])
   end
 
   it "should delete a new priority" do
     response = @priorities.delete($priority_id)
-    response.body.should == '"Successfully deleted"'
+    expect(response.body).to eq('"Successfully deleted"')
   end
 end
 

@@ -68,28 +68,28 @@ describe "Creative API" do
     creative = @creatives.create(new_creative)
     $creative_id = creative[:id].to_s
 
-    creative[:title].should eq($Title)
-    creative[:url].should eq($Url)
-    creative[:body].should eq($Body)
-    creative[:advertiser_id].should eq(@advertiser_id)
-    creative[:ad_type_id].should eq($AdTypeId)
-    creative[:is_active].should eq($IsCreativeActive)
-    creative[:alt].should eq($Alt)
-    creative[:is_deleted].should eq($IsCreativeDeleted)
-    creative[:is_sync].should eq($IsSync)
+    expect(creative[:title]).to eq($Title)
+    expect(creative[:url]).to eq($Url)
+    expect(creative[:body]).to eq($Body)
+    expect(creative[:advertiser_id]).to eq(@advertiser_id)
+    expect(creative[:ad_type_id]).to eq($AdTypeId)
+    expect(creative[:is_active]).to eq($IsCreativeActive)
+    expect(creative[:alt]).to eq($Alt)
+    expect(creative[:is_deleted]).to eq($IsCreativeDeleted)
+    expect(creative[:is_sync]).to eq($IsSync)
   end
 
   it "should get a specific creative" do
     creative = @creatives.get($creative_id)
-    creative[:title].should eq($Title)
-    creative[:url].should eq($Url)
-    creative[:body].should eq($Body)
-    creative[:advertiser_id].should eq(@advertiser_id)
-    creative[:ad_type_id].should eq($AdTypeId)
-    creative[:is_active].should eq($IsCreativeActive)
-    creative[:alt].should eq($Alt)
-    creative[:is_deleted].should eq($IsCreativeDeleted)
-    creative[:is_sync].should eq($IsSync)
+    expect(creative[:title]).to eq($Title)
+    expect(creative[:url]).to eq($Url)
+    expect(creative[:body]).to eq($Body)
+    expect(creative[:advertiser_id]).to eq(@advertiser_id)
+    expect(creative[:ad_type_id]).to eq($AdTypeId)
+    expect(creative[:is_active]).to eq($IsCreativeActive)
+    expect(creative[:alt]).to eq($Alt)
+    expect(creative[:is_deleted]).to eq($IsCreativeDeleted)
+    expect(creative[:is_sync]).to eq($IsSync)
   end
 
   it "should update a specific creative" do
@@ -115,29 +115,29 @@ describe "Creative API" do
       :is_sync => $new_is_sync
     }
     creative = @creatives.update(update_creative)
-    creative[:title].should eq($new_title)
-    creative[:url].should eq($new_url)
-    creative[:body].should eq($new_body)
-    creative[:ad_type_id].should eq($new_ad_type_id)
-    creative[:is_active].should eq($new_is_active)
-    creative[:is_sync].should eq($new_is_sync)
+    expect(creative[:title]).to eq($new_title)
+    expect(creative[:url]).to eq($new_url)
+    expect(creative[:body]).to eq($new_body)
+    expect(creative[:ad_type_id]).to eq($new_ad_type_id)
+    expect(creative[:is_active]).to eq($new_is_active)
+    expect(creative[:is_sync]).to eq($new_is_sync)
   end
 
 
   it "should list all creatives for an advertiser" do
     response = @creatives.list(@advertiser_id)
     creative = response[:items].last
-    creative[:title].should eq($new_title)
-    creative[:url].should eq($new_url)
-    creative[:body].should eq($new_body)
-    creative[:ad_type_id].should eq($new_ad_type_id)
-    creative[:is_active].should eq($new_is_active)
-    creative[:is_sync].should eq($new_is_sync)
+    expect(creative[:title]).to eq($new_title)
+    expect(creative[:url]).to eq($new_url)
+    expect(creative[:body]).to eq($new_body)
+    expect(creative[:ad_type_id]).to eq($new_ad_type_id)
+    expect(creative[:is_active]).to eq($new_is_active)
+    expect(creative[:is_sync]).to eq($new_is_sync)
   end
 
   it "should delete the creatives after creating it" do
     response = @creatives.delete($creative_id)
-    response.body.should == '"Successfully deleted"'
+    expect(response.body).to eq('"Successfully deleted"')
   end
 
 end

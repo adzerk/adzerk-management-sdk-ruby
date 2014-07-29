@@ -21,17 +21,17 @@ describe "Zone API" do
                          :site_id => $site_id,
                          :is_deleted => false)
     $zone_id = zone[:id].to_s
-    zone[:name].should == $name
-    zone[:site_id].should == $site_id
-    zone[:is_deleted].should == false
+    expect(zone[:name]).to eq($name)
+    expect(zone[:site_id]).to eq($site_id)
+    expect(zone[:is_deleted]).to eq(false)
   end
 
   it "should list a specific zone" do
     zone = @zones.get($zone_id)
-    zone[:id].should eq($zone_id.to_i)
-    zone[:name].should eq($name)
-    zone[:site_id].should eq($site_id)
-    zone[:is_deleted].should eq(false)
+    expect(zone[:id]).to eq($zone_id.to_i)
+    expect(zone[:name]).to eq($name)
+    expect(zone[:site_id]).to eq($site_id)
+    expect(zone[:is_deleted]).to eq(false)
   end
 
   it "should update a zone" do
@@ -40,24 +40,24 @@ describe "Zone API" do
                              :name => $name,
                              :site_id => $site_id,
                              :is_deleted => false)
-    zone[:id].should eq($zone_id.to_i)
-    zone[:name].should eq($name)
-    zone[:site_id].should eq($site_id)
-    zone[:is_deleted].should eq(false)
+    expect(zone[:id]).to eq($zone_id.to_i)
+    expect(zone[:name]).to eq($name)
+    expect(zone[:site_id]).to eq($site_id)
+    expect(zone[:is_deleted]).to eq(false)
   end
 
   it "should list all zones" do
     result = @zones.list
-    result.length.should > 0
-    result[:items].last[:id].to_s.should == $zone_id
-    result[:items].last[:name].should == $name
-    result[:items].last[:site_id].should == $site_id
-    result[:items].last[:is_deleted].should == false
+    expect(result.length).to be > 0
+    expect(result[:items].last[:id].to_s).to eq($zone_id)
+    expect(result[:items].last[:name]).to eq($name)
+    expect(result[:items].last[:site_id]).to eq($site_id)
+    expect(result[:items].last[:is_deleted]).to eq(false)
   end
 
   it "should delete a new zone" do
     response = @zones.delete($zone_id)
-    response.body.should == '"Successfully deleted"'
+    expect(response.body).to eq('"Successfully deleted"')
   end
 
 end

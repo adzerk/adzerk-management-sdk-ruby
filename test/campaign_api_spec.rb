@@ -48,14 +48,14 @@ describe "Campaign API" do
                                  :is_deleted => false)
 
     $campaign_id = campaign[:id].to_s
-    $campaign_name.should == campaign[:name]
+    expect($campaign_name).to eq(campaign[:name])
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    $campaign_is_active.should == campaign[:is_active]
-    $campaign_price.to_f.should == campaign[:price]
-    $campaign_advertiser_id.should == campaign[:advertiser_id]
-    campaign[:is_deleted].should == false
-    campaign[:flights].should eq([])
+    expect($campaign_is_active).to eq(campaign[:is_active])
+    expect($campaign_price.to_f).to eq(campaign[:price])
+    expect($campaign_advertiser_id).to eq(campaign[:advertiser_id])
+    expect(campaign[:is_deleted]).to eq(false)
+    expect(campaign[:flights]).to eq([])
   end
 
   it "should create a new campaign with one flight" do
@@ -82,22 +82,22 @@ describe "Campaign API" do
     }
     campaign = @campaigns.create(new1_campaign)
     $campaign_id_1 = campaign[:id].to_s
-    $campaign_name.should == campaign[:name]
+    expect($campaign_name).to eq(campaign[:name])
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    $campaign_is_active.should == campaign[:is_active]
-    campaign[:is_deleted].should == false
-    $campaign_price.to_f.should == campaign[:price]
-    $campaign_advertiser_id.should == campaign[:advertiser_id]
-    campaign[:flights].first[:id].should_not == nil
+    expect($campaign_is_active).to eq(campaign[:is_active])
+    expect(campaign[:is_deleted]).to eq(false)
+    expect($campaign_price.to_f).to eq(campaign[:price])
+    expect($campaign_advertiser_id).to eq(campaign[:advertiser_id])
+    expect(campaign[:flights].first[:id]).not_to eq(nil)
   end
 
 
   it "should list a specific campaign" do
     campaign = @campaigns.get($campaign_id_1)
-    campaign[:id].should eq($campaign_id_1.to_i)
-    campaign[:flights].should_not be_empty
-    campaign[:name].should eq($campaign_name)
+    expect(campaign[:id]).to eq($campaign_id_1.to_i)
+    expect(campaign[:flights]).not_to be_empty
+    expect(campaign[:name]).to eq($campaign_name)
   end
 
   it "should update a campaign" do
@@ -121,19 +121,19 @@ describe "Campaign API" do
     }
 
     campaign = @campaigns.update(campaign_to_update)
-    campaign[:name].should eq($campaign_name)
+    expect(campaign[:name]).to eq($campaign_name)
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    campaign[:is_active].should eq($campaign_is_active)
-    campaign[:price].should eq($campaign_price.to_f)
-    campaign[:advertiser_id].should eq($campaign_advertiser_id)
-    campaign[:is_deleted].should eq(false)
-    campaign[:flights].should eq($campaign_flights)
+    expect(campaign[:is_active]).to eq($campaign_is_active)
+    expect(campaign[:price]).to eq($campaign_price.to_f)
+    expect(campaign[:advertiser_id]).to eq($campaign_advertiser_id)
+    expect(campaign[:is_deleted]).to eq(false)
+    expect(campaign[:flights]).to eq($campaign_flights)
   end
 
   it "should list all campaigns" do
     campaigns = @campaigns.list
-    campaigns.length.should > 0
+    expect(campaigns.length).to be > 0
   end
 
   it "should not create/update a campaign with a advertiserId that doesn't belong to it" do
@@ -148,7 +148,7 @@ describe "Campaign API" do
       :is_deleted => false
     }
 
-    lambda{ @campaigns.create(new_campaign) }.should raise_error("This advertiser is not part of your network")
+    expect{ @campaigns.create(new_campaign) }.to raise_error("This advertiser is not part of your network")
 
     updated_campaign = {
       :id => $campaign_id,
@@ -162,16 +162,16 @@ describe "Campaign API" do
       :is_deleted => false
     }
 
-    lambda{ @campaigns.update(updated_campaign) }.should raise_error("This advertiser is not part of your network")
+    expect{ @campaigns.update(updated_campaign) }.to raise_error("This advertiser is not part of your network")
   end
 
   it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
-    lambda { @campaigns.get('123') }.should raise_error("This campaign is not part of your network")
+    expect { @campaigns.get('123') }.to raise_error("This campaign is not part of your network")
   end
 
     it "should delete a new campaign" do
     response = @campaigns.delete($campaign_id)
-    response.body.should == '"Successfully deleted."'
+    expect(response.body).to eq('"Successfully deleted."')
   end
 
   it "should not update a deleted campaign" do
@@ -180,7 +180,7 @@ describe "Campaign API" do
       :name => "test"
     }
 
-    lambda { @campaigns.update(campaign_to_update) }.should raise_error("This campaign has been deleted")
+    expect { @campaigns.update(campaign_to_update) }.to raise_error("This campaign has been deleted")
   end
 
 end

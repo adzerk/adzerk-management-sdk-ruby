@@ -26,23 +26,23 @@ describe "Publisher API" do
     }
     publisher = @publishers.create(new_publisher)
     $publisher_id = publisher[:id]
-    publisher[:first_name].should eq('John' + @rand)
-    publisher[:last_name].should eq('Doe' + @rand)
-    publisher[:company_name].should eq('Company' + @rand)
-    publisher[:payment_option].should eq("1")
-    publisher[:paypal_email].should eq("johndoe+" + @rand + "@johndoe.com")
-    publisher[:address].should_not be_nil
+    expect(publisher[:first_name]).to eq('John' + @rand)
+    expect(publisher[:last_name]).to eq('Doe' + @rand)
+    expect(publisher[:company_name]).to eq('Company' + @rand)
+    expect(publisher[:payment_option]).to eq("1")
+    expect(publisher[:paypal_email]).to eq("johndoe+" + @rand + "@johndoe.com")
+    expect(publisher[:address]).not_to be_nil
     $address_id = publisher[:address][:id].to_s
   end
 
   it "should list a specific publisher" do
     publisher = @publishers.get($publisher_id)
-    publisher[:first_name].should eq('John' + @rand)
-    publisher[:last_name].should eq('Doe' + @rand)
-    publisher[:company_name].should eq('Company' + @rand)
-    publisher[:payment_option].should eq("PayPal")
-    publisher[:paypal_email].should eq("johndoe+" + @rand + "@johndoe.com")
-    publisher[:address].should_not be_nil
+    expect(publisher[:first_name]).to eq('John' + @rand)
+    expect(publisher[:last_name]).to eq('Doe' + @rand)
+    expect(publisher[:company_name]).to eq('Company' + @rand)
+    expect(publisher[:payment_option]).to eq("PayPal")
+    expect(publisher[:paypal_email]).to eq("johndoe+" + @rand + "@johndoe.com")
+    expect(publisher[:address]).not_to be_nil
    end
 
   it "should update a publisher" do
@@ -63,19 +63,19 @@ describe "Publisher API" do
      :paypal_email => "johndoe+" + @rand + "@johndoe.com"
     }
     publisher = @publishers.update(updated_publisher)
-    publisher[:first_name].should eq("Rafael" + @rand)
+    expect(publisher[:first_name]).to eq("Rafael" + @rand)
   end
 
   it "should list all publishers" do
     publishers = @publishers.list
 
     publisher = publishers[:items].last
-    publisher[:id].should eq($publisher_id)
+    expect(publisher[:id]).to eq($publisher_id)
   end
 
   it "should delete a new publisher" do
     response = @publishers.delete($publisher_id)
-    response.body.should == '"Successfully deleted"'
+    expect(response.body).to eq('"Successfully deleted"')
   end
 
 end

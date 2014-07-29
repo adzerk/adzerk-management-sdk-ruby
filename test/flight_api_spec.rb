@@ -82,39 +82,39 @@ describe "Flight API" do
     }
     flight = @flights.create(new_flight)
     $flight_id = flight[:id].to_s
-    flight[:no_end_date].should eq(false)
-    flight[:priority_id].should eq($priority_id.to_i)
-    flight[:name].should eq($flight_Name)
+    expect(flight[:no_end_date]).to eq(false)
+    expect(flight[:priority_id]).to eq($priority_id.to_i)
+    expect(flight[:name]).to eq($flight_Name)
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    flight[:price].should eq(15.0)
-    flight[:option_type].should eq($flight_OptionType)
-    flight[:impressions].should eq($flight_Impressions)
-    flight[:is_unlimited].should eq($flight_IsUnlimited)
-    flight[:is_full_speed].should eq($flight_IsFullSpeed)
-    flight[:keywords].should eq($flight_Keywords)
-    flight[:user_agent_keywords].should eq($flight_UserAgentKeywords)
-    flight[:weight_override].should eq($flight_WeightOverride)
-    flight[:campaign_id].should eq($flight_CampaignId)
-    flight[:is_active].should eq($flight_IsActive)
-    flight[:is_deleted].should eq($flight_IsDeleted)
+    expect(flight[:price]).to eq(15.0)
+    expect(flight[:option_type]).to eq($flight_OptionType)
+    expect(flight[:impressions]).to eq($flight_Impressions)
+    expect(flight[:is_unlimited]).to eq($flight_IsUnlimited)
+    expect(flight[:is_full_speed]).to eq($flight_IsFullSpeed)
+    expect(flight[:keywords]).to eq($flight_Keywords)
+    expect(flight[:user_agent_keywords]).to eq($flight_UserAgentKeywords)
+    expect(flight[:weight_override]).to eq($flight_WeightOverride)
+    expect(flight[:campaign_id]).to eq($flight_CampaignId)
+    expect(flight[:is_active]).to eq($flight_IsActive)
+    expect(flight[:is_deleted]).to eq($flight_IsDeleted)
   end
 
   it "should list a specific flight" do
     flight = @flights.get($flight_id)
-    flight[:priority_id].should eq($priority_id.to_i)
-    flight[:name].should eq($flight_Name)
-    flight[:price].should eq(15.0)
-    flight[:option_type].should eq($flight_OptionType)
-    flight[:impressions].should eq($flight_Impressions)
-    flight[:is_unlimited].should eq($flight_IsUnlimited)
-    flight[:is_full_speed].should eq($flight_IsFullSpeed)
-    flight[:keywords].should eq($flight_Keywords)
-    flight[:user_agent_keywords].should eq($flight_UserAgentKeywords)
-    flight[:weight_override].should eq($flight_WeightOverride)
-    flight[:campaign_id].should eq($flight_CampaignId)
-    flight[:is_active].should eq($flight_IsActive)
-    flight[:is_deleted].should eq($flight_IsDeleted)
+    expect(flight[:priority_id]).to eq($priority_id.to_i)
+    expect(flight[:name]).to eq($flight_Name)
+    expect(flight[:price]).to eq(15.0)
+    expect(flight[:option_type]).to eq($flight_OptionType)
+    expect(flight[:impressions]).to eq($flight_Impressions)
+    expect(flight[:is_unlimited]).to eq($flight_IsUnlimited)
+    expect(flight[:is_full_speed]).to eq($flight_IsFullSpeed)
+    expect(flight[:keywords]).to eq($flight_Keywords)
+    expect(flight[:user_agent_keywords]).to eq($flight_UserAgentKeywords)
+    expect(flight[:weight_override]).to eq($flight_WeightOverride)
+    expect(flight[:campaign_id]).to eq($flight_CampaignId)
+    expect(flight[:is_active]).to eq($flight_IsActive)
+    expect(flight[:is_deleted]).to eq($flight_IsDeleted)
   end
 
   it "should update a flight" do
@@ -123,17 +123,17 @@ describe "Flight API" do
                              :name => "New Flight Name",
                              :priority_id => $priority_id,
                              :start_date => $flight_StartDate)
-    flight[:name].should eq("New Flight Name")
+    expect(flight[:name]).to eq("New Flight Name")
   end
 
   it "should list all flights" do
     flights = @flights.list
-    flights.length.should > 0
+    expect(flights.length).to be > 0
   end
 
   it "should delete a new flight" do
     response = @flights.delete($flight_id)
-    response.body.should == '"Successfully deleted"'
+    expect(response.body).to eq('"Successfully deleted"')
   end
 
   it "should create a flight with geotargeting" do
@@ -165,30 +165,30 @@ describe "Flight API" do
     }
     flight = @flights.create(new_flight)
     $flight_id = flight[:id].to_s
-    flight[:no_end_date].should eq(false)
-    flight[:priority_id].should eq($priority_id.to_i)
-    flight[:name].should eq($flight_Name)
+    expect(flight[:no_end_date]).to eq(false)
+    expect(flight[:priority_id]).to eq($priority_id.to_i)
+    expect(flight[:name]).to eq($flight_Name)
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
     # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
-    flight[:price].should eq(15.0)
-    flight[:option_type].should eq($flight_OptionType)
-    flight[:impressions].should eq($flight_Impressions)
-    flight[:is_unlimited].should eq($flight_IsUnlimited)
-    flight[:is_full_speed].should eq($flight_IsFullSpeed)
-    flight[:keywords].should eq($flight_Keywords)
-    flight[:user_agent_keywords].should eq($flight_UserAgentKeywords)
-    flight[:weight_override].should eq($flight_WeightOverride)
-    flight[:campaign_id].should eq($flight_CampaignId)
-    flight[:is_active].should eq($flight_IsActive)
-    flight[:is_deleted].should eq($flight_IsDeleted)
+    expect(flight[:price]).to eq(15.0)
+    expect(flight[:option_type]).to eq($flight_OptionType)
+    expect(flight[:impressions]).to eq($flight_Impressions)
+    expect(flight[:is_unlimited]).to eq($flight_IsUnlimited)
+    expect(flight[:is_full_speed]).to eq($flight_IsFullSpeed)
+    expect(flight[:keywords]).to eq($flight_Keywords)
+    expect(flight[:user_agent_keywords]).to eq($flight_UserAgentKeywords)
+    expect(flight[:weight_override]).to eq($flight_WeightOverride)
+    expect(flight[:campaign_id]).to eq($flight_CampaignId)
+    expect(flight[:is_active]).to eq($flight_IsActive)
+    expect(flight[:is_deleted]).to eq($flight_IsDeleted)
     geotargeting = flight[:geo_targeting].first
-    geotargeting[:country_code].should eq("US")
-    geotargeting[:region].should eq("NC")
-    geotargeting[:metro_code].should eq(560)
+    expect(geotargeting[:country_code]).to eq("US")
+    expect(geotargeting[:region]).to eq("NC")
+    expect(geotargeting[:metro_code]).to eq(560)
   end
 
   it "should not create a flight for a campaign in a different network" do
-    lambda{
+    expect{
       flight = @flights.create(
         :no_end_date => false,
         :priority_id => $priority_id,
@@ -208,6 +208,6 @@ describe "Flight API" do
         :is_active => $flight_IsActive,
         :is_deleted => $flight_IsDeleted
       )
-    }.should raise_error "This campaign is not part of your network"
+    }.to raise_error "This campaign is not part of your network"
   end
 end

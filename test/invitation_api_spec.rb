@@ -15,18 +15,18 @@ describe "Invitation API" do
     response = @client.invitations.invite_publisher(:email => 'test@adzerk.com',
                                         :site_id => @site_id,
                                         :advertiser_id => @advertiser_id)
-    response.body.should_not == ""
-    response.body.length.should > 10
-    response.body.length.should < 100
+    expect(response.body).not_to eq("")
+    expect(response.body.length).to be > 10
+    expect(response.body.length).to be < 100
   end
 
   it "should create a new advertiser invitation" do
     response = @client.invitations.invite_advertiser(:email => 'test@adzerk.com',
                                                  :site_id => @site_id,
                                                  :advertiser_id => @advertiser_id)
-    response.body.should_not == ""
-    response.body.length.should > 10
-    response.body.length.should < 100
+    expect(response.body).not_to eq("")
+    expect(response.body.length).to be > 10
+    expect(response.body.length).to be < 100
   end
 
 end

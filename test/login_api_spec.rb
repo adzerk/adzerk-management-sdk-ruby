@@ -14,25 +14,25 @@ describe "Login_API" do
                            :password => '1234567',
                            :name => "John Doe")
     $login_id = login[:id]
-    login[:email].should eq(email)
-    login[:password].should eq("1234567")
-    login[:name].should eq("John Doe")
+    expect(login[:email]).to eq(email)
+    expect(login[:password]).to eq("1234567")
+    expect(login[:name]).to eq("John Doe")
   end
 
   it "should list all logins" do
     logins = @logins.list
-    logins[:items].last[:id].should eq($login_id)
+    expect(logins[:items].last[:id]).to eq($login_id)
   end
 
   it "should list a specific login" do
     login = @logins.get($login_id)
-    login[:name].should eq("John Doe")
+    expect(login[:name]).to eq("John Doe")
   end
 
   it "should update a login" do
     login = @logins.update(:id => $login_id,
                            :name => "New Name")
-    login[:name].should eq("New Name")
+    expect(login[:name]).to eq("New Name")
   end
 
 end

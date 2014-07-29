@@ -90,18 +90,18 @@ describe "SiteZoneTargeting API" do
     }
  
     sitezone = @sitezonetargeting.create($flight_id, new_sitezone)
-    sitezone[:site_id].should eq($sitezone_SiteId.to_i)
-    sitezone[:zone_id].should eq($sitezone_ZoneId.to_i)
-    sitezone[:is_exclude].should eq(true)
+    expect(sitezone[:site_id]).to eq($sitezone_SiteId.to_i)
+    expect(sitezone[:zone_id]).to eq($sitezone_ZoneId.to_i)
+    expect(sitezone[:is_exclude]).to eq(true)
     $sitezone_id = sitezone[:id]
 
   end
 
   it "should retrieve a sitezone targeting" do
     sitezone = @sitezonetargeting.get($flight_id,$sitezone_id)
-    sitezone[:site_id].should eq($sitezone_SiteId.to_i)
-    sitezone[:zone_id].should eq($sitezone_ZoneId.to_i)
-    sitezone[:is_exclude].should eq(true)
+    expect(sitezone[:site_id]).to eq($sitezone_SiteId.to_i)
+    expect(sitezone[:zone_id]).to eq($sitezone_ZoneId.to_i)
+    expect(sitezone[:is_exclude]).to eq(true)
   end
 
   it "should update a sitezone targeting" do
@@ -111,23 +111,23 @@ describe "SiteZoneTargeting API" do
       :is_exclude => false,
     }
     sitezone = @sitezonetargeting.update($flight_id,$sitezone_id,data)
-    sitezone[:is_exclude].should eq(false)
+    expect(sitezone[:is_exclude]).to eq(false)
   end
 
   it "should delete a sitezone targeting" do
     sitezone = @sitezonetargeting.delete($flight_id,$sitezone_id)
-    sitezone.body.should include("Successfully deleted")
+    expect(sitezone.body).to include("Successfully deleted")
   end
 
   it "should error when deleting a sitezone targeting that does not exist" do
-    lambda{ geo = @sitezonetargeting.delete($flight_id,1) }.should raise_error
+    expect{ geo = @sitezonetargeting.delete($flight_id,1) }.to raise_error
   end
 
   it "should check if a flight is not a part of your network" do
     non_network_flight = 123;
-    lambda{ @sitezonetargeting.delete(non_network_flight,1) }.should raise_error("Flight is not a part of your network")
-    lambda{ @sitezonetargeting.get(non_network_flight,1) }.should raise_error("Flight is not a part of your network")
-    lambda{ @sitezonetargeting.update(non_network_flight,1,{}) }.should raise_error("Flight is not a part of your network")
+    expect{ @sitezonetargeting.delete(non_network_flight,1) }.to raise_error("Flight is not a part of your network")
+    expect{ @sitezonetargeting.get(non_network_flight,1) }.to raise_error("Flight is not a part of your network")
+    expect{ @sitezonetargeting.update(non_network_flight,1,{}) }.to raise_error("Flight is not a part of your network")
   end
 
 end

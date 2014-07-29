@@ -80,10 +80,10 @@ describe "GeoTargeting API" do
     }
  
     geo = @geotargetings.create($flight_id, new_geo)
-    geo[:country_code].should eq($geo_CountryCode)
-    geo[:region].should eq($geo_Region)
-    geo[:metro_code].should eq($geo_MetroCode)
-    geo[:is_exclude].should eq(true)
+    expect(geo[:country_code]).to eq($geo_CountryCode)
+    expect(geo[:region]).to eq($geo_Region)
+    expect(geo[:metro_code]).to eq($geo_MetroCode)
+    expect(geo[:is_exclude]).to eq(true)
     $geo_id = geo[:location_id]
 
   end
@@ -100,7 +100,7 @@ describe "GeoTargeting API" do
       :is_exclude => true,
     }
     geo = @geotargetings.update($flight_id,$geo_id,data)
-    geo[:metro_code].should eq(517)
+    expect(geo[:metro_code]).to eq(517)
   end
 
   it "should delete a geotargeting" do
@@ -108,14 +108,14 @@ describe "GeoTargeting API" do
   end
 
   it "should error when deleting a geotargeting that does not exist" do
-    lambda{ geo = @geotargetings.delete($flight_id,1) }.should raise_error
+    expect{ geo = @geotargetings.delete($flight_id,1) }.to raise_error
   end
 
   it "should check if a flight is not a part of your network" do
     non_network_flight = 123;
-    lambda{ @geotargetings.delete(non_network_flight,1) }.should raise_error("Flight is not a part of your network")
-    lambda{ @geotargetings.get(non_network_flight,1) }.should raise_error("Flight is not a part of your network")
-    lambda{ @geotargetings.update(non_network_flight,1,{}) }.should raise_error("Flight is not a part of your network")
+    expect{ @geotargetings.delete(non_network_flight,1) }.to raise_error("Flight is not a part of your network")
+    expect{ @geotargetings.get(non_network_flight,1) }.to raise_error("Flight is not a part of your network")
+    expect{ @geotargetings.update(non_network_flight,1,{}) }.to raise_error("Flight is not a part of your network")
   end
 
 end
