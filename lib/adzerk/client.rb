@@ -3,7 +3,7 @@ module Adzerk
 
     include Adzerk::Util
 
-    attr_reader :sites, :zones, :campaigns, :channels, :priorities,
+    attr_reader :sites, :ad_types, :zones, :campaigns, :channels, :priorities,
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories
