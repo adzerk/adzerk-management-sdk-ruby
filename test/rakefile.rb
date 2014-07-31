@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rake'
 @files = [
+  'adtype_api_spec.rb',
   'advertiser_api_spec.rb',
   'campaign_api_spec.rb',
   'channel_api_spec.rb',
