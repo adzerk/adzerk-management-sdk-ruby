@@ -75,33 +75,31 @@ describe "Category API" do
   it "should add a category to a flight" do
     cat = @category.create($flight_id, $new_category)
     $category_id = cat[:id]
-    cat[:name].should eq($category_name)
-
+    expect(cat[:name]).to eq($category_name)
   end
 
   it "should list categories for a given flight" do
     cat = @category.list($flight_id)[:items].first
-    cat[:name].should eq($category_name)
-    cat[:id].should eq($category_id)
+    expect(cat[:name]).to eq($category_name)
+    expect(cat[:id]).to eq($category_id)
   end
 
   it "should list categories for the current network" do
-    cat = @category.listAll()[:items].first
-    cat[:name].should eq($category_name)
-    cat[:id].should eq($category_id)
+    cat = @category.listAll()[:items].last
+    expect(cat[:name]).to eq($category_name)
   end
 
   it "should delete a category from a flight" do
     response = @category.delete($flight_id, $category_id)
-    response.body.should == '"Successfully deleted"'
+    expect(response.body).to eq('"Successfully deleted"')
   end
 
   it "should error when the flight or category id does not exist or does not belong to the network" do
     bad_id = 0
-    lambda{ cat = @category.create(bad_id, $new_category) }.should raise_error
-    lambda{ cat = @category.list(bad_id) }.should raise_error
-    lambda{ cat = @category.delete(bad_id,$category_id) }.should raise_error
-    lambda{ cat = @category.delete($flight_id,bad_id) }.should raise_error
+    expect{ cat = @category.create(bad_id, $new_category) }.to raise_error
+    expect{ cat = @category.list(bad_id) }.to raise_error
+    expect{ cat = @category.delete(bad_id,$category_id) }.to raise_error
+    expect{ cat = @category.delete($flight_id,bad_id) }.to raise_error
   end
 
 end

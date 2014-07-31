@@ -3,7 +3,7 @@ module Adzerk
 
     include Adzerk::Util
 
-    attr_reader :sites, :zones, :campaigns, :channels, :priorities,
+    attr_reader :sites, :ad_types, :zones, :campaigns, :channels, :priorities,
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories
@@ -17,6 +17,7 @@ module Adzerk
       @api_key = key
       @config = DEFAULTS.merge!(opts)
       @sites = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'site')
+      @ad_types = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'adtypes')
       @flights = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'flight')
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
       @campaigns = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'campaign')

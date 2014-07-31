@@ -17,8 +17,8 @@ describe "Report API" do
       :parameters => []
     }
     report = @reports.create_report(new_report)
-    report[:is_total].should eq(true)
-    report[:grouping].should eq(["month"])
+    expect(report[:is_total]).to eq(true)
+    expect(report[:grouping]).to eq(["month"])
   end
 
   it "should pull a saved custom report" do

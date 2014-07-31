@@ -21,22 +21,22 @@ describe "Channel API" do
                                :ad_types => $channel_ad_types,
                                'CPM' =>  $channel_cpm)
     $channel_id = channel[:id].to_s
-    $channel_title.should == channel[:title]
-    $channel_commission.to_f.should == channel[:commission]
-    $channel_engine.should == channel[:engine]
-    $channel_keywords.should == channel[:keywords]
-    $channel_cpm.to_f.should == channel[:cpm]
-    $channel_ad_types.should == channel[:ad_types]
+    expect($channel_title).to eq(channel[:title])
+    expect($channel_commission.to_f).to eq(channel[:commission])
+    expect($channel_engine).to eq(channel[:engine])
+    expect($channel_keywords).to eq(channel[:keywords])
+    expect($channel_cpm.to_f).to eq(channel[:cpm])
+    expect($channel_ad_types).to eq(channel[:ad_types])
   end
 
   it "should list a specific channel" do
     channel = @channels.get($channel_id)
-    $channel_title.should == channel[:title]
-    $channel_commission.to_f.should == channel[:commission]
-    $channel_engine.should == channel[:engine]
-    $channel_keywords.should == channel[:keywords]
-    $channel_cpm.to_f.should == channel[:cpm]
-    $channel_ad_types.should == channel[:ad_types]
+    expect($channel_title).to eq(channel[:title])
+    expect($channel_commission.to_f).to eq(channel[:commission])
+    expect($channel_engine).to eq(channel[:engine])
+    expect($channel_keywords).to eq(channel[:keywords])
+    expect($channel_cpm.to_f).to eq(channel[:cpm])
+    expect($channel_ad_types).to eq(channel[:ad_types])
   end
 
   it "should update a channel" do
@@ -56,34 +56,34 @@ describe "Channel API" do
              :ad_types => $u_channel_AdTypes,
              'CPM' => $u_channel_CPM)
 
-    $u_channel_title.should == channel[:title]
-    $u_channel_commission.should == channel[:commission].to_s
-    $u_channel_engine.should == channel[:engine]
-    $u_channel_keywords.should == channel[:keywords]
-    $u_channel_CPM.to_f.should == channel[:cpm]
-    $u_channel_AdTypes.should == channel[:ad_types]
+    expect($u_channel_title).to eq(channel[:title])
+    expect($u_channel_commission).to eq(channel[:commission].to_s)
+    expect($u_channel_engine).to eq(channel[:engine])
+    expect($u_channel_keywords).to eq(channel[:keywords])
+    expect($u_channel_CPM.to_f).to eq(channel[:cpm])
+    expect($u_channel_AdTypes).to eq(channel[:ad_types])
   end
 
   it "should list all channels" do
     result = @channels.list
-    result.length.should > 0
+    expect(result.length).to be > 0
     last_channel = result[:items].last
-    last_channel[:id].to_s.should == $channel_id
-    last_channel[:title].should == $u_channel_title
-    last_channel[:commission].should == $u_channel_commission.to_f
-    last_channel[:engine].should == $u_channel_engine
-    last_channel[:keywords].should == $u_channel_keywords
-    last_channel[:cpm].should == $u_channel_CPM.to_f
-    last_channel[:ad_types].should == $u_channel_AdTypes
+    expect(last_channel[:id].to_s).to eq($channel_id)
+    expect(last_channel[:title]).to eq($u_channel_title)
+    expect(last_channel[:commission]).to eq($u_channel_commission.to_f)
+    expect(last_channel[:engine]).to eq($u_channel_engine)
+    expect(last_channel[:keywords]).to eq($u_channel_keywords)
+    expect(last_channel[:cpm]).to eq($u_channel_CPM.to_f)
+    expect(last_channel[:ad_types]).to eq($u_channel_AdTypes)
   end
 
   it "should delete a new channel" do
     response = @channels.delete($channel_id)
-    response.body.should == '"Successfully deleted"'
+    expect(response.body).to eq('"Successfully deleted"')
   end
 
   it "should not get individual deleted channel" do
-    lambda{ @channels.get($channel_id) }.should raise_error 'This channel has been deleted'
+    expect{ @channels.get($channel_id) }.to raise_error 'This channel has been deleted'
   end
 
   it "should not update deleted channels" do
@@ -96,7 +96,7 @@ describe "Channel API" do
       'CPM' => $u_channel_CPM,
       :ad_types => $u_channel_AdTypes
     }
-    lambda { @channels.update(updated_channel) }.should raise_error "This channel has been deleted"
+    expect { @channels.update(updated_channel) }.to raise_error "This channel has been deleted"
   end
 
 end

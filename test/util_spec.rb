@@ -5,13 +5,13 @@ describe Adzerk::Util do
     it "doesn't camelize keys when they are strings" do
       data = {'No_CAMELcaseString' => 1234}
       result = Adzerk::Util.camelize_data(data)
-      result['No_CAMELcaseString'].should eql(1234)
+      expect(result['No_CAMELcaseString']).to eql(1234)
     end
 
     it "camelizes keys when they are symbols" do
       data = {:'No_CAMEL_case_Symbol' => 1234}
       result = Adzerk::Util.camelize_data(data)
-      result['NoCamelCaseSymbol'].should eql(1234)
+      expect(result['NoCamelCaseSymbol']).to eql(1234)
     end
   end
 end

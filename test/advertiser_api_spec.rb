@@ -15,63 +15,63 @@ describe "Advertiser API" do
                                      :is_active => $is_active,
                                      :is_deleted => $is_deleted)
     $advertiser_id = advertiser[:id].to_s
-    $title.should == advertiser[:title]
-    $is_active.should == advertiser[:is_active]
-    $is_deleted.should == advertiser[:is_deleted]
+    expect($title).to eq(advertiser[:title])
+    expect($is_active).to eq(advertiser[:is_active])
+    expect($is_deleted).to eq(advertiser[:is_deleted])
   end
 
   it "should list a specific advertiser" do
     advertiser = @advertisers.get($advertiser_id)
-    $title.should == advertiser[:title]
-    $is_active.should == advertiser[:is_active]
-    $is_deleted.should == advertiser[:is_deleted]
+    expect($title).to eq(advertiser[:title])
+    expect($is_active).to eq(advertiser[:is_active])
+    expect($is_deleted).to eq(advertiser[:is_deleted])
   end
 
   it "should list all advertisers" do
     result = @advertisers.list
-    result.length.should > 0
+    expect(result.length).to be > 0
     advertiser = result[:items].last
-    $title.should == advertiser[:title]
-    $is_active.should == advertiser[:is_active]
-    $is_deleted.should == advertiser[:is_deleted]
-    $advertiser_id.should == advertiser[:id].to_s
+    expect($title).to eq(advertiser[:title])
+    expect($is_active).to eq(advertiser[:is_active])
+    expect($is_deleted).to eq(advertiser[:is_deleted])
+    expect($advertiser_id).to eq(advertiser[:id].to_s)
   end
 
   it "should update a advertiser" do
     advertiser = @advertisers.update(:id => $advertiser_id,
                                      :title => "Cocacola",
                                      :is_active => false)
-    advertiser[:title].should eq("Cocacola")
-    advertiser[:is_active].should eq(false)
+    expect(advertiser[:title]).to eq("Cocacola")
+    expect(advertiser[:is_active]).to eq(false)
   end
 
   it "should search advertiser based on name" do
     advertiser = @advertisers.search("Cocacola")
-    advertiser[:total_items].should > 0
+    expect(advertiser[:total_items]).to be > 0
   end
 
   it "should delete a new advertiser" do
     response = @advertisers.delete($advertiser_id)
-    response.body.should == '"Successfully deleted."'
+    expect(response.body).to eq('"Successfully deleted."')
   end
 
   it "should not list deleted advertisers" do
     response = @advertisers.list
     response[:items].each do |r|
-      r["Id"].should_not == $advertiser_id
+      expect(r["Id"]).not_to eq($advertiser_id)
     end
   end
 
   it "should not get individual deleted advertiser" do
-    lambda { @advertisers.get $advertiser_id }.should raise_error("This advertiser is deleted.")
+    expect { @advertisers.get $advertiser_id }.to raise_error("This advertiser is deleted.")
   end
 
   it "should not update a deleted advertiser" do
-    lambda { @advertisers.update(:id => $advertiser_id, :title => "Cocacola") }.should raise_error("This advertiser is deleted.")
+    expect { @advertisers.update(:id => $advertiser_id, :title => "Cocacola") }.to raise_error("This advertiser is deleted.")
   end
 
   it "should require a title" do
-    lambda{ @advertisers.create() }.should raise_error("A title is required.")
+    expect{ @advertisers.create() }.to raise_error("A title is required.")
   end
 
 end
