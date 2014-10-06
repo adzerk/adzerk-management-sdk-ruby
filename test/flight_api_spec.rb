@@ -60,6 +60,7 @@ describe "Flight API" do
     $flight_CampaignId = $campaign_id
     $flight_IsActive = true
     $flight_IsDeleted = false
+    $flight_GoalType = 1
 
     new_flight = {
       :no_end_date => false,
@@ -78,7 +79,8 @@ describe "Flight API" do
       :weight_override => $flight_WeightOverride,
       :campaign_id => $flight_CampaignId,
       :is_active => $flight_IsActive,
-      :is_deleted => $flight_IsDeleted
+      :is_deleted => $flight_IsDeleted,
+      :goal_type => $flight_GoalType
     }
     flight = @flights.create(new_flight)
     $flight_id = flight[:id].to_s
@@ -98,6 +100,7 @@ describe "Flight API" do
     expect(flight[:campaign_id]).to eq($flight_CampaignId)
     expect(flight[:is_active]).to eq($flight_IsActive)
     expect(flight[:is_deleted]).to eq($flight_IsDeleted)
+    expect(flight[:goal_type]).to eq($flight_GoalType)
   end
 
   it "should list a specific flight" do
@@ -115,6 +118,7 @@ describe "Flight API" do
     expect(flight[:campaign_id]).to eq($flight_CampaignId)
     expect(flight[:is_active]).to eq($flight_IsActive)
     expect(flight[:is_deleted]).to eq($flight_IsDeleted)
+    expect(flight[:goal_type]).to eq($flight_GoalType)
   end
 
   it "should update a flight" do
@@ -122,7 +126,8 @@ describe "Flight API" do
                              :campaign_id => $flight_CampaignId,
                              :name => "New Flight Name",
                              :priority_id => $priority_id,
-                             :start_date => $flight_StartDate)
+                             :start_date => $flight_StartDate,
+                             :goal_type => $flight_GoalType)
     expect(flight[:name]).to eq("New Flight Name")
   end
 
@@ -161,7 +166,8 @@ describe "Flight API" do
       'CampaignId' => $flight_CampaignId,
       'IsActive' => $flight_IsActive,
       'IsDeleted' => $flight_IsDeleted,
-      'GeoTargeting' => geo
+      'GeoTargeting' => geo,
+      'GoalType' => $flight_GoalType
     }
     flight = @flights.create(new_flight)
     $flight_id = flight[:id].to_s
@@ -185,6 +191,7 @@ describe "Flight API" do
     expect(geotargeting[:country_code]).to eq("US")
     expect(geotargeting[:region]).to eq("NC")
     expect(geotargeting[:metro_code]).to eq(560)
+    expect(flight[:goal_type]).to eq($flight_GoalType)
   end
 
   it "should not create a flight for a campaign in a different network" do
@@ -206,7 +213,8 @@ describe "Flight API" do
         :weight_override => $flight_WeightOverride,
         :campaign_id => 123,
         :is_active => $flight_IsActive,
-        :is_deleted => $flight_IsDeleted
+        :is_deleted => $flight_IsDeleted,
+        :goal_type => $flight_GoalType
       )
     }.to raise_error "This campaign is not part of your network"
   end

@@ -61,7 +61,8 @@ describe "SiteZoneTargeting API" do
       :weight_override => nil,
       :campaign_id => $campaign_id,
       :is_active => true,
-      :is_deleted => false
+      :is_deleted => false,
+      :goal_type => 1
     }
     flight = @flights.create(new_flight)
     $flight_id = flight[:id].to_s
