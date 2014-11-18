@@ -5,6 +5,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "adzerk"
 
 API_KEY = ENV['ADZERK_API_KEY'] || 'your_api_key'
+API_HOST = ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/'
 # $adzerk = Adzerk.new(API_KEY)
 
 RSpec.configure do |config|
