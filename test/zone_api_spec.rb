@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Zone API" do
 
-
   before(:all) do
     @client = Adzerk::Client.new(API_KEY)
     @zones = @client.zones
@@ -49,10 +48,7 @@ describe "Zone API" do
   it "should list all zones" do
     result = @zones.list
     expect(result.length).to be > 0
-    expect(result[:items].last[:id].to_s).to eq($zone_id)
-    expect(result[:items].last[:name]).to eq($name)
-    expect(result[:items].last[:site_id]).to eq($site_id)
-    expect(result[:items].last[:is_deleted]).to eq(false)
+    expect(result[:items].any? {|zone| zone[:id].to_s == $zone_id}).to be true
   end
 
   it "should delete a new zone" do
