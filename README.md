@@ -21,4 +21,4 @@ Refer to the [https://github.com/adzerk/adzerk-api/wiki](https://github.com/adze
     client.sites.list
 
 
-Copyright (c) 2011 Adzerk, Inc.
+Copyright © 2011-2015 Adzerk, Inc.
