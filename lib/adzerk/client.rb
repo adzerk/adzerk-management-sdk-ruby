@@ -22,7 +22,7 @@ module Adzerk
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
       @campaigns = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'campaign')
       @channels = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'channel')
-      @priorities = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'priority')
+      @priorities = Adzerk::Priority.new(:client => self, :endpoint => 'priority')
       @advertisers = Adzerk::Advertiser.new(:client => self, :endpoint => 'advertiser')
       @publishers = Adzerk::Publisher.new(:client => self, :endpoint => 'publisher')
       @creatives = Adzerk::Creative.new(:client => self, :endpoint => 'creative')

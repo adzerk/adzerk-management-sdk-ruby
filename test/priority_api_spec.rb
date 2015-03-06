@@ -31,6 +31,7 @@ describe "Priority API" do
     expect($priority_channel_id.to_f).to eq(priority[:channel_id])
     expect($priority_weight).to eq(priority[:weight])
     expect($priority_is_deleted).to eq(priority[:is_deleted])
+    expect(priority[:selection_algorithm]).to eq(0) # default (Lottery)
   end
 
   it "should list a specific priority" do
@@ -39,7 +40,7 @@ describe "Priority API" do
     expect($priority_channel_id.to_f).to eq(priority[:channel_id])
     expect($priority_weight).to eq(priority[:weight])
     expect($priority_is_deleted).to eq(priority[:is_deleted])
-    priority = @priorities.get($priority_id)
+    expect(priority[:selection_algorithm]).to eq(0)
   end
 
   it "should update a priority" do
@@ -54,6 +55,11 @@ describe "Priority API" do
     expect($priority_channel_id.to_f).to eq(priority[:channel_id])
     expect(priority[:weight]).to eq(2)
     expect($priority_is_deleted).to eq(priority[:is_deleted])
+    expect(priority[:selection_algorithm]).to eq(0)
+  end
+
+  it "should not allow selection algorithm to be updated" do
+    expect { @priorities.update(selection_algorithm: 1) }.to raise_error
   end
 
   it "should list all priorities" do
@@ -65,6 +71,7 @@ describe "Priority API" do
     expect($priority_channel_id.to_f).to eq(priority[:channel_id])
     expect(priority[:weight]).to eq(2)
     expect($priority_is_deleted).to eq(priority[:is_deleted])
+    expect(priority[:selection_algorithm]).to eq(0)
   end
 
   it "should delete a new priority" do
