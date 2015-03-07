@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Flight API" do
 
-
   before(:all) do
     new_advertiser = {
       'Title' => "Test"
@@ -80,11 +79,12 @@ describe "Flight API" do
       :campaign_id => $flight_CampaignId,
       :is_active => $flight_IsActive,
       :is_deleted => $flight_IsDeleted,
-      :goal_type => $flight_GoalType
+      :goal_type => $flight_GoalType,
+      :is_companion => true
     }
     flight = @flights.create(new_flight)
     $flight_id = flight[:id].to_s
-    expect(flight[:no_end_date]).to eq(false)
+    expect(flight[:no_end_date]).to be false
     expect(flight[:priority_id]).to eq($priority_id.to_i)
     expect(flight[:name]).to eq($flight_Name)
     # JSON.parse(response.body)["StartDate"].should == "/Date(1293840000000+0000)/"
@@ -101,6 +101,31 @@ describe "Flight API" do
     expect(flight[:is_active]).to eq($flight_IsActive)
     expect(flight[:is_deleted]).to eq($flight_IsDeleted)
     expect(flight[:goal_type]).to eq($flight_GoalType)
+    expect(flight[:is_companion]).to be true
+  end
+
+  it "should fail to create a flight without a goal type" do
+    flight_without_goal_type = {
+      :no_end_date => false,
+      :priority_id => $priority_id,
+      :name => $flight_Name,
+      :start_date => $flight_StartDate,
+      :end_date => $flight_EndDate,
+      :no_end_date => $flight_NoEndDate,
+      :price => $flight_Price,
+      :option_type => $flight_OptionType,
+      :impressions => $flight_Impressions,
+      :is_unlimited => $flight_IsUnlimited,
+      :is_full_speed => $flight_IsFullSpeed,
+      :keywords => $flight_Keywords,
+      :user_agent_keywords => $flight_UserAgentKeywords,
+      :weight_override => $flight_WeightOverride,
+      :campaign_id => $flight_CampaignId,
+      :is_active => $flight_IsActive,
+      :is_deleted => $flight_IsDeleted
+    }
+
+    expect { @flights.create flight_without_goal_type }.to raise_error
   end
 
   it "should list a specific flight" do
@@ -119,6 +144,7 @@ describe "Flight API" do
     expect(flight[:is_active]).to eq($flight_IsActive)
     expect(flight[:is_deleted]).to eq($flight_IsDeleted)
     expect(flight[:goal_type]).to eq($flight_GoalType)
+    expect(flight[:is_companion]).to be true
   end
 
   it "should update a flight" do
@@ -127,8 +153,10 @@ describe "Flight API" do
                              :name => "New Flight Name",
                              :priority_id => $priority_id,
                              :start_date => $flight_StartDate,
-                             :goal_type => $flight_GoalType)
+                             :goal_type => $flight_GoalType,
+                             :is_companion => false)
     expect(flight[:name]).to eq("New Flight Name")
+    expect(flight[:is_companion]).to be false
   end
 
   it "should list all flights" do
