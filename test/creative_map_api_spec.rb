@@ -85,6 +85,7 @@ describe "Creative Flight API" do
     $DistributionType = 1
     $IsMapActive = true
     $IsMapDeleted = false
+    $CustomTargeting = '$keywords contains "bjork"'
     
     $Title = 'Test creative ' + rand(1000000).to_s
     $Url = "http://adzerk.com"
@@ -111,6 +112,7 @@ describe "Creative Flight API" do
       :distributionType => $DistributionType,
       :isActive => $IsMapActive,
       :isDeleted => $IsMapDeleted,
+      :custom_targeting => $CustomTargeting,
       :creative => {
         :title => $Title,
         :url => $Url,
@@ -139,6 +141,7 @@ describe "Creative Flight API" do
     expect(creative_map[:distribution_type]).to eq($DistributionType)
     expect(creative_map[:is_active]).to eq($IsMapActive)
     expect(creative_map[:is_deleted]).to eq($IsMapDeleted)
+    expect(creative_map[:custom_targeting]).to eq($CustomTargeting)
 
     expect(creative_map[:creative][:title]).to eq($Title)
     expect(creative_map[:creative][:url]).to eq($Url)
@@ -169,6 +172,7 @@ describe "Creative Flight API" do
     expect(creative_map[:distribution_type]).to eq($DistributionType)
     expect(creative_map[:is_active]).to eq($IsMapActive)
     expect(creative_map[:is_deleted]).to eq($IsMapDeleted)
+    expect(creative_map[:custom_targeting]).to eq($CustomTargeting)
 
     expect(creative_map[:creative][:title]).to eq($Title)
     expect(creative_map[:creative][:url]).to eq($Url)
@@ -195,6 +199,7 @@ describe "Creative Flight API" do
     expect(creative_map[:distribution_type]).to eq($DistributionType)
     expect(creative_map[:is_active]).to eq($IsMapActive)
     expect(creative_map[:is_deleted]).to eq($IsMapDeleted)
+    expect(creative_map[:custom_targeting]).to eq($CustomTargeting)
 
     expect(creative_map[:creative][:title]).to eq($Title)
     expect(creative_map[:creative][:url]).to eq($Url)
