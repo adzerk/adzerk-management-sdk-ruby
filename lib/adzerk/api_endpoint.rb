@@ -11,9 +11,10 @@ module Adzerk
       @datakey = args[:datakey] ? args[:datakey] : args[:endpoint]
     end
 
-    def create(opts={})
+    def create(opts={}, channel=nil)
+      e = channel ? "channel/#{channel}/#{endpoint}" : endpoint
       data = { @datakey => camelize_data(opts).to_json }
-      response = @client.post_request(endpoint, data)
+      response = @client.post_request(e, data)
       parse_response(response)
     end
 
@@ -22,8 +23,9 @@ module Adzerk
       parse_response(response)
     end
 
-    def list
-      response = @client.get_request(endpoint)
+    def list(channel=nil)
+      e = channel ? "channel/#{channel}/#{endpoint}" : endpoint
+      response = @client.get_request(e)
       parse_response(response)
     end
 
@@ -34,8 +36,9 @@ module Adzerk
       parse_response(response)
     end
 
-    def delete(id)
-      url = "#{endpoint}/#{id}/delete"
+    def delete(id, channel=nil)
+      e = channel ? "channel/#{channel}/#{endpoint}" : endpoint
+      url = "#{e}/#{id}/delete"
       @client.get_request(url)
     end
   end
