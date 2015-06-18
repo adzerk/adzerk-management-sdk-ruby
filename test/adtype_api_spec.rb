@@ -13,4 +13,12 @@ describe "Ad Type API" do
     expect(result[:items].last[:width]).to_not eq(nil)
     expect(result[:items].last[:height]).to_not eq(nil)
   end
+
+  it "should create ad types" do
+    result = @client.ad_types.create({:width => 1000, :height => 2000})
+    expect(result[:id].to_s).to_not eq(nil)
+    expect(result[:width].to_s).to eq("1000")
+    expect(result[:height].to_s).to eq("2000")
+    expect(result[:name].to_s).to_not eq(nil)
+  end
 end
