@@ -16,8 +16,9 @@ module Adzerk
     def initialize(key, opts = {})
       @api_key = key
       @config = DEFAULTS.merge!(opts)
+      @logins = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'login')
       @sites = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'site')
-      @ad_types = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'adtypes', :datakey => 'adtype')
+      @ad_types = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'adtypes', :subendpoint => 'channel', :datakey => 'adtype')
       @flights = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'flight')
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
       @campaigns = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'campaign')
@@ -30,7 +31,6 @@ module Adzerk
       @invitations = Adzerk::Invitation.new(:client => self)
       @reports = Adzerk::Reporting.new(:client => self)
       @channel_site_maps = Adzerk::ChannelSiteMap.new(:client => self)
-      @logins = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'login')
       @geotargetings = Adzerk::GeoTargeting.new(:client => self, :endpoint => 'geotargeting')
       @sitezonetargetings = Adzerk::SiteZoneTargeting.new(:client => self, :endpoint => 'sitezone')
       @categories = Adzerk::Category.new(:client => self, :endpoint => 'category')
