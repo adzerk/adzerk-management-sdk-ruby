@@ -3,17 +3,18 @@ module Adzerk
 
     include Adzerk::Util
 
-    attr_reader :client, :endpoint, :datakey
+    attr_reader :client, :endpoint, :datakey, :subendpoint
 
     def initialize(args= {})
       @client = args[:client]
       @endpoint = args[:endpoint]
+      @subendpoint = args[:subendpoint]
       @datakey = args[:datakey] ? args[:datakey] : args[:endpoint]
     end
 
-    def create(opts={}, channel=nil)
-      e = channel ? "channel/#{channel}/#{endpoint}" : endpoint
-      data = { @datakey => camelize_data(opts).to_json }
+    def create(opts={}, subid=nil)
+      e = (subid && subendpoint) ? "#{subendpoint}/#{subid}/#{endpoint}" : endpoint
+      data = { datakey => camelize_data(opts).to_json }
       response = @client.post_request(e, data)
       parse_response(response)
     end
@@ -23,21 +24,21 @@ module Adzerk
       parse_response(response)
     end
 
-    def list(channel=nil)
-      e = channel ? "channel/#{channel}/#{endpoint}" : endpoint
+    def list(subid=nil)
+      e = (subid && subendpoint) ? "#{subendpoint}/#{subid}/#{endpoint}" : endpoint
       response = @client.get_request(e)
       parse_response(response)
     end
 
     def update(opts={})
       id = opts[:id].to_s
-      data = { @datakey => camelize_data(opts).to_json }
+      data = { datakey => camelize_data(opts).to_json }
       response = @client.put_request("#{endpoint}/#{id}", data)
       parse_response(response)
     end
 
-    def delete(id, channel=nil)
-      e = channel ? "channel/#{channel}/#{endpoint}" : endpoint
+    def delete(id, subid=nil)
+      e = (subid && subendpoint) ? "#{subendpoint}/#{subid}/#{endpoint}" : endpoint
       url = "#{e}/#{id}/delete"
       @client.get_request(url)
     end
