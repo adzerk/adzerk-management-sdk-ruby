@@ -10,7 +10,8 @@ Gem::Specification.new do |s|
   s.require_path  = 'lib'
   s.authors       = ["Kacy Fortner", "James Jeffers", "James Avery",
                      "Nate Kohari", "Rafael Chacon", "Sean Chaney",
-                     "Brec Carson", "Sam Lehman", "Dave Yarwood"]
+                     "Brec Carson", "Sam Lehman", "Dave Yarwood",
+                     "Micha Niskin"]
   s.email         = "engineering@adzerk.com"
   s.homepage      = "http://adzerk.com"
   s.add_development_dependency "rspec", "= 2.11.0"
