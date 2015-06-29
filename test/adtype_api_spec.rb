@@ -49,6 +49,7 @@ describe "Ad Type API" do
   end
 
   it "should delete ad type for channel" do
+    $ad_type_channel_id = @client.channels.list[:items].last[:id].to_s
     @client.ad_types.delete($ad_type_channel_id, $channel_id)
   end
 end
