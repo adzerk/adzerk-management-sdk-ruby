@@ -86,8 +86,8 @@ describe "Category API" do
   end
 
   it "should list categories for the current network" do
-    cat = @category.listAll()[:items].last
-    expect(cat[:name]).to eq($category_name)
+    cats = @category.listAll()[:items].select { |x| x[:name] == $category_name }
+    expect(cats.count).to eq(1)
   end
 
   it "should delete a category from a flight" do

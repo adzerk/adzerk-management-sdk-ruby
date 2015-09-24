@@ -36,7 +36,7 @@ describe "Report API" do
   end
 
   it "should return a status of 1 if the report isn't ready yet" do
-    bigger_report = $new_report.update(start_date: "1/1/2010", end_date: "10/1/2014")
+    bigger_report = $new_report.update(start_date: "1/1/2014", end_date: "10/1/2018")
     report_id = @reports.create_queued_report(bigger_report)[:id]
     # immediately poll for the result
     response = @reports.retrieve_queued_report(report_id)
