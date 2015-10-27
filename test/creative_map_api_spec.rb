@@ -327,8 +327,9 @@ describe "Creative Flight API" do
     expect{ @creative_maps.get(123, @flight_id) }.to raise_error "This flight is not part of your network"
   end
 
-  it "should not get a map that's been deleted" do
-    expect{ @creative_maps.get($map_id, @flight_id) }.to raise_error "This creative map has been deleted"
+  it "should get a map that's been deleted" do
+    map = @creative_maps.get($map_id, @flight_id)
+    expect(map[:is_deleted]).to eq(true)
   end
 
   it "should not update a map that's in a different network" do

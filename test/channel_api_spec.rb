@@ -82,8 +82,9 @@ describe "Channel API" do
     expect(response.body).to eq('"Successfully deleted"')
   end
 
-  it "should not get individual deleted channel" do
-    expect{ @channels.get($channel_id) }.to raise_error 'This channel has been deleted'
+  it "should get individual deleted channel" do
+    channel = @channels.get $channel_id
+    expect(channel[:is_deleted]).to eq(true)
   end
 
   it "should not update deleted channels" do
