@@ -62,8 +62,9 @@ describe "Advertiser API" do
     end
   end
 
-  it "should not get individual deleted advertiser" do
-    expect { @advertisers.get $advertiser_id }.to raise_error("This advertiser is deleted.")
+  it "should get individual deleted advertiser" do
+    advertiser = @advertisers.get $advertiser_id
+    expect(advertiser[:is_deleted]).to eq(true)
   end
 
   it "should not update a deleted advertiser" do
