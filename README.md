@@ -17,8 +17,8 @@ Refer to the [https://github.com/adzerk/adzerk-api/wiki](https://github.com/adze
 ### Examples
 
     require 'adzerk'
-    client = Adzerk::Client.new('your_api_key')
-    client.sites.list
+    client = Adzerk.new('your_api_key')
+    client.Site.new.list
 
 
 Copyright © 2011-2015 Adzerk, Inc.
