@@ -42,6 +42,3 @@ DEPENDENCIES
   rake
   rest-client
   rspec
-
-BUNDLED WITH
-   1.10.4

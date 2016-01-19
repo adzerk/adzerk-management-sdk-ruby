@@ -154,6 +154,7 @@ describe "Flight API" do
                              :priority_id => $priority_id,
                              :start_date => $flight_StartDate,
                              :goal_type => $flight_GoalType,
+                             :impressions => $flight_Impressions,
                              :is_companion => false)
     expect(flight[:name]).to eq("New Flight Name")
     expect(flight[:is_companion]).to be false
