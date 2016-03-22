@@ -9,7 +9,7 @@ module Adzerk
                 :logins, :geotargetings, :sitezonetargetings, :categories
 
     DEFAULTS = {
-      :host => ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/',
+      :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/v1/',
       :header => 'X-Adzerk-ApiKey'
     }
 
@@ -60,11 +60,11 @@ module Adzerk
       send_request(request, uri)
     end
 
-    def create_creative(data={}, image_path='')      
+    def create_creative(data={}, image_path='')
       response = RestClient.post(@config[:host] + 'creative',
                                  {:creative => camelize_data(data).to_json},
                                  :X_Adzerk_ApiKey => @api_key,
-                                 :content_type => :json, 
+                                 :content_type => :json,
                                  :accept => :json)
       response = upload_creative(JSON.parse(response)["Id"], image_path) unless image_path.empty?
       response
@@ -80,6 +80,7 @@ module Adzerk
 
     def send_request(request, uri)
       http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = uri.scheme == 'https'
       response = http.request(request)
       if response.kind_of? Net::HTTPClientError
         error_response = JSON.parse(response.body)
