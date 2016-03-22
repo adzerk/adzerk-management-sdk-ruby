@@ -9,7 +9,7 @@ module Adzerk
                 :logins, :geotargetings, :sitezonetargetings, :categories
 
     DEFAULTS = {
-      :host => ENV["ADZERK_API_HOST"] || 'http://api.adzerk.net/v1/',
+      :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/v1/',
       :header => 'X-Adzerk-ApiKey'
     }
 
