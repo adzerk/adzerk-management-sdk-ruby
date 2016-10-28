@@ -2,13 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "SiteZoneTargeting API" do
 
-
   before(:all) do
-    new_advertiser = {
-      'Title' => "Test"
-    }
     client = Adzerk::Client.new(API_KEY)
-    @flights= client.flights
+    @flights = client.flights
     @advertisers = client.advertisers
     @channels = client.channels
     @campaigns = client.campaigns
@@ -76,7 +72,16 @@ describe "SiteZoneTargeting API" do
                          :site_id => $site_id,
                          :is_deleted => false)
     $zone_id = zone[:id].to_s
+  end
 
+  after(:all) do
+    @flights.delete($flight_id)
+    @campaigns.delete($campaign_id)
+    @advertisers.delete($advertiserId)
+    @zones.delete($zone_id)
+    @sites.delete($site_id)
+    @priorities.delete($priority_id)
+    @channels.delete($channel_id)
   end
 
   it "should create a sitezone targeting" do
@@ -89,7 +94,7 @@ describe "SiteZoneTargeting API" do
       :zone_id => $sitezone_ZoneId,
       :is_exclude => true,
     }
- 
+
     sitezone = @sitezonetargeting.create($flight_id, new_sitezone)
     expect(sitezone[:site_id]).to eq($sitezone_SiteId.to_i)
     expect(sitezone[:zone_id]).to eq($sitezone_ZoneId.to_i)
@@ -121,7 +126,7 @@ describe "SiteZoneTargeting API" do
   end
 
   it "should error when deleting a sitezone targeting that does not exist" do
-    expect{ geo = @sitezonetargeting.delete($flight_id,1) }.to raise_error
+    expect{ @sitezonetargeting.delete($flight_id,1) }.to raise_error
   end
 
   it "should check if a flight is not a part of your network" do

@@ -4,10 +4,15 @@ describe "Creative API" do
 
   before(:all) do
     client = Adzerk::Client.new(API_KEY)
+    @advertisers = client.advertisers
     @creatives = client.creatives
-    @advertiser_id = client.advertisers.create(:title => "Test")[:id]
+    @advertiser_id = @advertisers.create(:title => "Test")[:id]
   end
-  
+
+  after(:all) do
+    @advertisers.delete(@advertiser_id)
+  end
+
   # this test gets a 400 error... doesn't work with current release
   # commenting out for now
 
@@ -22,7 +27,7 @@ describe "Creative API" do
   #     :is_active => true,
   #     :alt => 'test alt',
   #     :is_deleted => false,
-  #     :is_sync => false 
+  #     :is_sync => false
   #   }
   #   creative_path = File.expand_path(File.dirname(__FILE__) + '/' + '250x250.gif')
   #   creative = @creatives.create(new_creative, creative_path)
@@ -60,7 +65,7 @@ describe "Creative API" do
       :ad_type_id => $AdTypeId,
       :is_active => $IsCreativeActive,
       :alt => $Alt,
-      :is_deleted => $IsCreativeDeleted, 
+      :is_deleted => $IsCreativeDeleted,
       :is_sync => $IsSync,
       :'isHTMLJS' => $isHTMLJS,
       :script_body => $ScriptBody

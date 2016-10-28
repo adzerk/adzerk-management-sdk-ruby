@@ -22,6 +22,11 @@ describe "Channel Site Map API" do
     @site_id = site[:id]
   end
 
+  after(:all) do
+    @channels.delete(@channel_id)
+    @sites.delete(@site_id)
+  end
+
   it "should create a new map" do
     new_map = {
      :site_id => @site_id,

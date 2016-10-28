@@ -74,10 +74,20 @@ describe "Creative Flight API" do
     @zone_id = zone[:id]
   end
 
+  after(:all) do
+    @flights.delete(@flight_id)
+    @campaigns.delete(@campaign_id)
+    @advertisers.delete(@advertiser_id)
+    @priorities.delete(@priority_id)
+    @channels.delete(@channel_id)
+    @zones.delete(@zone_id)
+    @sites.delete(@site_id)
+  end
+
   it "should create a creative map" do
 
     $ImageName = "test.jpg"
-    
+
     $SizeOverride = false
     $Iframe = false
     $Impressions = 10000
@@ -86,7 +96,7 @@ describe "Creative Flight API" do
     $IsMapActive = true
     $IsMapDeleted = false
     $CustomTargeting = '$keywords contains "bjork"'
-    
+
     $Title = 'Test creative ' + rand(1000000).to_s
     $Url = "http://adzerk.com"
     $Body = "Test text"
@@ -99,7 +109,7 @@ describe "Creative Flight API" do
     $IsSync = false
 
     $PublisherAccountId = 372
-    
+
     new_creative = {
       :campaign_id => @campaign_id,
       :flight_id => @flight_id,
@@ -189,7 +199,7 @@ describe "Creative Flight API" do
 
   it "should get a specific creative map" do
     creative_map = @creative_maps.get($map_id, @flight_id)
-    
+
     expect(creative_map[:campaign_id]).to eq(@campaign_id)
     expect(creative_map[:flight_id]).to eq(@flight_id)
     expect(creative_map[:impressions]).to eq($Impressions)
@@ -215,7 +225,7 @@ describe "Creative Flight API" do
  end
 
   it "should update a specific creative map" do
-    
+
     new_impressions = 1234
     new_percentage = 51
     new_is_active = false
@@ -238,7 +248,7 @@ describe "Creative Flight API" do
       }
     }
     creative_map = @creative_maps.update(updated_creative)
-    
+
     #test new values
     expect(creative_map[:percentage]).to eq(new_percentage)
     expect(creative_map[:impressions]).to eq(new_impressions)
@@ -315,7 +325,7 @@ describe "Creative Flight API" do
     expect(creative_map[:creative][:alt]).to eq new_alt
     expect(creative_map[:creative][:is_sync]).to eq new_is_sync
     expect(creative_map[:creative][:image_name]).to eq new_image_name
-    
+
   end
 
   it "should delete the creatives after creating it" do

@@ -14,6 +14,10 @@ describe "Zone API" do
     $site_id = site[:id]
   end
 
+  after(:all) do
+    @sites.delete($site_id)
+  end
+
   it "should create a new zone" do
     $name = 'Test Zone ' + rand(1000000).to_s
     zone = @zones.create(:name => $name,

@@ -3,11 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "Flight API" do
 
   before(:all) do
-    new_advertiser = {
-      'Title' => "Test"
-    }
     client = Adzerk::Client.new(API_KEY)
-    @flights= client.flights
+    @flights = client.flights
     @advertisers = client.advertisers
     @channels = client.channels
     @campaigns = client.campaigns
@@ -40,7 +37,14 @@ describe "Flight API" do
              :flights => [],
              :is_deleted => false)
     $campaign_id = campaign[:id]
+  end
 
+  after(:all) do
+    @flights.delete($flight_id_2)
+    @campaigns.delete($campaign_id)
+    @advertisers.delete($advertiserId)
+    @priorities.delete($priority_id)
+    @channels.delete($channel_id)
   end
 
   it "should create a flight" do
@@ -199,7 +203,7 @@ describe "Flight API" do
       'GoalType' => $flight_GoalType
     }
     flight = @flights.create(new_flight)
-    $flight_id = flight[:id].to_s
+    $flight_id_2 = flight[:id].to_s
     expect(flight[:no_end_date]).to eq(false)
     expect(flight[:priority_id]).to eq($priority_id.to_i)
     expect(flight[:name]).to eq($flight_Name)
@@ -224,8 +228,8 @@ describe "Flight API" do
   end
 
   it "should not create a flight for a campaign in a different network" do
-    expect{
-      flight = @flights.create(
+    expect {
+      @flights.create(
         :no_end_date => false,
         :priority_id => $priority_id,
         :name => $flight_Name,

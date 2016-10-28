@@ -11,6 +11,11 @@ describe "Invitation API" do
     @site_id = site[:id].to_s
   end
 
+  after do
+    @client.advertisers.delete(@advertiser_id)
+    @client.sites.delete(@site_id)
+  end
+
   it "should create a new publisher invitation" do
     response = @client.invitations.invite_publisher(:email => 'test@adzerk.com',
                                         :site_id => @site_id,

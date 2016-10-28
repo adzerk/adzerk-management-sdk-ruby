@@ -4,9 +4,6 @@ describe "GeoTargeting API" do
 
 
   before(:all) do
-    new_advertiser = {
-      'Title' => "Test"
-    }
     client = Adzerk::Client.new(API_KEY)
     @flights= client.flights
     @advertisers = client.advertisers
@@ -64,7 +61,14 @@ describe "GeoTargeting API" do
     }
     flight = @flights.create(new_flight)
     $flight_id = flight[:id].to_s
+  end
 
+  after(:all) do
+    @flights.delete($flight_id)
+    @campaigns.delete($campaign_id)
+    @advertisers.delete($advertiserId)
+    @priorities.delete($priority_id)
+    @channels.delete($channel_id)
   end
 
   it "should create a geotargeting" do
@@ -79,7 +83,7 @@ describe "GeoTargeting API" do
       :metro_code => $geo_MetroCode,
       :is_exclude => true,
     }
- 
+
     geo = @geotargetings.create($flight_id, new_geo)
     expect(geo[:country_code]).to eq($geo_CountryCode)
     expect(geo[:region]).to eq($geo_Region)
@@ -90,7 +94,7 @@ describe "GeoTargeting API" do
   end
 
   it "should retrieve a geotargeting" do
-    geo = @geotargetings.get($flight_id,$geo_id)
+    @geotargetings.get($flight_id,$geo_id)
   end
 
   it "should update a geotargeting" do
@@ -105,11 +109,11 @@ describe "GeoTargeting API" do
   end
 
   it "should delete a geotargeting" do
-    geo = @geotargetings.delete($flight_id,$geo_id)
+    @geotargetings.delete($flight_id,$geo_id)
   end
 
   it "should error when deleting a geotargeting that does not exist" do
-    expect{ geo = @geotargetings.delete($flight_id,1) }.to raise_error
+    expect{ @geotargetings.delete($flight_id,1) }.to raise_error
   end
 
   it "should check if a flight is not a part of your network" do

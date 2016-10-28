@@ -4,9 +4,6 @@ describe "Category API" do
 
 
   before(:all) do
-    new_advertiser = {
-      'Title' => "Test"
-    }
     client = Adzerk::Client.new(API_KEY)
     @flights= client.flights
     @advertisers = client.advertisers
@@ -73,6 +70,14 @@ describe "Category API" do
 
   end
 
+  after(:all) do
+    @flights.delete($flight_id)
+    @campaigns.delete($campaign_id)
+    @advertisers.delete($advertiserId)
+    @priorities.delete($priority_id)
+    @channels.delete($channel_id)
+  end
+
   it "should add a category to a flight" do
     cat = @category.create($flight_id, $new_category)
     $category_id = cat[:id]
@@ -97,10 +102,10 @@ describe "Category API" do
 
   it "should error when the flight or category id does not exist or does not belong to the network" do
     bad_id = 0
-    expect{ cat = @category.create(bad_id, $new_category) }.to raise_error
-    expect{ cat = @category.list(bad_id) }.to raise_error
-    expect{ cat = @category.delete(bad_id,$category_id) }.to raise_error
-    expect{ cat = @category.delete($flight_id,bad_id) }.to raise_error
+    expect{ @category.create(bad_id, $new_category) }.to raise_error
+    expect{ @category.list(bad_id) }.to raise_error
+    expect{ @category.delete(bad_id,$category_id) }.to raise_error
+    expect{ @category.delete($flight_id,bad_id) }.to raise_error
   end
 
 end

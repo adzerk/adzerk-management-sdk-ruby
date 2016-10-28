@@ -27,7 +27,12 @@ describe "Campaign API" do
     $priority_id = priority[:id].to_s
   end
 
-
+  after(:all) do
+    @campaigns.delete($campaign_id_1)
+    @advertisers.delete($campaign_advertiser_id)
+    @priorities.delete($priority_id)
+    @channels.delete($channel_id)
+  end
 
   it "should create a new campaign with no flights" do
     $campaign_name = 'Test campaign ' + rand(1000000).to_s

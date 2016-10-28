@@ -4,8 +4,8 @@ describe "Priority API" do
 
   before(:all) do
     client = Adzerk::Client.new(API_KEY)
-    channels = client.channels
-    channel = channels.
+    @channels = client.channels
+    channel = @channels.
       create(:title => 'Test Channel ' + rand(1000000).to_s,
              :commission => '0',
              :engine => 'CPM',
@@ -14,6 +14,10 @@ describe "Priority API" do
              :ad_types => [1,2,3,4])
     $channel_id = channel[:id].to_s
     @priorities = client.priorities
+  end
+
+  after(:all) do
+    @channels.delete($channel_id)
   end
 
   it "should create a new priority" do

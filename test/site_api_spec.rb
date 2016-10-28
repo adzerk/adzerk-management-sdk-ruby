@@ -9,10 +9,6 @@ describe "Site API" do
 
   it "should create a new site" do
     $site_title = 'Test Site ' + rand(1000000).to_s
-    new_site = {
-     'Title' => $site_title,
-     'Url' => @site_url
-    }
     site = @client.sites.create(:title => $site_title, :url => @site_url)
     $site_id = site[:id].to_s
     expect($site_title).to eq(site[:title])
