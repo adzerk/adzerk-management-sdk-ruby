@@ -102,10 +102,22 @@ describe "Category API" do
 
   it "should error when the flight or category id does not exist or does not belong to the network" do
     bad_id = 0
-    expect{ @category.create(bad_id, $new_category) }.to raise_error
-    expect{ @category.list(bad_id) }.to raise_error
-    expect{ @category.delete(bad_id,$category_id) }.to raise_error
-    expect{ @category.delete($flight_id,bad_id) }.to raise_error
+
+    expect {
+      @category.create(bad_id, $new_category)
+    }.to raise_error "Flight is not a part of your network"
+
+    expect {
+      @category.list(bad_id)
+    }.to raise_error "Flight is not a part of your network"
+
+    expect {
+      @category.delete(bad_id,$category_id)
+    }.to raise_error "Flight is not a part of your network"
+
+    expect {
+      @category.delete($flight_id,bad_id)
+    }.to raise_error "Category is not part of your network"
   end
 
 end

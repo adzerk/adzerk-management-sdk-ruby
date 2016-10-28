@@ -126,7 +126,9 @@ describe "SiteZoneTargeting API" do
   end
 
   it "should error when deleting a sitezone targeting that does not exist" do
-    expect{ @sitezonetargeting.delete($flight_id,1) }.to raise_error
+    expect {
+      @sitezonetargeting.delete($flight_id,1)
+    }.to raise_error "This sitezone targeting id does not exist"
   end
 
   it "should check if a flight is not a part of your network" do

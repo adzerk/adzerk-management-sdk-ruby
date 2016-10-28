@@ -129,7 +129,9 @@ describe "Flight API" do
       :is_deleted => $flight_IsDeleted
     }
 
-    expect { @flights.create flight_without_goal_type }.to raise_error
+    expect {
+      @flights.create flight_without_goal_type
+    }.to raise_error "Goal Type is a required field"
   end
 
   it "should list a specific flight" do

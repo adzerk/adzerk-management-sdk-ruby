@@ -113,7 +113,9 @@ describe "GeoTargeting API" do
   end
 
   it "should error when deleting a geotargeting that does not exist" do
-    expect{ @geotargetings.delete($flight_id,1) }.to raise_error
+    expect {
+      @geotargetings.delete($flight_id, 1)
+    }.to raise_error "Geo-Targeting record with Id 1 does not exist"
   end
 
   it "should check if a flight is not a part of your network" do
