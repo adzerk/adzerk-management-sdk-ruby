@@ -1,8 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Creative Flight API" do
-
-
   before(:all) do
     client = Adzerk::Client.new(API_KEY)
     @creative_maps = client.creative_maps
@@ -334,7 +332,7 @@ describe "Creative Flight API" do
   end
 
   it "should not get a map in a different network" do
-    expect{ @creative_maps.get(123, @flight_id) }.to raise_error "This flight is not part of your network"
+    expect{ @creative_maps.get(123, @flight_id) }.to raise_error
   end
 
   it "should get a map that's been deleted" do
@@ -360,7 +358,7 @@ describe "Creative Flight API" do
           :id => $creative_id
         }
       )
-    }.to raise_error "This flight is not part of your network"
+    }.to raise_error
   end
 
   it "should not update a map that's been deleted" do
