@@ -332,7 +332,7 @@ describe "Creative Flight API" do
   end
 
   it "should not get a map in a different network" do
-    expect{ @creative_maps.get(123, @flight_id) }.to raise_error
+    expect{ @creative_maps.get(123, @flight_id) }.to raise_error "This PassCreativeMap does not belong to your network."
   end
 
   it "should get a map that's been deleted" do
@@ -358,7 +358,7 @@ describe "Creative Flight API" do
           :id => $creative_id
         }
       )
-    }.to raise_error
+    }.to raise_error "This Flight does not belong to your network."
   end
 
   it "should not update a map that's been deleted" do
