@@ -128,13 +128,13 @@ describe "SiteZoneTargeting API" do
   it "should error when deleting a sitezone targeting that does not exist" do
     expect {
       @sitezonetargeting.delete($flight_id,1)
-    }.to raise_error "This sitezone targeting id does not exist"
+    }.to raise_error "Couldn't find network for model: PassSiteMap, id: 1"
   end
 
   it "should check if a flight is not a part of your network" do
     non_network_flight = 123;
-    expect{ @sitezonetargeting.delete(non_network_flight,1) }.to raise_error("Flight is not a part of your network")
-    expect{ @sitezonetargeting.get(non_network_flight,1) }.to raise_error("Flight is not a part of your network")
+    expect{ @sitezonetargeting.delete(non_network_flight,1) }.to raise_error("This Flight does not belong to your network.")
+    expect{ @sitezonetargeting.get(non_network_flight,1) }.to raise_error("This Flight does not belong to your network.")
     expect{ @sitezonetargeting.update(non_network_flight,1,{}) }.to raise_error("Flight is not a part of your network")
   end
 

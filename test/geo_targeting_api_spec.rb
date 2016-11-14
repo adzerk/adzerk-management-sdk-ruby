@@ -1,8 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "GeoTargeting API" do
-
-
   before(:all) do
     client = Adzerk::Client.new(API_KEY)
     @flights= client.flights
@@ -115,14 +113,14 @@ describe "GeoTargeting API" do
   it "should error when deleting a geotargeting that does not exist" do
     expect {
       @geotargetings.delete($flight_id, 1)
-    }.to raise_error "Geo-Targeting record with Id 1 does not exist"
+    }.to raise_error "Couldn't find network for model: PassLocation, id: 1"
   end
 
   it "should check if a flight is not a part of your network" do
     non_network_flight = 123;
-    expect{ @geotargetings.delete(non_network_flight,1) }.to raise_error("Flight is not a part of your network")
-    expect{ @geotargetings.get(non_network_flight,1) }.to raise_error("Flight is not a part of your network")
-    expect{ @geotargetings.update(non_network_flight,1,{}) }.to raise_error("Flight is not a part of your network")
+    expect{ @geotargetings.delete(non_network_flight,1) }.to raise_error("This Flight does not belong to your network.")
+    expect{ @geotargetings.get(non_network_flight,1) }.to raise_error("This Flight does not belong to your network.")
+    expect{ @geotargetings.update(non_network_flight,1,{}) }.to raise_error("This Flight does not belong to your network.")
   end
 
 end
