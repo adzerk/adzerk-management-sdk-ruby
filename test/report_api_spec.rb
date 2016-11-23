@@ -45,7 +45,7 @@ describe "Report API" do
 
   it "should retrieve a queued report if available" do
     # use $saved_report_id from 3 tests ago, wait a couple seconds to make sure the report is ready
-    sleep 2
+    sleep 10
     response = @reports.retrieve_queued_report($saved_report_id)
     expect(response[:status]).to eq 2
     expect(response[:result][:is_total]).to be true
