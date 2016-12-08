@@ -16,9 +16,9 @@ describe "Report API" do
     }
   end
 
-  it "should create a report" do
-    report = @reports.create_report($new_report)
-    #expect(report.has_key? :id).to be true
+  it "should create a report within 20 seconds" do
+    report = @reports.create_report($new_report, 20000)
+    expect(report.has_key? :report_id).to be true
     expect(report[:is_total]).to be true
     # expect(report[:grouping]).to eq ["month"]
   end
@@ -44,7 +44,8 @@ describe "Report API" do
   end
 
   it "should retrieve a queued report if available" do
-    # use $saved_report_id from 3 tests ago, wait a couple seconds to make sure the report is ready
+    # use $saved_report_id from 3 tests ago, wait a while to make sure the
+    # report is ready
     sleep 10
     response = @reports.retrieve_queued_report($saved_report_id)
     expect(response[:status]).to eq 2
