@@ -20,5 +20,11 @@ Refer to the [https://github.com/adzerk/adzerk-api/wiki](https://github.com/adze
     client = Adzerk::Client.new('your_api_key')
     client.sites.list
 
+## To run tests as Adzerk developer
+
+    bundle install 
+    export ADZERK_API_KEY=<get-key-from-adzerk>
+    rake spec
+
 
 Copyright © 2011-2016 Adzerk, Inc.

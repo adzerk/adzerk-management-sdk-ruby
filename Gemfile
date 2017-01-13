@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-gem 'json'
+gem 'json', '2.0.3'
 gem 'rest-client', '1.6.9'
 gem 'activesupport', '>=3.2.8'
 gem 'rake', :group => :test
