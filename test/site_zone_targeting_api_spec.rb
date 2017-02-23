@@ -41,7 +41,6 @@ describe "SiteZoneTargeting API" do
     $campaign_id = campaign[:id]
 
     new_flight = {
-      :no_end_date => false,
       :priority_id => $priority_id,
       :name => 'Test flight ' + rand(1000000).to_s,
       :start_date => "1/1/2011",

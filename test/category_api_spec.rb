@@ -46,7 +46,6 @@ describe "Category API" do
       :name => 'Test flight ' + rand(1000000).to_s,
       :start_date => "1/1/2011",
       :end_date => "12/31/2011",
-      :no_end_date => false,
       :price => '15.00',
       :option_type => 1,
       :impressions => 10000,
