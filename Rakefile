@@ -6,4 +6,5 @@ begin
 rescue LoadError
 end
 
+task :test => :spec
 task :default => :spec
