@@ -66,7 +66,6 @@ describe "Flight API" do
     $flight_GoalType = 1
 
     new_flight = {
-      :no_end_date => false,
       :priority_id => $priority_id,
       :name => $flight_Name,
       :start_date => $flight_StartDate,
@@ -110,7 +109,6 @@ describe "Flight API" do
 
   it "should fail to create a flight without a goal type" do
     flight_without_goal_type = {
-      :no_end_date => false,
       :priority_id => $priority_id,
       :name => $flight_Name,
       :start_date => $flight_StartDate,
@@ -184,7 +182,6 @@ describe "Flight API" do
     }]
 
     new_flight = {
-      'NoEndDate' => false,
       'PriorityId' => $priority_id,
       'Name' => $flight_Name,
       'StartDate' => $flight_StartDate,
@@ -232,7 +229,6 @@ describe "Flight API" do
   it "should not create a flight for a campaign in a different network" do
     expect {
       @flights.create(
-        :no_end_date => false,
         :priority_id => $priority_id,
         :name => $flight_Name,
         :start_date => $flight_StartDate,

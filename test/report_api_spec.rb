@@ -16,8 +16,8 @@ describe "Report API" do
     }
   end
 
-  it "should create a report within 20 seconds" do
-    report = @reports.create_report($new_report, 20000)
+  it "should create a report within 60 seconds" do
+    report = @reports.create_report($new_report, 60000)
     expect(report.has_key? :report_id).to be true
     expect(report[:is_total]).to be true
     # expect(report[:grouping]).to eq ["month"]
