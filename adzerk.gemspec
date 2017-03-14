@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
   s.email         = "engineering@adzerk.com"
   s.homepage      = "http://adzerk.com"
   s.add_development_dependency "rspec", "= 2.11.0"
+  s.add_development_dependency "rake", "= 12.0.0"
   s.add_runtime_dependency "json", ">= 1.7.7"
-  s.add_runtime_dependency "rest-client", "= 1.6.9"
+  s.add_runtime_dependency "rest-client", "= 2.0.1"
   s.add_runtime_dependency "activesupport", ">= 3.2.8"
 end
