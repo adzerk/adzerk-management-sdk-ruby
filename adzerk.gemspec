@@ -4,6 +4,7 @@ require 'adzerk/version'
 Gem::Specification.new do |s|
   s.name          = 'adzerk'
   s.version       =  Adzerk::VERSION
+  s.licenses      = ['Apache-2.0']
   s.summary       = "Adzerk API"
   s.description   = "Ruby library for the Adzerk API"
   s.files         = ['lib/adzerk.rb'] + Dir['lib/**/*.rb'] + Dir['test/*.rb']
