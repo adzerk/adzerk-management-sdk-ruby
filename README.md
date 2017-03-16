@@ -1,6 +1,6 @@
 # Adzerk
 
-Ruby wrapper for the [Adzerk API](http://adzerk.com/).
+Ruby wrapper for the [Adzerk](https://adzerk.com) API.
 
 ## Installation
 
@@ -8,11 +8,16 @@ Ruby wrapper for the [Adzerk API](http://adzerk.com/).
 
 ## Get your API key
 
-Be sure and get your API key. Log into the management application at [http://manage.adzerk.net/](http://manage.adzerk.net/). Then, click on the settings tab, followed by the API Keys tab.
+To obtain your Adzerk API key:
+
+- Log into the management application at http://_yournetwork_.adzerk.com.
+- Click on the Settings tab.
+- Click on the API Keys tab.
+- Check to make sure that the API key you are using is enabled.
 
 ## Usage
 
-Refer to the [https://github.com/adzerk/adzerk-api/wiki](https://github.com/adzerk/adzerk-api/wiki) of this repository for the properties needed for update and create.
+Refer to the [Adzerk Knowledge Base](http://dev.adzerk.com) for information about the properties needed to create and update ads, flights, etc.
 
 ### Examples
 
