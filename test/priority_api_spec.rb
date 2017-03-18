@@ -63,7 +63,7 @@ describe "Priority API" do
   end
 
   it "should not allow selection algorithm to be updated" do
-    expect { @priorities.update(selection_algorithm: 1) }.to raise_error
+    expect { @priorities.update(selection_algorithm: 1) }.to raise_error JSON::ParserError
   end
 
   it "should list all priorities" do
