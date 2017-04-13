@@ -69,9 +69,11 @@ module Adzerk
       response
     end
 
-    def upload_creative(id, image_path)
+    def upload_creative(id, image_path, size_override: false)
       image = File.new(image_path, 'rb')
-      RestClient.post(@config[:host] + 'creative/' + id.to_s + '/upload',
+      url = @config[:host] + 'creative/' + id.to_s + '/upload'
+      url += '?sizeOverride=true' if size_override
+      RestClient.post(url,
       {:image => image},
       "X-Adzerk-ApiKey" => @api_key,
       :accept => :mime)
