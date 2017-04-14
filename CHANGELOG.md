@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.12 (2017-04-14)
+
+`upload_creative` now takes an optional `size_override` keyword argument that
+will allow you to upload a creative image whose dimensions are different than
+the ad type.
+
+Thanks to [@wulftone][wulftone] for the PR!
+
 ## v0.11 (2017-03-14)
 
 - Updated dependencies:
@@ -64,3 +72,4 @@ the queued report. This `Id` will be available for 30 days.
 object's `Status` property will be 1 ("in progress"). If the report is ready,
 `Status` will be 2 ("complete") and `Result` will contain the requested report.
 
+[wulftone]: https://github.com/wulftone
