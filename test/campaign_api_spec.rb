@@ -154,7 +154,9 @@ describe "Campaign API" do
     }
 
     expect{ @campaigns.create(new_campaign) }.to raise_error("This advertiser is not part of your network")
+  end
 
+  it "should not update a campaign with a new advertiserId" do
     updated_campaign = {
       :id => $campaign_id,
       :name => 'Test campaign ' + rand(1000000).to_s,
@@ -167,7 +169,7 @@ describe "Campaign API" do
       :is_deleted => false
     }
 
-    expect{ @campaigns.update(updated_campaign) }.to raise_error("This advertiser is not part of your network")
+    expect{ @campaigns.update(updated_campaign) }.to raise_error("This campaign belongs to advertiser #{$advertiserId}; a different advertiser cannot be specified.")
   end
 
   it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
