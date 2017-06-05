@@ -85,7 +85,8 @@ module Adzerk
       response = http.request(request)
       if response.kind_of? Net::HTTPClientError
         error_response = JSON.parse(response.body)
-        raise Adzerk::ApiError.new(error_response["message"])
+        msg = error_response["message"] || error_response["Error"]
+        raise Adzerk::ApiError.new(msg)
       end
       response
     end
