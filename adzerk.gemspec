@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake", "= 12.0.0"
   s.add_runtime_dependency "json", "~> 2.0"
   s.add_runtime_dependency "rest-client", "= 2.0.1"
-  s.add_runtime_dependency "activesupport", "~> 3.2"
+  s.add_runtime_dependency "activesupport", "~> 5.1"
 end
