@@ -1,5 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
+def random_email
+  "test@email-#{rand(1000000)}.com"
+end
+
 describe "Login_API" do
 
   before do
@@ -7,13 +11,14 @@ describe "Login_API" do
   end
 
   it "should create a new login" do
-    email = "test@email_#{rand(1000000)}.com"
+    email = random_email()
     login = @logins.create(:email => email,
                            :password => '1234567',
                            :name => "John Doe")
     $login_id = login[:id]
     expect(login[:email]).to eq(email)
-    expect(login[:password]).to eq("1234567")
+    # Password is redacted in the response.
+    expect(login[:password]).to eq("")
     expect(login[:name]).to eq("John Doe")
   end
 
@@ -28,9 +33,12 @@ describe "Login_API" do
   end
 
   it "should update a login" do
+    new_email = random_email()
     login = @logins.update(:id => $login_id,
-                           :name => "New Name")
+                           :name => "New Name",
+                           :email => new_email)
     expect(login[:name]).to eq("New Name")
+    expect(login[:email]).to eq(new_email)
   end
 
 end
