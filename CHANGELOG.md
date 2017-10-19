@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.13 (2017-10-19)
+
+Updated `activesupport` dependency from `~> 3.2` to `~> 5.1`.
+
 ## v0.12 (2017-04-14)
 
 `upload_creative` now takes an optional `size_override` keyword argument that
