@@ -83,7 +83,7 @@ module Adzerk
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = uri.scheme == 'https'
       response = http.request(request)
-      if response.kind_of? Net::HTTPClientError
+      if response.kind_of? Net::HTTPClientError or response.kind_of? Net::HTTPServerError
         error_response = JSON.parse(response.body)
         msg = error_response["message"] || error_response["Error"]
         raise Adzerk::ApiError.new(msg)
