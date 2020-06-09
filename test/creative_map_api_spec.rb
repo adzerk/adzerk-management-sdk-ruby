@@ -332,7 +332,7 @@ describe "Creative Flight API" do
   end
 
   it "should not get a map in a different network" do
-    expect{ @creative_maps.get(123, @flight_id) }.to raise_error "This PassCreativeMap does not belong to your network."
+    expect{ @creative_maps.get(123, @flight_id) }.to raise_error Adzerk::ApiError
   end
 
   it "should get a map that's been deleted" do
@@ -380,37 +380,6 @@ describe "Creative Flight API" do
         }
       )
     }.to raise_error "This creative map has been deleted"
-  end
-
-  it "should fail when creating a map for a campaign in a different network" do
-    expect {
-      creative_map = @creative_maps.create(
-        :campaign_id => 123,
-        :flight_id => @flight_id,
-        :size_override => false,
-        :iframe => false,
-        :impressions => 100000,
-        :percentage => 50,
-        :siteId => @site_id,
-        :zoneId => @zone_id,
-        :distributionType => 1,
-        :isActive => true,
-        :isDeleted => false,
-        :creative => {
-          :title => "Creative Title",
-          :url => "http://www.adzerk.com",
-          :body => "Test Body",
-          :advertiser_id => @advertiser_id,
-          :ad_type_id => 18,
-          'IsHTMLJS' => true,
-          :script_body => "<html></html>",
-          :is_active => true,
-          :alt => "alt text",
-          :is_deleted => false,
-          :is_sync => false
-        }
-      )
-    }.to raise_error "This campaign is not part of your network"
   end
 
   it "should fail when creating a map for a site in a different network" do
