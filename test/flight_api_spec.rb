@@ -159,7 +159,8 @@ describe "Flight API" do
                              :start_date => $flight_StartDate,
                              :goal_type => $flight_GoalType,
                              :impressions => $flight_Impressions,
-                             :is_companion => false)
+                             :is_companion => false,
+                             :end_date => $flight_EndDate)
     expect(flight[:name]).to eq("New Flight Name")
     expect(flight[:is_companion]).to be false
   end

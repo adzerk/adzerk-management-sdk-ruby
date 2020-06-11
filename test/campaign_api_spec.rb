@@ -73,7 +73,8 @@ describe "Campaign API" do
       :name => "Test",
       :priority_id => $priority_id,
       :impressions => 10000,
-      :is_deleted => false
+      :is_deleted => false,
+      :goal_type => 1
     }]
     new1_campaign = {
       :name => $campaign_name,
@@ -88,8 +89,6 @@ describe "Campaign API" do
     campaign = @campaigns.create(new1_campaign)
     $campaign_id_1 = campaign[:id].to_s
     expect($campaign_name).to eq(campaign[:name])
-    # JSON.parse(response.body)["StartDate"].should == "/Date(1293858000000-0500)/"
-    # JSON.parse(response.body)["EndDate"].should == "/Date(1325307600000-0500)/"
     expect($campaign_is_active).to eq(campaign[:is_active])
     expect(campaign[:is_deleted]).to eq(false)
     expect($campaign_price.to_f).to eq(campaign[:price])
