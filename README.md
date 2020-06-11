@@ -33,7 +33,7 @@ Refer to the [Adzerk Knowledge Base](http://dev.adzerk.com) for information abou
 
 ## License
 
-Copyright © 2011-2017 Adzerk, Inc.
+Copyright © 2011-2020 Adzerk, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License.  You may obtain a copy of the
