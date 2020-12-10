@@ -1,6 +1,6 @@
 module Adzerk
   module Util
-    extend self 
+    extend self
 
     def camelize_data(data)
       return data unless data.respond_to?(:reduce)
@@ -29,7 +29,7 @@ module Adzerk
     end
 
     def parse_response(response)
-      uncamelize_data(JSON.parse(response.body))
+      uncamelize_data(JSON.parse(response.body)).to_dot.with_indifferent_access
     end
   end
 end
