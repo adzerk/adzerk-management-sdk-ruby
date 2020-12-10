@@ -9,8 +9,8 @@ module Adzerk
       parse_reponse(@client.get_request(url))
     end
 
-    def instant_counts(id)
-      url = "instantcounts/#{endpoint}/#{id}"
+    def instant_counts(flight_id)
+      url = "instantcounts/#{endpoint}/#{flight_id}"
       parse_response(client.get_request(url))
     end
   end
