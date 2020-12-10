@@ -8,6 +8,9 @@ module Adzerk
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories
 
+    SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
+    VERSION = Gem.loaded_specs['adzerk_api'].version.to_s
+
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/v1/',
       :header => 'X-Adzerk-ApiKey'
@@ -21,7 +24,7 @@ module Adzerk
       @ad_types = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'adtypes', :subendpoint => 'channel', :datakey => 'adtype')
       @flights = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'flight')
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
-      @campaigns = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'campaign')
+      @campaigns = Adzerk::Campaign.new(:client => self, :endpoint => 'campaign')
       @channels = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'channel')
       @priorities = Adzerk::Priority.new(:client => self, :endpoint => 'priority')
       @advertisers = Adzerk::Advertiser.new(:client => self, :endpoint => 'advertiser')
@@ -41,6 +44,7 @@ module Adzerk
       uri = URI.parse(@config[:host] + url)
       request = Net::HTTP::Get.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, VERSION)
       send_request(request, uri)
     end
 
@@ -48,6 +52,7 @@ module Adzerk
       uri = URI.parse(@config[:host] + url)
       request = Net::HTTP::Post.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, VERSION)
       request.set_form_data(data)
       send_request(request, uri)
     end
@@ -56,6 +61,7 @@ module Adzerk
       uri = URI.parse(@config[:host] + url)
       request = Net::HTTP::Put.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, VERSION)
       request.set_form_data(data)
       send_request(request, uri)
     end
@@ -64,6 +70,7 @@ module Adzerk
       response = RestClient.post(@config[:host] + 'creative',
                                  {:creative => camelize_data(data).to_json},
                                   :X_Adzerk_ApiKey => @api_key,
+                                  :X_Adzerk_Sdk_Version => VERSION,
                                   :accept => :json)
       response = upload_creative(JSON.parse(response)["Id"], image_path) unless image_path.empty?
       response
@@ -76,6 +83,7 @@ module Adzerk
       RestClient.post(url,
       {:image => image},
       "X-Adzerk-ApiKey" => @api_key,
+      SDK_HEADER_NAME => VERSION,
       :accept => :mime)
     end
 
