@@ -29,7 +29,7 @@ module Adzerk
     end
 
     def parse_response(response)
-      uncamelize_data(JSON.parse(response.body)).to_dot.with_indifferent_access
+      uncamelize_data(JSON.parse(response.body))
     end
   end
 end
