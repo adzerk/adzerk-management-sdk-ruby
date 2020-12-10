@@ -9,7 +9,7 @@ module Adzerk
                 :logins, :geotargetings, :sitezonetargetings, :categories
 
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
-    VERSION = Gem.loaded_specs['adzerk_api'].version.to_s
+    VERSION = Gem.loaded_specs['adzerk'].version.to_s
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/v1/',
