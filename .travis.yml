@@ -7,6 +7,6 @@ env:
   - secure: PY/XH+jW7WXjqp7lKQCI/AlY0O0Ab+3kGR0IdoNAICzmcOtnxCJxHzMdnfjWE8ehRMwGe1oo2NC3yV7GZsdYaudwOWSRfYX+AeWXRASTjGZyzEOeyTxFL+UAFoFg6f9FI0APUG7JzxdAaCQpt14A/q6mPSfR9QnfiHlC0OiGhVI=
 notifications:
   slack:
-    secure: Ambh/T7Nz497PyiRgbP7ZJbEdoBvoLrA+yJUFU/h47O5VUsn2Bt5ot/PNXlSvvynR/zaRyWosgGfvp2mfTZM5qVfdTt6QdpXEXBnuG/ofCHFIxmIogrmQW4LJv4KhvbFthPyliE7hqMVZ7hNSEfpQV3jpAxKYl+2XpW64G6kSFA=
+    secure: WG1h/8GOoDl7eO93iPd8GSM9ufWtTwzX3M2bWCP2pafaPO+lskkw9p9lwGTuhPMnCO3MEtsC5SKHzg/0IbccK3qDG29kbbu3GrgKspVB+MBhH/rRMI9EygSleXWrdr3aktRxp96LewMYI4cua3DO/GjVWJEHfsVKOmwjrzeZ8+0=
 script:
 - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && bundle exec rake || false'
