@@ -7,7 +7,7 @@ module Adzerk
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories,
-                :instant_counts
+                :instant_counts, :ads
 
     VERSION = Gem.loaded_specs['adzerk'].version.to_s
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
@@ -24,7 +24,7 @@ module Adzerk
       @logins = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'login')
       @sites = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'site')
       @ad_types = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'adtypes', :subendpoint => 'channel', :datakey => 'adtype')
-      @flights = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'flight')
+      @flights = Adzerk::Flight.new(:client => self, :endpoint => 'flight')
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
       @campaigns = Adzerk::Campaign.new(:client => self, :endpoint => 'campaign')
       @channels = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'channel')
@@ -33,6 +33,7 @@ module Adzerk
       @publishers = Adzerk::Publisher.new(:client => self, :endpoint => 'publisher')
       @creatives = Adzerk::Creative.new(:client => self, :endpoint => 'creative')
       @creative_maps = Adzerk::CreativeMap.new(:client => self)
+      @ads = @creative_maps
       @invitations = Adzerk::Invitation.new(:client => self)
       @reports = Adzerk::Reporting.new(:client => self)
       @channel_site_maps = Adzerk::ChannelSiteMap.new(:client => self)
