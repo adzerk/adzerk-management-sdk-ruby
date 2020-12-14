@@ -6,7 +6,8 @@ module Adzerk
     attr_reader :sites, :ad_types, :zones, :campaigns, :channels, :priorities,
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
-                :logins, :geotargetings, :sitezonetargetings, :categories
+                :logins, :geotargetings, :sitezonetargetings, :categories,
+                :instant_counts
 
     VERSION = Gem.loaded_specs['adzerk'].version.to_s
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
@@ -38,6 +39,7 @@ module Adzerk
       @geotargetings = Adzerk::GeoTargeting.new(:client => self, :endpoint => 'geotargeting')
       @sitezonetargetings = Adzerk::SiteZoneTargeting.new(:client => self, :endpoint => 'sitezone')
       @categories = Adzerk::Category.new(:client => self, :endpoint => 'category')
+      @instant_counts = Adzerk::InstantCount.new(:client => self)
 
     end
 
@@ -55,6 +57,15 @@ module Adzerk
       request.add_field(@config[:header], @api_key)
       request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
       request.set_form_data(data)
+      send_request(request, uri)
+    end
+
+    def post_json_request(url, data)
+      uri = URI.parse(@config[:host] + url)
+      request = Net::HTTP::Post.new(uri.request_uri, 'Content-Type' => 'application/json')
+      request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
+      request.body = data.to_json
       send_request(request, uri)
     end
 
