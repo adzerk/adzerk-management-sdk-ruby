@@ -41,4 +41,4 @@ jobs:
         with:
           status: ${{ env.WORKFLOW_CONCLUSION }}
         env:
-          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
