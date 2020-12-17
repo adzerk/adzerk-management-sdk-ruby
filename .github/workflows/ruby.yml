@@ -26,4 +26,6 @@ jobs:
     - name: Install dependencies
       run: bundle install
     - name: Run tests
+      env:
+        ADZERK_API_KEY: ${{ secrets.ADZERK_API_KEY }}
       run: bundle exec rake
