@@ -8,5 +8,18 @@ module Adzerk
       url = 'region/' + region
       parse_reponse(@client.get_request(url))
     end
+
+    def instant_counts(flight_id)
+      url = "instantcounts/#{endpoint}/#{flight_id}"
+      parse_response(client.get_request(url))
+    end
+
+    def list_for_campaign(campaign_id, is_active = nil)
+      url = "campaign/#{campaign_id}/flight"
+      if !is_active.nil?
+        url = "#{url}?isActive=#{is_active}"
+      end
+      parse_response(@client.get_request(url))
+    end
   end
 end

@@ -1,6 +1,6 @@
 module Adzerk
   module Util
-    extend self 
+    extend self
 
     def camelize_data(data)
       return data unless data.respond_to?(:reduce)
