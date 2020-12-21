@@ -79,6 +79,15 @@ module Adzerk
       send_request(request, uri)
     end
 
+    def put_json_request(url, data)
+      uri = URI.parse(@config[:host] + url)
+      request = Net::HTTP::Put.new(uri.request_uri, 'Content-Type' => 'application/json')
+      request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
+      request.body = data.to_json
+      send_request(request, uri)
+    end
+
     def create_creative(data={}, image_path='')
       response = RestClient.post(@config[:host] + 'creative',
                                  {:creative => camelize_data(data).to_json},
