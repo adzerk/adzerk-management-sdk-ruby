@@ -20,13 +20,13 @@ module Adzerk
       @client.get_request(url)
     end
 
-    def listAll
+    def listAll(page: 1, pageSize: 500)
       response = client.get_request('categories')
       parse_response(response)
     end
 
-    def list(flight_id)
-      url = "flight/#{flight_id}/categories"
+    def list(flight_id, page: 1, pageSize: 500)
+      url = "flight/#{flight_id}/categories?page=#{page}&pageSize=#{pageSize}"
       response = client.get_request(url)
       parse_response(response)
     end

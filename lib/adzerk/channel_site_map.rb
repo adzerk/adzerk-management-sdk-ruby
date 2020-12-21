@@ -21,7 +21,7 @@ module Adzerk
       response = parse_response(response)
     end
 
-    def list
+    def list(page: 1, pageSize: 500)
       response = client.get_request('channelSite')
       parse_response(response)
     end
