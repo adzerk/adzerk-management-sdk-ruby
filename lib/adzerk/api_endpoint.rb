@@ -24,8 +24,9 @@ module Adzerk
       parse_response(response)
     end
 
-    def list(subid=nil)
+    def list(subid: nil, page: 1, pageSize: 500)
       e = (subid && subendpoint) ? "#{subendpoint}/#{subid}/#{endpoint}" : endpoint
+      e = "#{e}?page=#{page}&pageSize=#{pageSize}"
       response = @client.get_request(e)
       parse_response(response)
     end
