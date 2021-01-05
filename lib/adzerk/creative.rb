@@ -8,8 +8,8 @@ module Adzerk
       uncamelize_data(JSON.parse(response))
     end
 
-    def list(advertiserId)
-      url = 'advertiser/' + advertiserId.to_s + "/creatives"
+    def list(advertiserId, page: 1, pageSize: 500)
+      url = "advertiser/#{advertiserId}/creatives?page=#{page}&pageSize=#{pageSize}"
       parse_response(@client.get_request(url))
     end
 

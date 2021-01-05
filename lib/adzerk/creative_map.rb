@@ -18,8 +18,8 @@ module Adzerk
       parse_response(@client.get_request(url))
     end
 
-    def list(flight_id)
-      url = "flight/#{flight_id}/creatives"
+    def list(flight_id, page: 1, pageSize: 500)
+      url = "flight/#{flight_id}/creatives?page=#{page}&#pageSize=#{pageSize}"
       parse_response(@client.get_request(url))
     end
 

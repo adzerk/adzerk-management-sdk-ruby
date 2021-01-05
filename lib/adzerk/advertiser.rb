@@ -7,12 +7,12 @@ module Adzerk
     end
 
     def instant_counts(advertiser_id)
-      url = "instantcounts/#{endpoint}/#{advertiser_id}"
+      url = "instantcounts/#{endpoint}/#{advertiser_id}?page=#{page}&pageSize=#{pageSize}"
       parse_response(client.get_request(url))
     end
 
-    def list_creatives(advertiser_id)
-      url = "advertiser/#{advertiser_id}/creatives"
+    def list_creatives(advertiser_id, page: 1, pageSize: 500)
+      url = "advertiser/#{advertiser_id}/creatives?page=#{page}&pageSize=#{pageSize}"
       parse_response(@client.get_request(url))
     end
   end
