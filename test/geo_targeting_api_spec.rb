@@ -112,7 +112,7 @@ describe "GeoTargeting API" do
   it "should error when deleting a geotargeting that does not exist" do
     expect {
       @geotargetings.delete($flight_id, 1)
-    }.to raise_error "Couldn't find network for model: PassLocation, id: 1"
+    }.to raise_error "This PassLocation does not exist in your network."
   end
 
   it "should check if a flight is not a part of your network" do

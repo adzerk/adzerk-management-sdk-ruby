@@ -127,7 +127,7 @@ describe "SiteZoneTargeting API" do
   it "should error when deleting a sitezone targeting that does not exist" do
     expect {
       @sitezonetargeting.delete($flight_id,1)
-    }.to raise_error "Couldn't find network for model: PassSiteMap, id: 1"
+    }.to raise_error "This PassSiteMap does not exist in your network."
   end
 
   it "should check if a flight is not a part of your network" do
