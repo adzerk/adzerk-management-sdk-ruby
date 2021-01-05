@@ -14,8 +14,8 @@ module Adzerk
 
     def create(opts={}, subid=nil)
       e = (subid && subendpoint) ? "#{subendpoint}/#{subid}/#{endpoint}" : endpoint
-      data = { datakey => camelize_data(opts).to_json }
-      response = @client.post_request(e, data)
+      data = camelize_data(opts)
+      response = @client.post_json_request(e, data)
       parse_response(response)
     end
 
@@ -32,8 +32,8 @@ module Adzerk
 
     def update(opts={})
       id = opts[:id].to_s
-      data = { datakey => camelize_data(opts).to_json }
-      response = @client.put_request("#{endpoint}/#{id}", data)
+      data = camelize_data(opts)
+      response = @client.put_json_request("#{endpoint}/#{id}", data)
       parse_response(response)
     end
 
