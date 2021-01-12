@@ -7,7 +7,7 @@ module Adzerk
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories,
-                :instant_counts, :ads
+                :instant_counts, :ads, :creative_templates
 
     VERSION = Gem.loaded_specs['adzerk'].version.to_s
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
@@ -15,7 +15,8 @@ module Adzerk
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/v1/',
-      :header => 'X-Adzerk-ApiKey'
+      :header => 'X-Adzerk-ApiKey',
+      :include_creative_templates => true
     }
 
     def initialize(key, opts = {})
@@ -42,6 +43,9 @@ module Adzerk
       @categories = Adzerk::Category.new(:client => self, :endpoint => 'category')
       @instant_counts = Adzerk::InstantCount.new(:client => self)
 
+      if @config[:include_creative_templates]
+        @creative_templates = Adzerk::CreativeTemplate.new(:key => key)
+      end
     end
 
     def get_request(url)
