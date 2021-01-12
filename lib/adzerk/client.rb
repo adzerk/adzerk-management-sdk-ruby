@@ -14,7 +14,7 @@ module Adzerk
     SDK_HEADER_VALUE = "adzerk-management-sdk-ruby:#{VERSION}"
 
     DEFAULTS = {
-      :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/v1/',
+      :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/',
       :header => 'X-Adzerk-ApiKey',
       :include_creative_templates => true
     }
@@ -42,22 +42,19 @@ module Adzerk
       @sitezonetargetings = Adzerk::SiteZoneTargeting.new(:client => self, :endpoint => 'sitezone')
       @categories = Adzerk::Category.new(:client => self, :endpoint => 'category')
       @instant_counts = Adzerk::InstantCount.new(:client => self)
-
-      if @config[:include_creative_templates]
-        @creative_templates = Adzerk::CreativeTemplate.new(:key => key)
-      end
+      @creative_templates = Adzerk::CreativeTemplate.new(:client => self)
     end
 
-    def get_request(url)
-      uri = URI.parse(@config[:host] + url)
+    def get_request(url, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
       request = Net::HTTP::Get.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
       request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
       send_request(request, uri)
     end
 
-    def post_request(url, data)
-      uri = URI.parse(@config[:host] + url)
+    def post_request(url, data, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
       request = Net::HTTP::Post.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
       request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
@@ -65,8 +62,8 @@ module Adzerk
       send_request(request, uri)
     end
 
-    def post_json_request(url, data)
-      uri = URI.parse(@config[:host] + url)
+    def post_json_request(url, data, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
       request = Net::HTTP::Post.new(uri.request_uri, 'Content-Type' => 'application/json')
       request.add_field(@config[:header], @api_key)
       request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
@@ -74,8 +71,8 @@ module Adzerk
       send_request(request, uri)
     end
 
-    def put_request(url, data)
-      uri = URI.parse(@config[:host] + url)
+    def put_request(url, data, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
       request = Net::HTTP::Put.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
       request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
@@ -83,8 +80,8 @@ module Adzerk
       send_request(request, uri)
     end
 
-    def put_json_request(url, data)
-      uri = URI.parse(@config[:host] + url)
+    def put_json_request(url, data, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
       request = Net::HTTP::Put.new(uri.request_uri, 'Content-Type' => 'application/json')
       request.add_field(@config[:header], @api_key)
       request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
@@ -92,8 +89,8 @@ module Adzerk
       send_request(request, uri)
     end
 
-    def create_creative(data={}, image_path='')
-      response = RestClient.post(@config[:host] + 'creative',
+    def create_creative(data={}, image_path='', version: 'v1')
+      response = RestClient.post(@config[:host] + version + '/creative',
                                  {:creative => camelize_data(data).to_json},
                                   :X_Adzerk_ApiKey => @api_key,
                                   :X_Adzerk_Sdk_Version => SDK_HEADER_VALUE,
@@ -102,9 +99,9 @@ module Adzerk
       response
     end
 
-    def upload_creative(id, image_path, size_override: false)
+    def upload_creative(id, image_path, size_override: false, version: 'v1')
       image = File.new(image_path, 'rb')
-      url = @config[:host] + 'creative/' + id.to_s + '/upload'
+      url = @config[:host] + version + '/creative/' + id.to_s + '/upload'
       url += '?sizeOverride=true' if size_override
       RestClient.post(url,
       {:image => image},
