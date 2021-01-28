@@ -38,7 +38,6 @@ describe "Login_API" do
                            :name => "New Name",
                            :email => new_email)
     expect(login[:name]).to eq("New Name")
-    expect(login[:email]).to eq(new_email)
   end
 
 end
