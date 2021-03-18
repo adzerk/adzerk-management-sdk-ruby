@@ -172,7 +172,7 @@ describe "Campaign API" do
   end
 
   it "should not retrieve a campaign with a advertiserId that doesn't belong to it" do
-    expect { @campaigns.get('123') }.to raise_error("This campaign is not part of your network")
+    expect { @campaigns.get('123') }.to raise_error("Campaign not found.")
   end
 
     it "should delete a new campaign" do
