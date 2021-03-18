@@ -74,7 +74,7 @@ describe "Channel API" do
     expect(last_channel[:engine]).to eq($u_channel_engine)
     expect(last_channel[:keywords]).to eq($u_channel_keywords)
     expect(last_channel[:cpm]).to eq($u_channel_CPM.to_f)
-    expect(last_channel[:ad_types]).to eq($u_channel_AdTypes)
+    expect(last_channel[:ad_types]).to match_array($u_channel_AdTypes)
   end
 
   it "should delete a new channel" do
