@@ -4,7 +4,9 @@ Ruby wrapper for the [Adzerk](https://adzerk.com) API.
 
 ## Installation
 
-    sudo gem install adzerk
+```bash
+sudo gem install adzerk
+```
 
 ## Get your API key
 
@@ -21,15 +23,19 @@ Refer to the [Adzerk Knowledge Base](http://dev.adzerk.com) for information abou
 
 ### Examples
 
-    require 'adzerk'
-    client = Adzerk::Client.new('your_api_key')
-    client.sites.list
+```ruby
+require 'adzerk'
+client = Adzerk::Client.new(ENV["ADZERK_API_KEY"])
+pp client.sites.list
+```
 
 ## To run tests as Adzerk developer
 
-    bundle install
-    export ADZERK_API_KEY=<get-key-from-adzerk>
-    rake spec
+```bash
+bundle install
+export ADZERK_API_KEY=<get-key-from-adzerk>
+rake spec
+```
 
 ## License
 
