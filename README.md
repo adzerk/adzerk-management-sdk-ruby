@@ -31,11 +31,9 @@ pp client.sites.list
 
 ## To run tests as Adzerk developer
 
-```bash
-bundle install
-export ADZERK_API_KEY=<get-key-from-adzerk>
-rake spec
-```
+    bundle install
+    export ADZERK_API_KEY=<get-key-from-adzerk>
+    rake spec
 
 ## License
 
