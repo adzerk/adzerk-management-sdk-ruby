@@ -92,27 +92,45 @@ module Adzerk
     end
 
     def create_creative(data={}, image_path='', version: 'v1')
-      response = RestClient.post(@config[:host] + version + '/creative',
-                                 {:creative => camelize_data(data).to_json},
-                                  :X_Adzerk_ApiKey => @api_key,
-                                  :X_Adzerk_Sdk_Version => SDK_HEADER_VALUE,
-                                  :accept => :json)
+      response = nil
+      attempt = 0
+
+      loop do
+        response = RestClient.post(@config[:host] + version + '/creative',
+                                  {:creative => camelize_data(data).to_json},
+                                    :X_Adzerk_ApiKey => @api_key,
+                                    :X_Adzerk_Sdk_Version => SDK_HEADER_VALUE,
+                                    :accept => :json)
+        break if response.code != 429
+        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
+        attempt += 1
+      end
       response = upload_creative(JSON.parse(response)["Id"], image_path) unless image_path.empty?
       response
     end
 
     def upload_creative(id, image_path, size_override: false, version: 'v1')
+      response = nil
+      attempt = 0
       image = File.new(image_path, 'rb')
       url = @config[:host] + version + '/creative/' + id.to_s + '/upload'
       url += '?sizeOverride=true' if size_override
-      RestClient.post(url,
-      {:image => image},
-      "X-Adzerk-ApiKey" => @api_key,
-      SDK_HEADER_NAME => SDK_HEADER_VALUE,
-      :accept => :mime)
+      loop do
+        response = RestClient.post(url,
+        {:image => image},
+        "X-Adzerk-ApiKey" => @api_key,
+        SDK_HEADER_NAME => SDK_HEADER_VALUE,
+        :accept => :mime)
+
+        break if response.code != 429
+        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
+        attempt += 1
+      end
+      response
     end
 
     def send_request(request, uri)
+      response = nil
       attempt = 0
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = uri.scheme == 'https'
@@ -121,7 +139,7 @@ module Adzerk
         response = http.request(request)
         break if response.code != "429"
         sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
-        attempt++
+        attempt += 1
       end
 
       if response.kind_of? Net::HTTPClientError or response.kind_of? Net::HTTPServerError
@@ -129,6 +147,7 @@ module Adzerk
         msg = error_response["message"] || error_response["Error"] || response.body
         raise Adzerk::ApiError.new(msg)
       end
+
       response
     end
 
