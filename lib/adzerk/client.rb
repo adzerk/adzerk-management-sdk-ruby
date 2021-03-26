@@ -12,6 +12,8 @@ module Adzerk
     VERSION = Gem.loaded_specs['adzerk'].version.to_s
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
     SDK_HEADER_VALUE = "adzerk-management-sdk-ruby:#{VERSION}"
+    BASE_SLEEP = 0.25
+    MAX_SLEEP = 5
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/',
@@ -111,9 +113,17 @@ module Adzerk
     end
 
     def send_request(request, uri)
+      attempt = 0
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = uri.scheme == 'https'
-      response = http.request(request)
+
+      loop do
+        response = http.request(request)
+        break if response.code != "429"
+        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
+        attempt++
+      end
+
       if response.kind_of? Net::HTTPClientError or response.kind_of? Net::HTTPServerError
         error_response = JSON.parse(response.body)
         msg = error_response["message"] || error_response["Error"] || response.body
