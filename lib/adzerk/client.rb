@@ -14,6 +14,7 @@ module Adzerk
     SDK_HEADER_VALUE = "adzerk-management-sdk-ruby:#{VERSION}"
     BASE_SLEEP = 0.25
     MAX_SLEEP = 5
+    MAX_ATTEMPTS = 10
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/',
@@ -101,7 +102,7 @@ module Adzerk
                                     :X_Adzerk_ApiKey => @api_key,
                                     :X_Adzerk_Sdk_Version => SDK_HEADER_VALUE,
                                     :accept => :json)
-        break if response.code != 429
+        break if response.code != 429 or attempt >= MAX_ATTEMPTS
         sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
         attempt += 1
       end
@@ -122,7 +123,7 @@ module Adzerk
         SDK_HEADER_NAME => SDK_HEADER_VALUE,
         :accept => :mime)
 
-        break if response.code != 429
+        break if response.code != 429 or attempt >= MAX_ATTEMPTS
         sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
         attempt += 1
       end
@@ -137,7 +138,7 @@ module Adzerk
 
       loop do
         response = http.request(request)
-        break if response.code != "429"
+        break if response.code != "429" or attempt >= MAX_ATTEMPTS
         sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
         attempt += 1
       end
