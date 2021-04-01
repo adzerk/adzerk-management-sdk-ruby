@@ -39,5 +39,10 @@ module Adzerk
       parse_response(client.get_request(url))
     end
 
+    def get_tracking_urls(id, site_id)
+      url = "ad/#{id}/tracking-urls"
+      @client.get_request(url)
+    end
+
   end
 end
