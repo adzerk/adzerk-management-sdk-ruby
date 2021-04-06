@@ -40,9 +40,8 @@ module Adzerk
     end
 
     def get_tracking_urls(id, site_id)
-      url = "ad/#{id}/tracking-urls"
+      url = "ad/#{id}/tracking-urls?siteid=#{site_id}"
       @client.get_request(url)
     end
-
   end
 end

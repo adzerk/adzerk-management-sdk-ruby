@@ -11,8 +11,9 @@ describe "Creative Flight API" do
     @flights  = client.flights
     @priorities = client.priorities
     @zones = client.zones
+    @channel_site_maps = client.channel_site_maps
 
-    advertiser = @advertisers.create(:title => "test")
+    advertiser = @advertisers.create(:title => "test", :is_active => true)
     @advertiser_id = advertiser[:id]
 
     channel = @channels.create(:title => 'Test Channel ' + rand(1000000).to_s,
@@ -20,7 +21,7 @@ describe "Creative Flight API" do
                                :engine => 'CPM',
                                :keywords => 'test',
                                'CPM' => '10.00',
-                               :ad_types =>  [1,2,3,4])
+                               :ad_types =>  [4])
     @channel_id = channel[:id].to_s
 
     priority = @priorities.create(:name => "High Priority Test",
@@ -31,9 +32,9 @@ describe "Creative Flight API" do
 
     campaign = @campaigns.
       create(:name => 'Test campaign ' + rand(1000000).to_s,
-             :start_date => "1/1/2011",
-             :end_date => "12/31/2011",
-             :is_active => false,
+             :start_date => "1/1/2021",
+             :end_date => "12/31/2022",
+             :is_active => true,
              :price => '10.00',
              :advertiser_id => @advertiser_id,
              :flights => [],
@@ -44,8 +45,8 @@ describe "Creative Flight API" do
       :no_end_date => false,
       :priority_id => @priority_id,
       :name => 'Test flight ' + rand(1000000).to_s,
-      :start_date => "1/1/2011",
-      :endDate => "12/31/2011",
+      :start_date => "1/1/2021",
+      :endDate => "12/31/2022",
       :noEndDate => false,
       :price => '15.00',
       :option_type => 1,
@@ -58,15 +59,18 @@ describe "Creative Flight API" do
       :campaign_id => @campaign_id,
       :is_active => true,
       :is_deleted => false,
-      :goal_type => 1
+      :goal_type => 1,
+      :is_tracking_conversions => true
     }
     flight = @flights.create(new_flight)
     @flight_id = flight[:id]
-
+    
     site = @sites.create(:title => 'Test Site ' + rand(1000000).to_s,
                         :url => 'http://www.adzerk.com')
     @site_id = site[:id]
 
+    channel_site_map = @channel_site_maps.create(:site_id => @site_id, :channel_id => @channel_id)
+    
     zone = @zones.create(:name => 'Test Zone ' + rand(10000000).to_s,
                          :site_id => @site_id)
     @zone_id = zone[:id]
@@ -98,7 +102,7 @@ describe "Creative Flight API" do
     $Title = 'Test creative ' + rand(1000000).to_s
     $Url = "http://adzerk.com"
     $Body = "Test text"
-    $AdTypeId = 18
+    $AdTypeId = 4
     $IsHTMLJS = true
     $ScriptBody = '<html></html>'
     $IsCreativeActive = true
@@ -169,8 +173,8 @@ describe "Creative Flight API" do
   it "should list all creatives maps for a flight" do
     creative_maps = @creative_maps.list(@flight_id)
     creative_map = creative_maps[:items].last
-    $map_id= creative_map[:id]
-
+    $map_id = creative_map[:id]
+    
     expect(creative_map[:campaign_id]).to eq(@campaign_id)
     expect(creative_map[:flight_id]).to eq(@flight_id)
     expect(creative_map[:impressions]).to eq($Impressions)
@@ -220,6 +224,13 @@ describe "Creative Flight API" do
     expect(creative_map[:creative][:is_deleted]).to eq($IsCreativeDeleted)
     expect(creative_map[:creative][:alt]).to eq($Alt)
     expect(creative_map[:creative][:is_sync]).to eq($IsSync)
+ end
+
+ it "should get tracking url for ad" do
+  creative_map = @creative_maps.get_tracking_urls($map_id, @site_id)
+  expect(creative_map[:id]).to eq($map_id)
+  expect(creative_map[:static_click_url]).to eq($StaticClickUrl)
+  expect(creative_map[:impression_pixel_url]).to eq($ImpressionPixelUrl)
  end
 
   it "should update a specific creative map" do
