@@ -103,7 +103,7 @@ module Adzerk
                                     :X_Adzerk_Sdk_Version => SDK_HEADER_VALUE,
                                     :accept => :json)
         break if response.code != 429 or attempt >= MAX_ATTEMPTS
-        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
+        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt].min()))
         attempt += 1
       end
       response = upload_creative(JSON.parse(response)["Id"], image_path) unless image_path.empty?
@@ -124,7 +124,7 @@ module Adzerk
         :accept => :mime)
 
         break if response.code != 429 or attempt >= MAX_ATTEMPTS
-        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
+        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt].min()))
         attempt += 1
       end
       response
@@ -139,7 +139,7 @@ module Adzerk
       loop do
         response = http.request(request)
         break if response.code != "429" or attempt >= MAX_ATTEMPTS
-        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt]))
+        sleep(rand(0.0..min([MAX_SLEEP, BASE_SLEEP * 2 ** attempt].min())))
         attempt += 1
       end
 
