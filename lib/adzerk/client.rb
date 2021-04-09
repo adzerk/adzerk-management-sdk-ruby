@@ -139,7 +139,7 @@ module Adzerk
       loop do
         response = http.request(request)
         break if response.code != "429" or attempt >= MAX_ATTEMPTS
-        sleep(rand(0.0..min([MAX_SLEEP, BASE_SLEEP * 2 ** attempt].min())))
+        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt].min()))
         attempt += 1
       end
 
