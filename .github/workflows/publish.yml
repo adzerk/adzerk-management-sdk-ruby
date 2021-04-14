@@ -13,3 +13,4 @@ jobs:
           RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
           GIT_EMAIL: engineering@kevel.co
           GIT_NAME: Kevel
+          RELEASE_COMMAND: bundle exec rake release
