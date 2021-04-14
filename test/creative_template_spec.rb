@@ -17,12 +17,14 @@ describe "Creative Template API" do
         type: 'String',
         variable: 'ctTitle',
         required: true,
+        ad_query: false
       }, {
         name: 'Thumbnail',
         description: 'The URL of a Thumbnail Image',
         type: 'String',
         variable: 'ctThumbnailUrl',
         required: false,
+        ad_query: true
       }],
       contents: [{
         type: 'Raw',
@@ -60,12 +62,14 @@ describe "Creative Template API" do
         type: 'String',
         variable: 'ctTitle',
         required: true,
+        ad_query: false,
       }, {
         name: 'Thumbnail',
         description: 'The URL of a Thumbnail Image',
         type: 'String',
         variable: 'ctThumbnailUrl',
         required: false,
+        ad_query: true,
       }],
       contents: [{
         type: 'Raw',
