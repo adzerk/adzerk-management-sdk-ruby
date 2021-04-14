@@ -1,0 +1,15 @@
+name: Publish Gem
+on:
+  release:
+    types: [created]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Release Gem
+        uses: discourse/publish-rubygems-action@v2-beta
+        env:
+          RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
+          GIT_EMAIL: engineering@kevel.co
+          GIT_NAME: Kevel
