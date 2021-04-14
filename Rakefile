@@ -2,6 +2,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require "json"
 require "net/http"
 require "adzerk"
+require "bundler/gem_tasks"
 
 begin
   require 'rspec/core/rake_task'
