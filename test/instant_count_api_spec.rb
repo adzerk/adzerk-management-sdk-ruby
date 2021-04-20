@@ -45,7 +45,7 @@ describe "Instant Count API" do
   end
 
   it "should get network instant counts" do
-    count = @instant_counts.instant_counts()
+    count = @instant_counts.network_counts()
     expect(count.length).to be > 0
    end
 end

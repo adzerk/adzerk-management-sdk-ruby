@@ -12,7 +12,7 @@ module Adzerk
       parse_response(response)
     end
 
-    def instant_counts()
+    def network_counts()
       url = "instantcounts/network?days=7"
       parse_response(@client.get_request(url))
     end
