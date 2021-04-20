@@ -50,6 +50,11 @@ describe "Advertiser API" do
     expect(advertiser[:total_items]).to be > 0
   end
 
+  it "should get advertiser instant counts" do
+    count = @advertisers.instant_counts($advertiser_id)
+    expect(count.length).to be > 0
+  end
+
   it "should delete a new advertiser" do
     response = @advertisers.delete($advertiser_id)
     expect(response.body).to eq('"Successfully deleted."')

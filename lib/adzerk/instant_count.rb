@@ -11,5 +11,10 @@ module Adzerk
       response = @client.post_json_request(url, data)
       parse_response(response)
     end
+
+    def instant_counts()
+      url = "instantcounts/network?days=7"
+      parse_response(@client.get_request(url))
+    end
   end
 end

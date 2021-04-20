@@ -170,6 +170,11 @@ describe "Flight API" do
     expect(flights.length).to be > 0
   end
 
+  it "should get flight instant counts" do
+    count = @flights.instant_counts($flight_id)
+    expect(count.length).to be > 0
+  end
+
   it "should delete a new flight" do
     response = @flights.delete($flight_id)
     expect(response.body).to eq('"Successfully deleted"')

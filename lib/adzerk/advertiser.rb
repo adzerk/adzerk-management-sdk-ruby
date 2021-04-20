@@ -6,7 +6,7 @@ module Adzerk
       parse_response(client.post_request(url, data))
     end
 
-    def instant_counts(advertiser_id)
+    def instant_counts(advertiser_id, page: 1, pageSize: 500)
       url = "instantcounts/#{endpoint}/#{advertiser_id}?page=#{page}&pageSize=#{pageSize}"
       parse_response(client.get_request(url))
     end

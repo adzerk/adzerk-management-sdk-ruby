@@ -140,6 +140,12 @@ describe "Campaign API" do
     expect(campaigns.length).to be > 0
   end
 
+
+  it "should get campaign instant counts" do
+    count = @campaigns.instant_counts($campaign_id)
+    expect(count.length).to be > 0
+  end
+
   it "should not create/update a campaign with a advertiserId that doesn't belong to it" do
     new_campaign = {
       :name => 'Test campaign ' + rand(1000000).to_s,
