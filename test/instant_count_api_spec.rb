@@ -45,7 +45,11 @@ describe "Instant Count API" do
   end
 
   it "should get network instant counts" do
-    count = @instant_counts.network_counts()
+    data = {
+      start: "2021-04-04",
+      end: "2021-04-20"
+    }
+    count = @instant_counts.network_counts(data)
     expect(count.length).to be > 0
-   end
+  end
 end

@@ -34,8 +34,9 @@ module Adzerk
       @client.get_request(url)
     end
 
-    def instant_counts(creative_map_id)
-      url = "instantcounts/ad/#{creative_map_id}"
+    def instant_counts(creative_map_id, data={})
+      query_string = URI.encode_www_form(data)
+      url = "instantcounts/ad/#{creative_map_id}?#{query_string}"
       parse_response(@client.get_request(url))
     end
   end
