@@ -171,7 +171,11 @@ describe "Flight API" do
   end
 
   it "should get flight instant counts" do
-    count = @flights.instant_counts($flight_id)
+    data = {
+      start: "2021-04-04",
+      end: "2021-04-20"
+    }
+    count = @flights.instant_counts($flight_id, data)
     expect(count.length).to be > 0
   end
 

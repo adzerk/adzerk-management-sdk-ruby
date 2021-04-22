@@ -142,7 +142,10 @@ describe "Campaign API" do
 
 
   it "should get campaign instant counts" do
-    count = @campaigns.instant_counts($campaign_id)
+    data = {
+      days: 5
+    }
+    count = @campaigns.instant_counts($campaign_id, data)
     expect(count.length).to be > 0
   end
 

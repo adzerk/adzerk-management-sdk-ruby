@@ -196,7 +196,10 @@ describe "Creative Flight API" do
   end
 
   it "should get creative map instant counts" do
-    count = @creative_maps.instant_counts($map_id)
+    data = {
+      days: 5
+    }
+    count = @creative_maps.instant_counts($map_id, data)
     expect(count.length).to be > 0
    end
 

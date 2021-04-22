@@ -51,7 +51,10 @@ describe "Advertiser API" do
   end
 
   it "should get advertiser instant counts" do
-    count = @advertisers.instant_counts($advertiser_id)
+    data = {
+      days: 5
+    }
+    count = @advertisers.instant_counts($advertiser_id, data)
     expect(count.length).to be > 0
   end
 
