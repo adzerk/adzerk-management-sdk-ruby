@@ -143,7 +143,6 @@ describe "Campaign API" do
   it "should search campaign based on name" do
     campaign = @campaigns.search("Test%")
     expect(campaign[:total_items]).to be > 0
-    pp campaign[:total_items]
   end
 
   it "should not create/update a campaign with a advertiserId that doesn't belong to it" do
