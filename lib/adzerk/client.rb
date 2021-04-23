@@ -7,7 +7,7 @@ module Adzerk
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories,
-                :instant_counts, :ads, :creative_templates
+                :instant_counts, :ads, :creative_templates, :day_partings
 
     VERSION = Gem.loaded_specs['adzerk'].version.to_s
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
@@ -46,6 +46,7 @@ module Adzerk
       @categories = Adzerk::Category.new(:client => self, :endpoint => 'category')
       @instant_counts = Adzerk::InstantCount.new(:client => self)
       @creative_templates = Adzerk::CreativeTemplate.new(:client => self)
+      @day_partings = Adzerk::DayParting.new(:client => self, :endpoint => 'dayparting')
     end
 
     def get_request(url, version: 'v1')
