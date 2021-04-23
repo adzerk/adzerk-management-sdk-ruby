@@ -262,7 +262,7 @@ describe "Flight API" do
     expect(response.length).to be > 0
   end
 
-  it "should list regions for a counrty" do
+  it "should list regions for a country" do
     country_code = "US"
     response = @flights.list_regions_for_country(country_code)
     expect(response.length).to be > 0
