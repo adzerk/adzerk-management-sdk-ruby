@@ -31,7 +31,7 @@ module Adzerk
       @flights = Adzerk::Flight.new(:client => self, :endpoint => 'flight')
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
       @campaigns = Adzerk::Campaign.new(:client => self, :endpoint => 'campaign')
-      @channels = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'channel')
+      @channels = Adzerk::Channel.new(:client => self, :endpoint => 'channel')
       @priorities = Adzerk::Priority.new(:client => self, :endpoint => 'priority')
       @advertisers = Adzerk::Advertiser.new(:client => self, :endpoint => 'advertiser')
       @publishers = Adzerk::Publisher.new(:client => self, :endpoint => 'publisher')
