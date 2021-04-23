@@ -41,8 +41,7 @@ describe "Channel API" do
 
   it "should get priorities for channel" do
     count = @channels.get_priorities($channel_id)
-    pp count
-    #expect(count.length).to be > 0
+    expect(count.length).to be > 0
   end
 
   it "should update a channel" do
