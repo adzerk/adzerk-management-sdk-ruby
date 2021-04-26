@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "DayParting API" do
     before(:all) do
         client = Adzerk::Client.new(API_KEY)
-        @day_partings = client.day_partings
+        @day_partings = client.day_parts
         @flights = client.flights
         @advertisers = client.advertisers
         @channels = client.channels
