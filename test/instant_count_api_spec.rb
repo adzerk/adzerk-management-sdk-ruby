@@ -5,11 +5,32 @@ describe "Instant Count API" do
   before(:all) do
     client = Adzerk::Client.new(API_KEY)
     @instant_counts = client.instant_counts
+    @advertisers = client.advertisers
+    @campaigns = client.campaigns
+
+    advertiser = @advertisers.create(:title => "test")
+    @advertiser_id = advertiser[:id]
+
+    campaign = @campaigns.
+      create(:name => 'Test campaign ' + rand(1000000).to_s,
+             :start_date => "1/1/2011",
+             :end_date => "12/31/2011",
+             :is_active => false,
+             :price => '10.00',
+             :advertiser_id => @advertiser_id,
+             :flights => [],
+             :is_deleted => false)
+    @campaign_id = campaign[:id]
+  end
+
+  after(:all) do
+    @campaigns.delete(@campaign_id)
+    @advertisers.delete(@advertiser_id)
   end
 
   it "should fetch bulk instant counts" do
-    advertiser_id = 1065290
-    campaign_id = 1582611
+    advertiser_id = @advertiser_id
+    campaign_id = @campaign_id
 
     counts = @instant_counts.bulk({
       :advertisers => [advertiser_id],
@@ -21,5 +42,14 @@ describe "Instant Count API" do
 
     expect(counts).to have_key(:campaigns)
     expect(counts[:campaigns]).to have_key(campaign_id.to_s.to_sym)
+  end
+
+  it "should get network instant counts" do
+    data = {
+      start: "2021-04-04",
+      end: "2021-04-20"
+    }
+    count = @instant_counts.network_counts(data)
+    expect(count.length).to be > 0
   end
 end
