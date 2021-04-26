@@ -3,7 +3,7 @@ module Adzerk
         def get_priorities(channel_id)
             url = "channel/#{channel_id}/priorities"
             response = client.get_request(url)
-            JSON.parse(response.body)
+            parse_response(response)
         end
     end
 end
