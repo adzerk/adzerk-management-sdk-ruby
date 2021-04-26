@@ -140,6 +140,14 @@ describe "Campaign API" do
     expect(campaigns.length).to be > 0
   end
 
+  it "should get campaign instant counts" do
+    data = {
+      days: 5
+    }
+    count = @campaigns.instant_counts($campaign_id, data)
+    expect(count.length).to be > 0
+  end
+
   it "should search campaign based on name" do
     campaign = @campaigns.search("Test%")
     expect(campaign[:total_items]).to be > 0

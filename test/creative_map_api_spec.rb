@@ -169,7 +169,7 @@ describe "Creative Flight API" do
   it "should list all creatives maps for a flight" do
     creative_maps = @creative_maps.list(@flight_id)
     creative_map = creative_maps[:items].last
-    $map_id= creative_map[:id]
+    $map_id = creative_map[:id]
 
     expect(creative_map[:campaign_id]).to eq(@campaign_id)
     expect(creative_map[:flight_id]).to eq(@flight_id)
@@ -194,6 +194,14 @@ describe "Creative Flight API" do
     expect(creative_map[:creative][:alt]).to eq($Alt)
     expect(creative_map[:creative][:is_sync]).to eq($IsSync)
   end
+
+  it "should get creative map instant counts" do
+    data = {
+      days: 5
+    }
+    count = @creative_maps.instant_counts($map_id, data)
+    expect(count.length).to be > 0
+   end
 
   it "should get a specific creative map" do
     creative_map = @creative_maps.get($map_id, @flight_id)

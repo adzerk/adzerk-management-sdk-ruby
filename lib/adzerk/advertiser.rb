@@ -6,8 +6,9 @@ module Adzerk
       parse_response(client.post_request(url, data))
     end
 
-    def instant_counts(advertiser_id)
-      url = "instantcounts/#{endpoint}/#{advertiser_id}?page=#{page}&pageSize=#{pageSize}"
+    def instant_counts(advertiser_id, data={})
+      query_string = URI.encode_www_form(data)
+      url = "instantcounts/#{endpoint}/#{advertiser_id}?#{query_string}"
       parse_response(client.get_request(url))
     end
 
