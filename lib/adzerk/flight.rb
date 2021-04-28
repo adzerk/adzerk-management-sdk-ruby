@@ -2,19 +2,19 @@ module Adzerk
   class Flight < ApiEndpoint
     def countries
       response = @client.get_request('countries')
-      JSON.parse(response.body)
+      parse_response(response)
     end
 
     def regions(region)
       url = "region/#{region}"
       response = @client.get_request(url)
-      JSON.parse(response.body)
+      parse_response(response)
     end
 
     def list_regions_for_country(country_code)
       url = "country/#{country_code}/regions?version=2"
       response = @client.get_request(url)
-      JSON.parse(response.body)
+      parse_response(response)
     end
 
     def instant_counts(flight_id, data={})
