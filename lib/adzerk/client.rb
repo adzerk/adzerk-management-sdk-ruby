@@ -46,7 +46,7 @@ module Adzerk
       @categories = Adzerk::Category.new(:client => self, :endpoint => 'category')
       @instant_counts = Adzerk::InstantCount.new(:client => self)
       @creative_templates = Adzerk::CreativeTemplate.new(:client => self)
-      @scheduled_reports = Adzerk::ScheduledReporting.new(:client => self, :endpoint => 'scheduledreporting')
+      @scheduled_reports = Adzerk::ScheduledReporting.new(:client => self, :endpoint => 'report')
     end
 
     def get_request(url, version: 'v1')
