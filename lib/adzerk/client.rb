@@ -7,7 +7,11 @@ module Adzerk
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories,
+<<<<<<< HEAD
                 :instant_counts, :ads, :creative_templates, :scheduled_reports
+=======
+                :instant_counts, :ads, :creative_templates, :day_parts
+>>>>>>> master
 
     VERSION = Gem.loaded_specs['adzerk'].version.to_s
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
@@ -31,7 +35,7 @@ module Adzerk
       @flights = Adzerk::Flight.new(:client => self, :endpoint => 'flight')
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
       @campaigns = Adzerk::Campaign.new(:client => self, :endpoint => 'campaign')
-      @channels = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'channel')
+      @channels = Adzerk::Channel.new(:client => self, :endpoint => 'channel')
       @priorities = Adzerk::Priority.new(:client => self, :endpoint => 'priority')
       @advertisers = Adzerk::Advertiser.new(:client => self, :endpoint => 'advertiser')
       @publishers = Adzerk::Publisher.new(:client => self, :endpoint => 'publisher')
@@ -47,6 +51,7 @@ module Adzerk
       @instant_counts = Adzerk::InstantCount.new(:client => self)
       @creative_templates = Adzerk::CreativeTemplate.new(:client => self)
       @scheduled_reports = Adzerk::ScheduledReporting.new(:client => self, :endpoint => 'report')
+      @day_parts = Adzerk::DayParting.new(:client => self, :endpoint => 'dayparting')
     end
 
     def get_request(url, version: 'v1')
