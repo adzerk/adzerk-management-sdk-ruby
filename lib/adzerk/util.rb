@@ -29,7 +29,12 @@ module Adzerk
     end
 
     def parse_response(response)
-      uncamelize_data(JSON.parse(response.body))
+      parsed_body = JSON.parse(response.body)
+      case parsed_body
+        when Hash then uncamelize_data(parsed_body)
+        when Array then parsed_body.map {|elem| uncamelize_data(elem)}
+        else parsed_body
+      end
     end
   end
 end
