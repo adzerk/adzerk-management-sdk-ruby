@@ -7,11 +7,8 @@ module Adzerk
                 :advertisers, :flights, :creatives, :creative_maps,
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories,
-<<<<<<< HEAD
-                :instant_counts, :ads, :creative_templates, :scheduled_reports
-=======
-                :instant_counts, :ads, :creative_templates, :day_parts
->>>>>>> master
+                :instant_counts, :ads, :creative_templates, :scheduled_reports, 
+                :day_parts
 
     VERSION = Gem.loaded_specs['adzerk'].version.to_s
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
