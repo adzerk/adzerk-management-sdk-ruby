@@ -259,4 +259,21 @@ describe "Flight API" do
       )
     }.to raise_error "This campaign is not part of your network"
   end
+
+  it "should list countries" do
+    response = @flights.countries()
+    expect(response.length).to be > 0
+  end
+
+  it "should list metro codes for region" do
+    region_code = "MN"
+    response = @flights.regions(region_code)
+    expect(response.length).to be > 0
+  end
+
+  it "should list regions for a country" do
+    country_code = "US"
+    response = @flights.list_regions_for_country(country_code)
+    expect(response.length).to be > 0
+  end
 end
