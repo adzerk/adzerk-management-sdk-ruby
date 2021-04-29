@@ -1,0 +1,39 @@
+name: Publish Gem
+on:
+  release:
+    types: [created]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: update version
+        run: sed -i -r "s/VERSION = \"[0-9a-z.-]+\"\$/VERSION = \"${GITHUB_REF#refs/*/}\"/g" lib/adzerk/version.rb
+      - name: push updated version
+        run: |
+          git config --global user.name 'Kevel CI'
+          git config --global user.email 'engineering@kevel.co'
+          git commit -am "Bump version to ${GITHUB_REF#refs/*/}"
+          git push
+      - name: set up ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.x
+      - name: create credentials folder
+        run: mkdir -p ~/.gem
+      - name: create credentials file
+        run: |
+          cat << EOF >> ~/.gem/credentials
+          ---
+          :rubygems_api_key: ${{secrets.RUBYGEMS_API_KEY}}
+          EOF
+
+          chmod 0600 ~/.gem/credentials
+      - name: update bundler
+        run: gem update bundler
+      - name: install dependencies
+        run: bundle install
+      - name: build gem
+        run: bundle exec rake build
+      - name: publish gem
+        run: gem push ./pkg/adzerk-${GITHUB_REF#refs/*/}.gem
