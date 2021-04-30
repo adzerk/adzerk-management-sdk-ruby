@@ -8,7 +8,7 @@ module Adzerk
                 :publishers, :invitations, :reports, :channel_site_maps,
                 :logins, :geotargetings, :sitezonetargetings, :categories,
                 :instant_counts, :ads, :creative_templates, :scheduled_reports, 
-                :day_parts
+                :day_parts, :distance_targetings
 
     VERSION = Gem.loaded_specs['adzerk'].version.to_s
     SDK_HEADER_NAME = 'X-Adzerk-Sdk-Version'
@@ -49,11 +49,20 @@ module Adzerk
       @creative_templates = Adzerk::CreativeTemplate.new(:client => self)
       @scheduled_reports = Adzerk::ScheduledReporting.new(:client => self, :endpoint => 'report')
       @day_parts = Adzerk::DayParting.new(:client => self, :endpoint => 'dayparting')
+      @distance_targetings = Adzerk::DistanceTargeting.new(:client => self, :endpoint => 'distancetargeting')
     end
 
     def get_request(url, version: 'v1')
       uri = URI.parse("#{@config[:host]}#{version}/#{url}")
       request = Net::HTTP::Get.new(uri.request_uri)
+      request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
+      send_request(request, uri)
+    end
+
+    def delete_request(url, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
+      request = Net::HTTP::Delete.new(uri.request_uri)
       request.add_field(@config[:header], @api_key)
       request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
       send_request(request, uri)
