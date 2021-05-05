@@ -16,7 +16,9 @@ jobs:
           git config --global user.name 'Kevel CI'
           git config --global user.email 'engineering@kevel.co'
           git commit -am "Bump version to ${GITHUB_REF#refs/*/}"
+          git tag --force ${GITHUB_REF#refs/*/}
           git push
+          git push --tags --force
       - name: set up ruby
         uses: actions/setup-ruby@v1
         with:
