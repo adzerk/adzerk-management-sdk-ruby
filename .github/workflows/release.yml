@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: master
       - name: update version
         run: sed -i -r "s/VERSION = \"[0-9a-z.-]+\"\$/VERSION = \"${GITHUB_REF#refs/*/}\"/g" lib/adzerk/version.rb
       - name: push updated version
