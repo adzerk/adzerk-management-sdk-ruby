@@ -19,7 +19,7 @@ module Adzerk
       # stop condition for the recursion
       return data unless data.respond_to?(:reduce)
       data.reduce({}) do |acc, (key, val)|
-        acc[key.underscore.to_sym] = case val
+        acc[/[a-zA-Z]/.match(key) ? key.underscore.to_sym : key] = case val
                                        when Hash then uncamelize_data(val)
                                        when Array then val.map {|elem| uncamelize_data(elem) }
                                        else val
