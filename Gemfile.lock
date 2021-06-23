@@ -1,0 +1,67 @@
+PATH
+  remote: .
+  specs:
+    adzerk (0.19)
+      activesupport (~> 5.1)
+      json (~> 2.0)
+      rest-client (~> 2.1)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    activesupport (5.2.6)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    concurrent-ruby (1.1.9)
+    diff-lcs (1.3)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
+    http-accept (1.7.0)
+    http-cookie (1.0.4)
+      domain_name (~> 0.5)
+    i18n (1.8.10)
+      concurrent-ruby (~> 1.0)
+    json (2.5.1)
+    mime-types (3.3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2021.0225)
+    minitest (5.14.4)
+    netrc (0.11.0)
+    rake (12.3.3)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.4)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
+    thread_safe (0.3.6)
+    tzinfo (1.2.9)
+      thread_safe (~> 0.1)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  adzerk!
+  rake (= 12.3.3)
+  rspec (= 3.5.0)
+
+BUNDLED WITH
+   2.1.2
