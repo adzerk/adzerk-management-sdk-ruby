@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     adzerk (0.20)
-      activesupport (~> 6.1.4.1)
+      activesupport (~> 6.1, >= 6.1.4.1)
       json (~> 2.0)
       rest-client (~> 2.1)
 
