@@ -179,6 +179,15 @@ describe "Flight API" do
     expect(count.length).to be > 0
   end
 
+  it "should filter a flight" do
+    data = {
+      name: "Test",
+      is_active: true
+    }
+    response = @flights.filter_flights(data)
+    # pp response
+  end
+
   it "should delete a new flight" do
     response = @flights.delete($flight_id)
     expect(response.body).to eq('"Successfully deleted"')
