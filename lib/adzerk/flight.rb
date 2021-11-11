@@ -28,14 +28,27 @@ module Adzerk
       if !is_active.nil?
         url = "#{url}?isActive=#{is_active}"
       end
+      pp url
       parse_response(@client.get_request(url))
     end
 
     def filter_flights(data={})
-      query_string = URI.encode_www_form(data)
-      url = "fast/flight?#{query_string}"
-      response = parse_response(client.get_request(url))
-      pp response
+      pp data
+      # query_string = URI.encode_www_form(data)
+      # url = "fast/flight?#{query_string}"
+      # Net::HTTP.start(uri.host, uri.port) do |http|
+      #   request = Net::HTTP::Get.new uri
+      
+      #   http.request request do |response|
+      #     open 'large_file', 'w' do |io|
+      #       response.read_body do |chunk|
+      #         io.write chunk
+      #       end
+      #     end
+      #   end
+      # end
+      # # response = parse_response(client.get_request(url))
+      # pp request
     end
   end
 end
