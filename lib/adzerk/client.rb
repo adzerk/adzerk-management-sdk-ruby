@@ -104,6 +104,21 @@ module Adzerk
       send_request(request, uri)
     end
 
+    def filter(url, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
+      Net::HTTP.start(uri.host, uri.port) do |http|
+      request = Net::HTTP::Get.new uri
+      request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
+      http.request request do |response|
+        open 'large_file', 'w' do |io|
+          response.read_body do |chunk|
+            io.write chunk
+          end
+        end
+      end
+    end
+
     def create_creative(data={}, image_path='', version: 'v1')
       response = nil
       attempt = 0
