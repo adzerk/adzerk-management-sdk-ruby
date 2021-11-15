@@ -28,7 +28,6 @@ module Adzerk
       if !is_active.nil?
         url = "#{url}?isActive=#{is_active}"
       end
-      pp url
       parse_response(@client.get_request(url))
     end
 
