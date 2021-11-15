@@ -16,5 +16,10 @@ module Adzerk
       url = "advertiser/#{advertiser_id}/creatives?page=#{page}&pageSize=#{pageSize}"
       parse_response(@client.get_request(url))
     end
+
+    def get_conversion_tracking_code(advertiser_id)
+      url = "advertiser/#{advertiser_id}/trackingCode"
+      parse_response(@client.get_request(url))
+    end
   end
 end

@@ -75,6 +75,11 @@ describe "Advertiser API" do
     expect(advertiser[:is_deleted]).to eq(true)
   end
 
+  it "should return conversion tracking code" do
+    advertiser = @advertisers.get_conversion_tracking_code $advertiser_id
+    expect(advertiser).not_to eq(nil)
+  end
+
   it "should not update a deleted advertiser" do
     expect { @advertisers.update(:id => $advertiser_id, :title => "Cocacola") }.to raise_error("This advertiser is deleted.")
   end
