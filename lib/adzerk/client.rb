@@ -27,7 +27,7 @@ module Adzerk
       @api_key = key
       @config = DEFAULTS.merge!(opts)
       @logins = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'login')
-      @sites = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'site')
+      @sites = Adzerk::Site.new(:client => self, :endpoint => 'site')
       @ad_types = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'adtypes', :subendpoint => 'channel', :datakey => 'adtype')
       @flights = Adzerk::Flight.new(:client => self, :endpoint => 'flight')
       @zones = Adzerk::ApiEndpoint.new(:client => self, :endpoint => 'zone')
@@ -106,14 +106,26 @@ module Adzerk
 
     def filter(url, version: 'v1')
       uri = URI.parse("#{@config[:host]}#{version}/#{url}")
-      Net::HTTP.start(uri.host, uri.port) do |http|
-      request = Net::HTTP::Get.new uri
-      request.add_field(@config[:header], @api_key)
-      request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
-      http.request request do |response|
-        open 'large_file', 'w' do |io|
-          response.read_body do |chunk|
-            io.write chunk
+      Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |https|
+        request = Net::HTTP::Get.new uri
+        request.add_field(@config[:header], @api_key)
+        request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
+        https.request request do |response|
+          arr = []
+          response.read_body do |segment|
+            str = ''
+            str.concat(segment)
+            split_str = str.split(/(?<=[\n])/)
+            for line in split_str do
+              begin
+                obj = JSON.parse(line)
+              rescue => exception
+                str.concat(line)
+              else
+                arr.append(obj)
+              end
+            end
+            return arr
           end
         end
       end

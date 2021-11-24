@@ -44,6 +44,15 @@ describe "Site API" do
     expect(result[:items].last[:publisher_account_id].to_s).to eq($site_pub_id)
   end
 
+  it "should filter sites" do
+    data = {
+      titleLike: "site",
+      urlLike: ".com"
+    }
+    response = @client.sites.filter_sites(data)
+    expect(response).not_to eq(nil)
+  end
+
   it "should delete a new site" do
     response = @client.sites.delete($site_id)
     expect(response.body).to eq('"Successfully deleted."')
@@ -55,5 +64,4 @@ describe "Site API" do
       expect(site[:id].to_s).not_to eq($site_id)
     end
   end
-
 end
