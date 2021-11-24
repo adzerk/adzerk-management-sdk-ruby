@@ -34,8 +34,7 @@ module Adzerk
     def filter_flights(data={})
       query_string = URI.encode_www_form(data)
       url = "fast/flight?#{query_string}"
-      response = parse_response(client.filter(url))
-      pp request
+      @client.filter(url)
     end
   end
 end
