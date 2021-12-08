@@ -115,7 +115,7 @@ module Adzerk
           response.read_body do |segment|
             str = ''
             str.concat(segment)
-            split_str = str.split(/(?<=[\n])/)
+            split_str = str.split("\n")
             for line in split_str do
               begin
                 obj = JSON.parse(line)
