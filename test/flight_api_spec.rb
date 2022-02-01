@@ -11,7 +11,7 @@ describe "Flight API" do
     @priorities = client.priorities
 
     advertiser = @advertisers.create(:title => "test")
-    $advertiserId = advertiser[:id].to_s
+    $advertiser_id = advertiser[:id].to_s
 
     channel = @channels.create(:title => 'Test Channel ' + rand(1000000).to_s,
                                :commission => '0.0',
@@ -33,7 +33,7 @@ describe "Flight API" do
              :end_date => "12/31/2011",
              :is_active => false,
              :price => '10.00',
-             :advertiser_id => $advertiserId,
+             :advertiser_id => $advertiser_id,
              :flights => [],
              :is_deleted => false)
     $campaign_id = campaign[:id]
@@ -42,7 +42,7 @@ describe "Flight API" do
   after(:all) do
     @flights.delete($flight_id_2)
     @campaigns.delete($campaign_id)
-    @advertisers.delete($advertiserId)
+    @advertisers.delete($advertiser_id)
     @priorities.delete($priority_id)
     @channels.delete($channel_id)
   end
@@ -167,6 +167,16 @@ describe "Flight API" do
 
   it "should list all flights" do
     flights = @flights.list
+    expect(flights.length).to be > 0
+  end
+
+  it "should list all flights for a campaign" do
+    flights = @flights.list_for_campaign($campaign_id)
+    expect(flights.length).to be > 0
+  end
+
+  it "should list all flights for an advertiser" do
+    flights = @flights.list_for_advertiser($advertiser_id)
     expect(flights.length).to be > 0
   end
 
