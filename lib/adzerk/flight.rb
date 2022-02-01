@@ -31,6 +31,14 @@ module Adzerk
       parse_response(@client.get_request(url))
     end
 
+    def list_for_advertiser(advertiser_id, is_active = nil)
+      url = "advertiser/#{advertiser_id}/flight"
+      if !is_active.nil?
+        url = "#{url}?isActive=#{is_active}"
+      end
+      parse_response(@client.get_request(url))
+    end
+
     def filter_flights(data={})
       query_string = URI.encode_www_form(data)
       url = "fast/flight?#{query_string}"
