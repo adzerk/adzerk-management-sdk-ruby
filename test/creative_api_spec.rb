@@ -140,6 +140,11 @@ describe "Creative API" do
     expect(creative[:is_sync]).to eq($new_is_sync)
   end
 
+  it "should list all creatives for a network" do
+    creatives = @creatives.list_for_network()
+    expect(creatives.length).to be > 0
+  end
+
   it "should delete the creatives after creating it" do
     response = @creatives.delete($creative_id)
     expect(response.body).to eq('"Successfully deleted"')
