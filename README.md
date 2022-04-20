@@ -32,8 +32,9 @@ pp client.sites.list
 ## To run tests as Adzerk developer
 
     bundle install
-    export ADZERK_API_KEY=<get-key-from-adzerk>
-    rake spec
+    run `sql-env` to set environment vars
+    export ADZERK_API_KEY=$(api-key 12345)
+    bundle exec rspec test_name.rb
 
 ## License
 
