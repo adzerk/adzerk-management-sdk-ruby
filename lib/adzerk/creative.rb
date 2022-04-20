@@ -13,5 +13,9 @@ module Adzerk
       parse_response(@client.get_request(url))
     end
 
+    def list_for_network(page: 1, pageSize: 500)
+      url = "creative?page=#{page}&pageSize=#{pageSize}"
+      parse_response(@client.get_request(url))
+    end
   end
 end
