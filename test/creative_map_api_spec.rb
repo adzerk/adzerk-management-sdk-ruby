@@ -195,6 +195,11 @@ describe "Creative Flight API" do
     expect(creative_map[:creative][:is_sync]).to eq($IsSync)
   end
 
+  it "should list all ads for a network" do
+    creative_maps = @creative_maps.list_for_network()
+    expect(creative_maps.length).to be > 0
+  end
+
   it "should get creative map instant counts" do
     data = {
       days: 5
