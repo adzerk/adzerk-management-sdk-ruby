@@ -23,6 +23,11 @@ module Adzerk
       parse_response(@client.get_request(url))
     end
 
+    def list_for_network(page: 1, pageSize: 500)
+      url = "ad?page=#{page}&#pageSize=#{pageSize}"
+      parse_response(@client.get_request(url))
+    end
+
     def update(data={})
       url = "flight/#{data[:flight_id]}/creative/#{data[:id]}"
       data = { 'creative' => camelize_data(data).to_json }
