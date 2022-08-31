@@ -180,10 +180,11 @@ describe "Flight API" do
     expect(flights.length).to be > 0
   end
 
+  # Date can't be more that 90 days old. Update if more than 90 days old
   it "should get flight instant counts" do
     data = {
-      start: "2021-04-04",
-      end: "2021-04-20"
+      start: "2022-08-04",
+      end: "2022-08-20"
     }
     count = @flights.instant_counts($flight_id, data)
     expect(count.length).to be > 0
@@ -200,7 +201,7 @@ describe "Flight API" do
 
   it "should delete a new flight" do
     response = @flights.delete($flight_id)
-    expect(response.body).to eq('"Successfully deleted"')
+    expect(response.body).to eq('"Successfully deleted."')
   end
 
   it "should create a flight with geotargeting" do

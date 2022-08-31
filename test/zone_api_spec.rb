@@ -57,7 +57,7 @@ describe "Zone API" do
 
   it "should delete a new zone" do
     response = @zones.delete($zone_id)
-    expect(response.body).to eq('"Successfully deleted"')
+    expect(response.body).to eq('"Successfully deleted."')
   end
 
 end

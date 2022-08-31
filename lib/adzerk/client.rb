@@ -138,9 +138,9 @@ module Adzerk
       loop do
         response = RestClient.post(@config[:host] + version + '/creative',
                                   {:creative => camelize_data(data).to_json},
-                                    :X_Adzerk_ApiKey => @api_key,
-                                    :X_Adzerk_Sdk_Version => SDK_HEADER_VALUE,
-                                    :accept => :json)
+                                   :X_Adzerk_ApiKey => @api_key,
+                                   :X_Adzerk_Sdk_Version => SDK_HEADER_VALUE,
+                                   :accept => :json)
         break if response.code != 429 or attempt >= (@config[:max_attempts] || MAX_ATTEMPTS)
         sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt].min()))
         attempt += 1

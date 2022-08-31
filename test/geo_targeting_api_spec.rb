@@ -109,15 +109,8 @@ describe "GeoTargeting API" do
     @geotargetings.delete($flight_id,$geo_id)
   end
 
-  it "should error when deleting a geotargeting that does not exist" do
-    expect {
-      @geotargetings.delete($flight_id, 1)
-    }.to raise_error "This PassLocation does not exist in your network."
-  end
-
   it "should check if a flight is not a part of your network" do
     non_network_flight = 123;
-    expect{ @geotargetings.delete(non_network_flight,1) }.to raise_error("This Flight does not belong to your network.")
     expect{ @geotargetings.get(non_network_flight,1) }.to raise_error("This Flight does not belong to your network.")
     expect{ @geotargetings.update(non_network_flight,1,{}) }.to raise_error("This Flight does not belong to your network.")
   end

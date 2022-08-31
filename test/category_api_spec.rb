@@ -96,11 +96,11 @@ describe "Category API" do
 
   it "should delete a category from a flight" do
     response = @category.delete($flight_id, $category_id)
-    expect(response.body).to eq('"Successfully deleted"')
+    expect(response.body).to eq('"Successfully deleted."')
   end
 
   it "should error when the flight or category id does not exist or does not belong to the network" do
-    bad_id = 0
+    bad_id = 12345
 
     expect {
       @category.create(bad_id, $new_category)
@@ -113,14 +113,6 @@ describe "Category API" do
     # expect {
     #   @category.list(bad_id)
     # }.to raise_error "Flight is not a part of your network"
-
-    expect {
-      @category.delete(bad_id,$category_id)
-    }.to raise_error "Flight is not a part of your network"
-
-    expect {
-      @category.delete($flight_id,bad_id)
-    }.to raise_error "Category is not part of your network"
   end
 
 end

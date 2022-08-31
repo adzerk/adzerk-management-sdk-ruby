@@ -341,7 +341,7 @@ describe "Creative Flight API" do
 
   it "should delete the creatives after creating it" do
     response = @creative_maps.delete($map_id, @flight_id)
-    expect(response.body).to eq("\"This creative map has been deleted\"")
+    expect(response.body).to eq("\"Successfully deleted.\"")
   end
 
   it "should not get a map in a different network" do
