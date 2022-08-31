@@ -36,18 +36,18 @@ describe "Instant Count API" do
       :advertisers => [advertiser_id],
       :campaigns => [campaign_id]
     })
-
+  
     expect(counts).to have_key(:advertisers)
-    expect(counts[:advertisers]).to have_key(advertiser_id.to_s.to_sym)
+    expect(counts[:advertisers].keys).to include(advertiser_id.to_s)
 
     expect(counts).to have_key(:campaigns)
-    expect(counts[:campaigns]).to have_key(campaign_id.to_s.to_sym)
+    expect(counts[:campaigns].keys).to include(campaign_id.to_s)
   end
 
   it "should get network instant counts" do
     data = {
-      start: "2021-04-04",
-      end: "2021-04-20"
+      start: "2022-08-04",
+      end: "2022-08-20"
     }
     count = @instant_counts.network_counts(data)
     expect(count.length).to be > 0

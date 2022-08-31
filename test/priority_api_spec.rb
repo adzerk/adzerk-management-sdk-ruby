@@ -63,7 +63,7 @@ describe "Priority API" do
   end
 
   it "should not allow selection algorithm to be updated" do
-    expect { @priorities.update(selection_algorithm: 1) }.to raise_error JSON::ParserError
+    expect { @priorities.update(selection_algorithm: 1) }.to raise_error Adzerk::ApiError
   end
 
   it "should list all priorities" do
@@ -80,7 +80,7 @@ describe "Priority API" do
 
   it "should delete a new priority" do
     response = @priorities.delete($priority_id)
-    expect(response.body).to eq('"Successfully deleted"')
+    expect(response.body).to eq('"Successfully deleted."')
   end
 end
 

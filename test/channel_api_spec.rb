@@ -84,7 +84,7 @@ describe "Channel API" do
 
   it "should delete a new channel" do
     response = @channels.delete($channel_id)
-    expect(response.body).to eq('"Successfully deleted"')
+    expect(response.body).to eq('"Successfully deleted."')
   end
 
   it "should get individual deleted channel" do
