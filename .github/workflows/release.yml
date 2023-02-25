@@ -21,9 +21,9 @@ jobs:
             git push --tags --force
           fi
       - name: set up ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.6.x
+          ruby-version: '2.6'
       - name: create credentials folder
         run: mkdir -p ~/.gem
       - name: create credentials file
