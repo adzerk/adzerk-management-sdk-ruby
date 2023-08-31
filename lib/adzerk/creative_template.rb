@@ -22,8 +22,8 @@ module Adzerk
       parse_response(@client.get_request("creative-templates/#{id}", version: 'v2'))
     end
 
-    def list(page: 1, pageSize: 100)
-      url = "creative-templates?page=#{page}&pageSize=#{pageSize}"
+    def list(page: 1, pageSize: 100, includeArchived: false)
+      url = "creative-templates?page=#{page}&pageSize=#{pageSize}&includeArchived=#{includeArchived}"
       parse_response(@client.get_request(url, version: 'v2'))
     end
   end
