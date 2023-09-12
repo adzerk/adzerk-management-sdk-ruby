@@ -20,6 +20,8 @@ jobs:
             git push
             git push --tags --force
           fi
+        env:
+          GITHUB_TOKEN: ${{secrets.REPO_READ_TOKEN}}
       - name: set up ruby
         uses: ruby/setup-ruby@v1
         with:
