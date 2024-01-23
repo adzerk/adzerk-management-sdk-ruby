@@ -1,3 +1,3 @@
 module Adzerk
-  VERSION = "0.28"
+  VERSION = "0.30"
 end
