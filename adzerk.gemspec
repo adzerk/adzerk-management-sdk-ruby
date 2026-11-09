@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.homepage      = "http://adzerk.com"
   s.add_development_dependency "rspec", "= 3.5.0"
   s.add_development_dependency "rake", "= 12.3.3"
-  s.add_runtime_dependency "json", "~> 2.0"
+  s.add_runtime_dependency "json", "~> 3.1"
   s.add_runtime_dependency "rest-client", "~> 2.1"
   s.add_runtime_dependency "activesupport", ">= 5.1"
 end

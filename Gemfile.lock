@@ -3,7 +3,7 @@ PATH
   specs:
     adzerk (0.30)
       activesupport (>= 5.1)
-      json (~> 2.0)
+      json (~> 3.1)
       rest-client (~> 2.1)
 
 GEM
@@ -34,7 +34,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    json (2.6.3)
+    json (3.1.0)
     logger (1.7.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
