@@ -27,7 +27,7 @@ jobs:
       - name: set up ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.6'
+          ruby-version: '3.4'
       - name: create credentials folder
         run: mkdir -p ~/.gem
       - name: create credentials file
