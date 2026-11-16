@@ -83,6 +83,51 @@ describe "Creative API" do
     expect(creative[:is_deleted]).to eq($IsCreativeDeleted)
     expect(creative[:is_sync]).to eq($IsSync)
   end
+
+  # The two examples below exercise the image upload (multipart) path: Creative#create with an image path, and
+  # Client#upload_creative directly.
+  it "should create a creative with an image" do
+    image_path = File.expand_path(File.dirname(__FILE__) + '/250x250.gif')
+    title = 'Test image creative ' + rand(1000000).to_s
+
+    new_creative = {
+      :title => title,
+      :image_name => "",
+      :url => "http://adzerk.com",
+      :body => "Test Body",
+      :advertiser_id => @advertiser_id,
+      :ad_type_id => 18,
+      :is_active => true,
+      :alt => 'test alt',
+      :is_deleted => false,
+      :is_sync => false
+    }
+    creative = @creatives.create(new_creative, image_path)
+
+    expect(creative[:id]).to be > 0
+    expect(creative[:title]).to eq(title)
+  end
+
+  it "should upload an image to an existing creative" do
+    image_path = File.expand_path(File.dirname(__FILE__) + '/250x250.gif')
+
+    new_creative = {
+      :title => 'Test upload creative ' + rand(1000000).to_s,
+      :image_name => "",
+      :url => "http://adzerk.com",
+      :body => "Test Body",
+      :advertiser_id => @advertiser_id,
+      :ad_type_id => 18,
+      :is_active => true,
+      :alt => 'test alt',
+      :is_deleted => false,
+      :is_sync => false
+    }
+    creative = @creatives.create(new_creative)
+    response = Adzerk::Client.new(API_KEY).upload_creative(creative[:id], image_path)
+
+    expect(JSON.parse(response.body)['Id']).to eq(creative[:id])
+  end
 # Fix me!
   # it "should get a specific creative" do
   #   creative = @creatives.get($creative_id)
