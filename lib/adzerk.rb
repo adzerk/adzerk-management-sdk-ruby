@@ -1,6 +1,5 @@
 require "json"
 require "net/http"
-require "securerandom"
 require "active_support/inflector"
 require "adzerk/util"
 require "adzerk/errors"

@@ -12,7 +12,7 @@ Behavior changes for `create_creative`, `upload_creative`, and
 - Error responses (4xx and 5xx) now raise `Adzerk::ApiError` with the API's
   message, instead of a `RestClient` exception.
 - A `429 Too Many Requests` response is now retried with the same backoff as
-  every other request. Previously `rest-client` raised on it, so the retry loop 
+  every other request. Previously `rest-client` raised on it, so the retry loop
   did not run.
 - `create_creative` and `upload_creative` now return a `Net::HTTPResponse`
   instead of a `RestClient::Response`. Use `response.body` for the JSON, and

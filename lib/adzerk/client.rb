@@ -92,6 +92,15 @@ module Adzerk
       send_request(request, uri)
     end
 
+    def post_multipart_request(url, parts, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
+      request.set_form(parts, 'multipart/form-data')
+      send_request(request, uri)
+    end
+
     def put_request(url, data, version: 'v1')
       uri = URI.parse("#{@config[:host]}#{version}/#{url}")
       request = Net::HTTP::Put.new(uri.request_uri)
@@ -147,24 +156,10 @@ module Adzerk
     def upload_creative(id, image_path, size_override: false, version: 'v1')
       url = "creative/#{id}/upload"
       url += '?sizeOverride=true' if size_override
-      post_multipart_request(url, 'image', File.basename(image_path), image_content_type(image_path),
-                             File.binread(image_path), version: version)
-    end
-
-    # Posts a single file as multipart/form-data. The body is built in memory, so a retry after a 429 sends the
-    # whole file again.
-    def post_multipart_request(url, field, filename, content_type, data, version: 'v1')
-      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
-      boundary = "AdzerkFormBoundary#{SecureRandom.hex(16)}"
-      request = Net::HTTP::Post.new(uri.request_uri, 'Content-Type' => "multipart/form-data; boundary=#{boundary}")
-      request.add_field(@config[:header], @api_key)
-      request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
-      request.body = ["--#{boundary}\r\n".b,
-                      "Content-Disposition: form-data; name=\"#{field}\"; filename=\"#{filename.gsub('"', '%22')}\"\r\n".b,
-                      "Content-Type: #{content_type}\r\n\r\n".b,
-                      data,
-                      "\r\n--#{boundary}--\r\n".b].join
-      send_request(request, uri)
+      # Bytes, not a File: send_request re-sends this request after a 429, and a File would already be read to EOF.
+      image = ['image', File.binread(image_path), {:filename => File.basename(image_path),
+                                                   :content_type => image_content_type(image_path)}]
+      post_multipart_request(url, [image], version: version)
     end
 
     def image_content_type(image_path)
