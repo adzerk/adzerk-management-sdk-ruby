@@ -3,7 +3,7 @@ PATH
   specs:
     adzerk (0.30)
       activesupport (>= 5.1)
-      json (~> 2.0)
+      json (>= 2.0, < 4)
       rest-client (~> 2.1)
 
 GEM
@@ -34,14 +34,17 @@ GEM
       domain_name (~> 0.5)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    json (2.6.3)
+    json (3.1.0)
     logger (1.7.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2023.0218.1)
-    minitest (5.19.0)
+    minitest (6.1.0)
+      drb (~> 2.0)
+      prism (>= 1.5, < 3)
     mutex_m (0.3.0)
     netrc (0.11.0)
+    prism (2.1.0)
     rake (12.3.3)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
@@ -77,4 +80,4 @@ DEPENDENCIES
   rspec (= 3.5.0)
 
 BUNDLED WITH
-   4.0.24
+  4.0.24
