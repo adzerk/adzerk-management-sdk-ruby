@@ -34,7 +34,7 @@ GEM
       drb (~> 2.0)
       prism (>= 1.5, < 3)
     mutex_m (0.3.0)
-    prism (2.1.0-arm64-darwin)
+    prism (2.1.0)
     rake (12.3.3)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
@@ -54,7 +54,7 @@ GEM
       concurrent-ruby (~> 1.0)
 
 PLATFORMS
-  arm64-darwin-25
+  ruby
 
 DEPENDENCIES
   adzerk!
