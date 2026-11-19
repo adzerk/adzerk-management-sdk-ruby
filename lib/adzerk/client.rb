@@ -16,6 +16,12 @@ module Adzerk
     BASE_SLEEP = 0.25
     MAX_SLEEP = 5
     MAX_ATTEMPTS = 10
+    IMAGE_CONTENT_TYPES = {
+      '.gif' => 'image/gif',
+      '.jpg' => 'image/jpeg',
+      '.jpeg' => 'image/jpeg',
+      '.png' => 'image/png'
+    }
 
     DEFAULTS = {
       :host => ENV["ADZERK_API_HOST"] || 'https://api.adzerk.net/',
@@ -86,6 +92,15 @@ module Adzerk
       send_request(request, uri)
     end
 
+    def post_multipart_request(url, parts, version: 'v1')
+      uri = URI.parse("#{@config[:host]}#{version}/#{url}")
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.add_field(@config[:header], @api_key)
+      request.add_field(SDK_HEADER_NAME, SDK_HEADER_VALUE)
+      request.set_form(parts, 'multipart/form-data')
+      send_request(request, uri)
+    end
+
     def put_request(url, data, version: 'v1')
       uri = URI.parse("#{@config[:host]}#{version}/#{url}")
       request = Net::HTTP::Put.new(uri.request_uri)
@@ -132,41 +147,23 @@ module Adzerk
     end
 
     def create_creative(data={}, image_path='', version: 'v1')
-      response = nil
-      attempt = 0
+      creative_response = post_request('creative', {:creative => camelize_data(data).to_json}, version: version)
+      return creative_response if image_path.empty?
 
-      loop do
-        response = RestClient.post(@config[:host] + version + '/creative',
-                                  {:creative => camelize_data(data).to_json},
-                                   :X_Adzerk_ApiKey => @api_key,
-                                   :X_Adzerk_Sdk_Version => SDK_HEADER_VALUE,
-                                   :accept => :json)
-        break if response.code != 429 or attempt >= (@config[:max_attempts] || MAX_ATTEMPTS)
-        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt].min()))
-        attempt += 1
-      end
-      response = upload_creative(JSON.parse(response)["Id"], image_path) unless image_path.empty?
-      response
+      upload_creative(JSON.parse(creative_response.body)["Id"], image_path)
     end
 
     def upload_creative(id, image_path, size_override: false, version: 'v1')
-      response = nil
-      attempt = 0
-      image = File.new(image_path, 'rb')
-      url = @config[:host] + version + '/creative/' + id.to_s + '/upload'
+      url = "creative/#{id}/upload"
       url += '?sizeOverride=true' if size_override
-      loop do
-        response = RestClient.post(url,
-        {:image => image},
-        "X-Adzerk-ApiKey" => @api_key,
-        SDK_HEADER_NAME => SDK_HEADER_VALUE,
-        :accept => :mime)
+      # Bytes, not a File: send_request re-sends this request after a 429, and a File would already be read to EOF.
+      image = ['image', File.binread(image_path), {:filename => File.basename(image_path),
+                                                   :content_type => image_content_type(image_path)}]
+      post_multipart_request(url, [image], version: version)
+    end
 
-        break if response.code != 429 or attempt >= (@config[:max_attempts] || MAX_ATTEMPTS)
-        sleep(rand(0.0..[MAX_SLEEP, BASE_SLEEP * 2 ** attempt].min()))
-        attempt += 1
-      end
-      response
+    def image_content_type(image_path)
+      IMAGE_CONTENT_TYPES.fetch(File.extname(image_path).downcase, 'application/octet-stream')
     end
 
     def send_request(request, uri)

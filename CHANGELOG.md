@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## Unreleased
+
+Removed the `rest-client` dependency, which is no longer maintained upstream.
+`create_creative` and `upload_creative` now use `Net::HTTP`, like other
+requests in the SDK.
+
+Behavior changes for `create_creative`, `upload_creative`, and
+`creatives.create` when it is given an image:
+
+- Error responses (4xx and 5xx) now raise `Adzerk::ApiError` with the API's
+  message, instead of a `RestClient` exception.
+- A `429 Too Many Requests` response is now retried with the same backoff as
+  every other request. Previously `rest-client` raised on it, so the retry loop
+  did not run.
+- `create_creative` and `upload_creative` now return a `Net::HTTPResponse`
+  instead of a `RestClient::Response`. Use `response.body` for the JSON, and
+  note that `response.code` is now a String (`"200"`), not an Integer.
+- The image is sent with a content type taken from its file extension
+  (`.gif`, `.jpg`, `.jpeg`, `.png`), or `application/octet-stream` for any other
+  extension. `rest-client` guessed it from a larger table of types.
+
 ## v0.13 (2017-10-19)
 
 Updated `activesupport` dependency from `~> 3.2` to `~> 5.1`.
