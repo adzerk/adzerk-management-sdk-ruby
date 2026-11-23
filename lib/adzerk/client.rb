@@ -157,7 +157,7 @@ module Adzerk
       url = "creative/#{id}/upload"
       url += '?sizeOverride=true' if size_override
       # Bytes, not a File: send_request re-sends this request after a 429, and a File would already be read to EOF.
-      image = ['image', File.binread(image_path), {:filename => File.basename(image_path),
+      image = ['image', File.binread(image_path), {:filename => File.basename(image_path).b,
                                                    :content_type => image_content_type(image_path)}]
       post_multipart_request(url, [image], version: version)
     end
