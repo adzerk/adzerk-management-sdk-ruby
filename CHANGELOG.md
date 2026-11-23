@@ -9,8 +9,9 @@ requests in the SDK.
 Behavior changes for `create_creative`, `upload_creative`, and
 `creatives.create` when it is given an image:
 
-- Error responses (4xx and 5xx) now raise `Adzerk::ApiError` with the API's
-  message, instead of a `RestClient` exception.
+- Errors are now raised in a manner consistent with other SDK requests. `RestClient` 
+  exceptions (`RestClient::BadRequest` or `RestClient::ExceptionWithResponse`) are no longer
+  returned and code that rescues these exception classes must change. 
 - A `429 Too Many Requests` response is now retried with the same backoff as
   every other request. Previously `rest-client` raised on it, so the retry loop
   did not run.
