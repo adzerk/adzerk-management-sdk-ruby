@@ -1,0 +1,107 @@
+name: Publish Gem
+
+# Publishes the gem when a PR that changes the version in lib/adzerk/version.rb merges to
+# master. Make the version change with scripts/create-release.rb (see RELEASE.md).
+# This workflow does not push to master. It only pushes the release tag.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "lib/adzerk/version.rb"
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version_changed: ${{ steps.check.outputs.version_changed }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # Each release has a tag with the version name (for example, 0.31). If the tag
+      # exists, the version is already published. This also makes re-runs safe.
+      - name: Check if the version has a release
+        id: check
+        run: |
+          VERSION=$(sed -n -E 's/^[[:space:]]*VERSION[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' lib/adzerk/version.rb | head -n 1)
+          if [ -z "$VERSION" ]; then
+            echo "❌ Cannot find VERSION in lib/adzerk/version.rb"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" > /dev/null; then
+            echo "version_changed=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️ Tag $VERSION exists, so version $VERSION is already released"
+          else
+            echo "version_changed=true" >> "$GITHUB_OUTPUT"
+            echo "✅ Version $VERSION has no tag. Publishing it."
+          fi
+
+  publish:
+    needs: check-version
+    if: needs.check-version.outputs.version_changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ needs.check-version.outputs.version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+
+      - name: Update bundler
+        run: gem update bundler
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Build gem
+        run: |
+          bundle exec rake build
+          test -f "pkg/adzerk-$VERSION.gem"
+
+      # Publish before the tag: a tag always means that the version is on RubyGems.
+      - name: Publish to RubyGems
+        run: gem push "pkg/adzerk-$VERSION.gem"
+        env:
+          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push --no-verify origin "refs/tags/$VERSION"
+
+      # Gets the text between "## [<version>]" and the next "## " heading.
+      - name: Extract changelog for this version
+        run: |
+          awk -v heading="## [$VERSION]" '
+            index($0, heading) == 1 { found = 1; next }
+            found && /^## / { exit }
+            found { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/changelog.md"
+
+          if ! grep -q '[^[:space:]]' "$RUNNER_TEMP/changelog.md"; then
+            echo "Release $VERSION" > "$RUNNER_TEMP/changelog.md"
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          body_path: ${{ runner.temp }}/changelog.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
