@@ -69,10 +69,15 @@ To add release notes before a release, add them to a `## Unreleased` section at 
 
 - `.github/workflows/publish.yml` (Publish Gem) — trigger: push to `master` that changes
   `lib/adzerk/version.rb`.
-  - The `check-version` job reads the version. If the tag `<version>` exists, the version
-    is already released and the workflow stops. This makes re-runs safe.
+  - The `check-version` job reads the version. If the GitHub Release `<version>` exists, the
+    version is already released and the workflow stops. The GitHub Release is the last step,
+    so it exists only when all of the steps are done.
   - The `publish` job builds the gem and pushes it to RubyGems. Then it pushes the tag
-    `<version>` and creates a GitHub Release from the `CHANGELOG.md` entry.
+    `<version>` and creates a GitHub Release from the `CHANGELOG.md` entry. Before each of
+    these steps, it checks if that part of the release exists, and it skips the step if it
+    does. This makes re-runs safe.
+  - If a lookup fails (for example, the GitHub API, RubyGems or the remote is unreachable),
+    the job fails. It does not continue as if the item is missing.
 - `.github/workflows/release-check.yml` (Release Check) — trigger: each PR to `master`. It has
   no `paths` filter, so it can be a required check. It runs `scripts/check-release.rb`.
   - It passes at once when the version is unchanged.
@@ -92,12 +97,9 @@ To add release notes before a release, add them to a `## Unreleased` section at 
 - You cannot change a published gem version. To fix a bad release, release a new version.
 - To remove a bad version from RubyGems, use `gem yank adzerk -v <version>` (needs a RubyGems
   owner). Use this only for a broken or unsafe release.
-- If the Publish Gem workflow fails before `gem push`, fix the cause and re-run the workflow.
-- If it fails after `gem push`, the gem is on RubyGems but the tag or the GitHub Release can
-  be missing. Create them by hand from the merge commit on `master`:
-  `git tag -a <version> -m "Release <version>" <commit>`, `git push origin <version>`, then
-  create the GitHub Release from the tag. Do not re-run the workflow, because the second
-  `gem push` of the same version fails.
+- If the Publish Gem workflow fails, fix the cause and re-run it. You can re-run all jobs or
+  only the failed job. The re-run skips the steps that are done (the gem on RubyGems, the tag
+  or the GitHub Release) and does the steps that are missing.
 
 ## Observability
 
