@@ -25,7 +25,8 @@ ROOT = File.expand_path("..", __dir__)
 VERSION_PATH = "lib/adzerk/version.rb"
 VERSION_PATTERN = /^\s*VERSION\s*=\s*"([^"]+)"/
 LOCKFILE_PATTERN = /^    adzerk \(([^)]+)\)$/
-FIX_HINT = "Run `ruby scripts/create-release.rb` and follow RELEASE.md → Deployment."
+FIX_HINT = "If you changed the version by hand, revert lib/adzerk/version.rb and Gemfile.lock first. " \
+           "Then run `ruby scripts/create-release.rb` and follow RELEASE.md → Deployment."
 
 def git(*args)
   output, error, status = Open3.capture3("git", *args, chdir: ROOT)

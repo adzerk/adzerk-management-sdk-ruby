@@ -10,6 +10,9 @@ on:
     paths:
       - "lib/adzerk/version.rb"
 
+permissions:
+  contents: read
+
 jobs:
   check-version:
     runs-on: ubuntu-latest
@@ -57,12 +60,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
-
-      - name: Update bundler
-        run: gem update bundler
-
-      - name: Install dependencies
-        run: bundle install
+          bundler-cache: true # Installs the Bundler version in Gemfile.lock and runs bundle install
 
       - name: Build gem
         run: |
@@ -96,7 +94,7 @@ jobs:
           fi
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}

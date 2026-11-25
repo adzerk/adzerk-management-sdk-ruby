@@ -30,20 +30,24 @@ GitHub Actions never pushes to `master`. It pushes only the release tag.
 ## Deployment
 
 1. On an up-to-date `master`, run `ruby scripts/create-release.rb` (it asks for the type), or
-   `ruby scripts/create-release.rb minor|major`.
+   `ruby scripts/create-release.rb minor|major`. The script fetches `origin/master` and stops if
+   the working tree has changes or `HEAD` is not `origin/master`.
    - `minor`: bug fixes, dependency updates and new features (`0.31` → `0.32`).
    - `major`: breaking changes (`0.31` → `1.0`).
 2. Review the changes with `git diff`. The script changes these files:
    - `lib/adzerk/version.rb` and `Gemfile.lock` get the new version.
    - `CHANGELOG.md` gets a `## [<version>] - <date>` entry. The entry has the notes from the
-     `## Unreleased` section and a list of the PRs that merged after the last tag.
+     `## Unreleased` section, then a `### Pull requests` list of the PRs and commits that merged
+     to `master` after the last tag.
 3. Edit the `CHANGELOG.md` entry, if necessary. The script does not commit or tag.
 4. Make a branch, commit the changes and open a PR to `master`.
 5. Merge the PR. The Publish Gem workflow publishes the gem, tags the version and creates
    the GitHub Release.
 
 Do not change the version by hand. The Release Check workflow fails a PR that changes the
-version without the matching `Gemfile.lock` and `CHANGELOG.md` changes.
+version without the matching `Gemfile.lock` and `CHANGELOG.md` changes. If you changed the
+version by hand, revert `lib/adzerk/version.rb` and `Gemfile.lock` first, then run the script.
+If you do not revert, the script increases the version again (for example, `0.32` → `0.33`).
 
 To add release notes before a release, add them to a `## Unreleased` section at the top of
 `CHANGELOG.md`. The next release moves them into its entry.
