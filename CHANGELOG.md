@@ -22,11 +22,11 @@ Behavior changes for `create_creative`, `upload_creative`, and
   (`.gif`, `.jpg`, `.jpeg`, `.png`), or `application/octet-stream` for any other
   extension. `rest-client` guessed it from a larger table of types.
 
-## v0.13 (2017-10-19)
+## [0.13] - 2017-10-19
 
 Updated `activesupport` dependency from `~> 3.2` to `~> 5.1`.
 
-## v0.12 (2017-04-14)
+## [0.12] - 2017-04-14
 
 `upload_creative` now takes an optional `size_override` keyword argument that
 will allow you to upload a creative image whose dimensions are different than
@@ -34,7 +34,7 @@ the ad type.
 
 Thanks to [@wulftone][wulftone] for the PR!
 
-## v0.11 (2017-03-14)
+## [0.11] - 2017-03-14
 
 - Updated dependencies:
   - `json ~> 2.0` (was `>= 1.7.7`)
@@ -43,7 +43,7 @@ Thanks to [@wulftone][wulftone] for the PR!
 - Fixed a warning about the Content-Type being overridden to
   `application/x-www-form-urlencoded` when creating a creative.
 
-## v0.9 (2016-12-08)
+## [0.9] - 2016-12-08
 
 Up until now, the `create_report` function was using a deprecated Adzerk API
 endpoint, /v1/report.
@@ -61,25 +61,25 @@ timeout, and it will block indefinitely until the report comes back.
 You may wish to add a timeout (in ms) as the second argument to `create_report`.
 An error will be raised if the report does not come back within the timeout.
 
-## v0.8 (2016-08-25)
+## [0.8] - 2016-08-25
 
 `rest-client` dependency upgraded/pinned to 1.6.9.
 
-## v0.7 (2016-03-22)
+## [0.7] - 2016-03-22
 
 The Adzerk API Ruby gem now uses https by default.
 
-## v0.6 (2015-06-22)
+## [0.6] - 2015-06-22
 
 Updated tests to reflect the current state of the API.
 
-## v0.5 (2015-03-06)
+## [0.5] - 2015-03-06
 
 Updated tests to reflect the current state of the API.
 
 Added SelectionAlgorithm to Priorities (defaults to 0).
 
-## v0.4 (2014-11-19)
+## [0.4] - 2014-11-19
 
 Reporting API methods updated to reflect how the reporting API works.
 

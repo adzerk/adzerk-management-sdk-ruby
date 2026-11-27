@@ -1,0 +1,76 @@
+name: Release Check
+
+# No paths filter: a required check with a paths filter stays pending on PRs that do not
+# change lib/adzerk/version.rb. The script exits early when the version is unchanged.
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  release-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Need the base branch to compare versions
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+
+      - name: Check release files for a version change
+        id: check
+        run: ruby scripts/check-release.rb "origin/$BASE_REF"
+        env:
+          BASE_REF: ${{ github.base_ref }}
+
+      # Keeps one comment per PR: adds or updates it for a valid version bump, and
+      # deletes it when the PR no longer has one (no version change, or the check
+      # failed). A failed comment does not fail the job (for example, PRs from forks
+      # get a read-only token).
+      - name: Comment on the PR about the release
+        if: ${{ !cancelled() && steps.check.outcome != 'skipped' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_REF: ${{ github.base_ref }}
+          VERSION: ${{ steps.check.outputs.release_version }}
+          BASE_VERSION: ${{ steps.check.outputs.base_version }}
+        run: |
+          MARKER="<!-- release-check -->"
+          COMMENTS="repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments"
+          COMMENT_ID=$(gh api "$COMMENTS" --paginate --jq ".[] | select(.body | startswith(\"$MARKER\")) | .id" | head -n 1)
+
+          if [ -z "$VERSION" ]; then
+            if [ -n "$COMMENT_ID" ]; then
+              gh api -X DELETE "repos/$GITHUB_REPOSITORY/issues/comments/$COMMENT_ID"
+              echo "Deleted the release comment, because the PR no longer changes the version"
+            fi
+            exit 0
+          fi
+
+          BODY="$MARKER
+          ### 📦 Merging this PR releases $VERSION
+
+          This PR changes the version from \`$BASE_VERSION\` to \`$VERSION\`. When it merges to \`$BASE_REF\`, the Publish Gem workflow:
+
+          - publishes \`adzerk $VERSION\` to RubyGems
+          - tags \`$VERSION\`
+          - creates a GitHub Release from the \`$VERSION\` entry in \`CHANGELOG.md\`
+
+          Published versions cannot change. To fix a bad release, publish a new version."
+
+          if [ -n "$COMMENT_ID" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$COMMENT_ID" -f body="$BODY" > /dev/null
+            echo "Updated the release comment for $VERSION"
+          else
+            gh api -X POST "$COMMENTS" -f body="$BODY" > /dev/null
+            echo "Added the release comment for $VERSION"
+          fi

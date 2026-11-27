@@ -1,0 +1,161 @@
+name: Publish Gem
+
+# Publishes the gem when a PR that changes the version in lib/adzerk/version.rb merges to
+# master. Make the version change with scripts/create-release.rb (see RELEASE.md).
+# This workflow does not push to master. It only pushes the release tag.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "lib/adzerk/version.rb"
+
+permissions:
+  contents: read
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      release_missing: ${{ steps.check.outputs.release_missing }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # The GitHub Release is the last step of a release. If it exists, the version is
+      # released. If it does not, the publish job does the steps that are missing.
+      - name: Check if the version has a GitHub Release
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(sed -n -E 's/^[[:space:]]*VERSION[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' lib/adzerk/version.rb | head -n 1)
+          if [ -z "$VERSION" ]; then
+            echo "❌ Cannot find VERSION in lib/adzerk/version.rb"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          STATUS=$(curl -sS -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/releases/tags/$VERSION")
+          case "$STATUS" in
+            200)
+              echo "release_missing=false" >> "$GITHUB_OUTPUT"
+              echo "ℹ️ Version $VERSION has a GitHub Release, so it is already released"
+              ;;
+            404)
+              echo "release_missing=true" >> "$GITHUB_OUTPUT"
+              echo "✅ Version $VERSION has no GitHub Release. Publishing it."
+              ;;
+            *)
+              echo "❌ Cannot look up the GitHub Release for $VERSION (HTTP $STATUS)"
+              exit 1
+              ;;
+          esac
+
+  publish:
+    needs: check-version
+    if: needs.check-version.outputs.release_missing == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ needs.check-version.outputs.version }}
+
+    # Each step checks if its part of the release exists and skips it if it does. A re-run
+    # (of all jobs or of only the failed job) then does only the steps that are missing.
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check if the version is on RubyGems
+        id: rubygems
+        run: |
+          STATUS=$(curl -sS -o /dev/null -w '%{http_code}' \
+            "https://rubygems.org/api/v2/rubygems/adzerk/versions/$VERSION.json")
+          case "$STATUS" in
+            200)
+              echo "published=true" >> "$GITHUB_OUTPUT"
+              echo "ℹ️ Version $VERSION is on RubyGems. Skipping the build and the push."
+              ;;
+            404)
+              echo "published=false" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "❌ Cannot look up version $VERSION on RubyGems (HTTP $STATUS)"
+              exit 1
+              ;;
+          esac
+
+      - name: Set up Ruby
+        if: steps.rubygems.outputs.published == 'false'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true # Installs the Bundler version in Gemfile.lock and runs bundle install
+
+      - name: Build gem
+        if: steps.rubygems.outputs.published == 'false'
+        run: |
+          bundle exec rake build
+          test -f "pkg/adzerk-$VERSION.gem"
+
+      # Publish before the tag: a tag always means that the version is on RubyGems.
+      - name: Publish to RubyGems
+        if: steps.rubygems.outputs.published == 'false'
+        run: gem push "pkg/adzerk-$VERSION.gem"
+        env:
+          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+
+      # git ls-remote --exit-code returns 2 when the lookup works and finds no tag. Other
+      # nonzero codes are errors (for example, the remote is unreachable).
+      - name: Create and push tag
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" > /dev/null; then
+            STATUS=0
+          else
+            STATUS=$?
+          fi
+          case "$STATUS" in
+            0)
+              echo "ℹ️ Tag $VERSION exists. Skipping it."
+              exit 0
+              ;;
+            2)
+              ;;
+            *)
+              echo "❌ Cannot look up tag $VERSION (git exit code $STATUS)"
+              exit 1
+              ;;
+          esac
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push --no-verify origin "refs/tags/$VERSION"
+
+      # Gets the text between "## [<version>]" and the next "## " heading.
+      - name: Extract changelog for this version
+        run: |
+          awk -v heading="## [$VERSION]" '
+            index($0, heading) == 1 { found = 1; next }
+            found && /^## / { exit }
+            found { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/changelog.md"
+
+          if ! grep -q '[^[:space:]]' "$RUNNER_TEMP/changelog.md"; then
+            echo "Release $VERSION" > "$RUNNER_TEMP/changelog.md"
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          body_path: ${{ runner.temp }}/changelog.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
