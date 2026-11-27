@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## [0.32] - 2026-11-27
 
 Removed the `rest-client` dependency, which is no longer maintained upstream.
 `create_creative` and `upload_creative` now use `Net::HTTP`, like other
@@ -21,6 +21,11 @@ Behavior changes for `create_creative`, `upload_creative`, and
 - The image is sent with a content type taken from its file extension
   (`.gif`, `.jpg`, `.jpeg`, `.png`), or `application/octet-stream` for any other
   extension. `rest-client` guessed it from a larger table of types.
+
+### Pull requests
+
+- [MGMT-1311] Update release process (#81, 6c0b570)
+- Remove rest-client dependency in favor of Net::HTTP (#79, da688c4)
 
 ## [0.13] - 2017-10-19
 
